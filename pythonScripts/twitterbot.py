@@ -33,4 +33,5 @@ for follower in tweepy.Cursor(api.followers).items():
 
 '''writing in a file'''
 
-
+api = tweepy.API(auth)
+api.update_status('Hello World')
