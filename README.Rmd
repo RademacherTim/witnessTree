@@ -1,0 +1,15 @@
+---
+title: "README.Rmd"
+author: "Tim T. Rademacher"
+date: "June 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read me file for the witnessTree project
+
+# witnessTree directory structure
+![project structure and overview.](/../figures/directory_structure.001.png)
