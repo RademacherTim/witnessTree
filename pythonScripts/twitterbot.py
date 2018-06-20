@@ -44,6 +44,7 @@ api = tweepy.API(auth)
 api.update_status('Hello World')
 api.update_with_media(filename[,'it is a bit chilly out'][file])  #How can I write "it's"? Also perhaps where it says chilly I can apply the exercise where based on a temperature the code fills a word
 
+<<<<<<< HEAD
 api.destroy_status('tweet ID')# Example: api.destroy_status(1007329170437951488) tweet ID can be found on URL after clicking on the Tweet
 api.me() #gives information about the authenticated user
 
@@ -51,3 +52,7 @@ api.me() #gives information about the authenticated user
 public_tweets = api.home_timeline()
 for tweet in public_tweets:
                       print(tweet.text)
+=======
+api = tweepy.API(auth)
+api.update_status('Hello World')
+>>>>>>> d9423f8c68fe9c27f8d5f211d947c25e30a31621
