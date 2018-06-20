@@ -1,3 +1,10 @@
+messages = open('~/GitHub/witnessTree-1/messages/2018-06-15.csv')
+message1 = messages.read() #today's message-tdmessage
+messages.close()
+message1
+
+for line in message1:
+    print (line)
 
 import tweepy
 import tkinter
@@ -31,6 +38,16 @@ for follower in tweepy.Cursor(api.followers).items():
     follower.unfollow()
     print ("Followed everyone that is following " + user.name)
 
-'''writing in a file'''
+'''putting a message on Twitter 'Hello World' '''
 
+api = tweepy.API(auth)
+api.update_status('Hello World')
+api.update_with_media(filename[,'it is a bit chilly out'][file])  #How can I write "it's"? Also perhaps where it says chilly I can apply the exercise where based on a temperature the code fills a word
 
+api.destroy_status('tweet ID')# Example: api.destroy_status(1007329170437951488) tweet ID can be found on URL after clicking on the Tweet
+api.me() #gives information about the authenticated user
+
+#These next few lines will print any tweets that were previously tweeted on the account 
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+                      print(tweet.text)
