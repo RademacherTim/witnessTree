@@ -1,6 +1,6 @@
 ---
 title: "README.Rmd"
-author: "Tim T. Rademacher"
+author: "Tim T. Rademacher, Kyle Wyche & David J. Basler-Chateau"
 date: "June 15, 2018"
 output: html_document
 ---
@@ -9,7 +9,29 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Read me file for the witnessTree project
+## What is the witnessTree project?
+
+The witnessTree project is an open-source project that enables trees fitted with a monitoring system to post messages and images about eco-physiological processes and outcomes, in particular climatic impatcs on the eco-physiology of the tree in question, on social media in near-real-time. 
+
+# What is a witnessTree?
+
+A witness tree is a tree that witnesses climate and its response in terms of functioning and interactions with other organisms. The tree is enabled to speak for itself, using sensors and software that provides objective truths concerning the life of the tree.
+
+# What is the aim of the witnessTree project?
+
+The aim is to provide an untainted voice about climate and how it is experienced by the dominant form of life on earth, trees. The messages and figures are descriptive in nature, such as comparison between current and previous states. Overall, the witnessTree is a means to reach out to the general public and inform them about what is happening in the forests around them.
+
+# Who is the team behind the witnessTree?
+
+Tim Rademacher is the project lead. Kyle Wyche is developing the first implementation. David Basler has contributed to the project with ideas and code. Tim developed the idea based on twittering trees from Europe and the book "Witness Tree: Seasons of Change with a Century-Old Oak" by Lynda V. Mapes.
+
+## How does it work?
+
+The project is divided into several hardware and software components. At the tree sensors are installed that create data, which are collected by a data logger and transferred in almost real-time to a server. On the server the data is stored in a data/ folder within the witnessTree/ folder. R scripts stored in the RScripts/ folder, which are executed by a run.sh shell script, analyse the data in the data/ folder at regular intervals to write messages and store them as csv-files in the messages folder. The R scripts also generate figures and store them as png-files in the figures/ folder. 
 
 # witnessTree directory structure
-![project structure and overview.](/../figures/directory_structure.001.png)
+![Fig. 1 shows the project project durectory structure. ](figures/directory_structure.001.png)
+
+In a second step the generated figures and messages are passed to twitter by python scripts, which are stored in the pythonScript/ folder. The python scripts are also executed after all R scripts and some checks by the run.sh script.
+
+The run.sh script executes automatically once a day.

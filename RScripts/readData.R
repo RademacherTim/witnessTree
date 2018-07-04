@@ -57,7 +57,17 @@ metFisher.past    <- read.csv (file = url ('http://harvardforest.fas.harvard.edu
 metDataHF <- rbind.fill (metShaler.past, metFisher.past, metFisher.current) 
 metDataHF$date <- as.POSIXct (metDataHF$date, format = '%Y-%m-%d')
 
+# read the barnTower data
+barnTowerData <- read.csv ('/home/rademachert/BarnData/Barn_Table.dat', 
+                           skip = 4, header = F)
+barnNames <- names (read.csv ('/home/rademachert/BarnData/Barn_Table.dat',
+                              skip = 1, header = T))
+names (barnTowerData) <- barnNames
+barnTowerData$TIMESTAMP <- as.POSIXct (barnTowerData$TIMESTAMP,
+                                       format = '%Y-%m-%d %H:%M:%S')
+
 # delete unnecessary files
 rm (metFisher.current, metFisher.past, metShaler.past,
     data1, data2, data3, data4, data5, data6, data7, 
+    barnNames, 
     dataNames1, dataNames2, dataNames3, dataNames4, dataNames5, dataNames6)
