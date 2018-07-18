@@ -6,30 +6,83 @@
 #
 # Project lead: Tim Tito Rademacher (rademacher.tim@gmail.com)
 #
+# Developpers:  Kyle Wyche 
+#               David Basler
+#
 #---------------------------------------------------------------------------------------#
  
-# load dependencies
+# Load dependencies
 #---------------------------------------------------------------------------------------#
-library(cronR)<br>f <- system.file(package = "cronR", "extdata", "helloworld.R")<br>cmd <- cron_rscript(f, rscript_args = c("productx", "20160101"))<br>## Every minute<br>cron_add(cmd, frequency = 'minutely', id = 'job1', description = 'Customers')<br>## Every hour at 20 past the hour on Monday and Tuesday<br>cron_add(cmd, frequency = 'hourly', id = 'job2', at = '00:20', description = 'Weather', days_of_week = c(1, 2))<br>## Every day at 14h20 on Sunday, Wednesday and Friday<br>cron_add(cmd, frequency = 'daily', id = 'job3', at = '14:20', days_of_week = c(0, 3, 5))<br>## Every starting day of the month at 10h30<br>cron_add(cmd, frequency = 'monthly', id = 'job4', at = '10:30', days_of_month = 'first', days_of_week = '*')<br>## Get all the jobs<br>cron_ls()<br>## Remove all scheduled jobs<br>cron_clear(ask=FALSE)
+require ('tibble')
+require ('dplyr')
+require ('readr')
+source  ('./RScripts/selectMessage.R')
+source  ('./RScripts/checkEvents.R')
+source  ('./RScripts/checkExpiration.R')
 
-# read in previously generated messages
+# Set working directory to the parent directory (witnessTree/)
+#---------------------------------------------------------------------------------------#
+setwd ('../') 
+
+# Read in previously generated messages, if not first iteration
+#---------------------------------------------------------------------------------------#
+if (file.exists ('./messages/messages.csv')) {
+  messages <- read_csv ('./messages/messages.csv', header = T)
+} else {
+  messages <- tibble (priority = 0, 
+                      fFigure  = F,
+                      message  = '',
+                      hashtags = '', 
+                      expires  = as.POSIXct (Sys.time ()) - 10e9)
+  names (messages) <- c ('priority','fFigure','message','hashtags','expires')
+}
+
+# Purge expired messages
+#---------------------------------------------------------------------------------------#
+messages <- checkExpirationOf (messages)
+
+# Re-evaluate priority of messages
+#---------------------------------------------------------------------------------------#
+messages <- reEvaluatePriorityOf (messages)
+
+# Generate new messages concerning regularly recurrent events
+#---------------------------------------------------------------------------------------#
+messages <- checkBirthday       (messages)
+messages <- checkArborDay       (messages)
+messages <- checkEarthDay       (messages)
+messages <- checkSpringEquinox  (messages)
+messages <- checkAutumnEquinox  (messages)
+messages <- checkSummerSolstice (messages)
+messages <- checkWinterSolstice (messages)
+messages <- checkPiday          (messages)
+messages <- checkHalloween      (messages)
+messages <- checkNewYears       (messages)
+
+# Generate new messages concerning climatic events
 #---------------------------------------------------------------------------------------#
 
-
-# purge expired messages and reevaluate priority
+# Selection of message, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
-
-
-# generate new messages concerning regularly recurrent events
+message <- selectMessage (messages)
+  
+# Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#
+if (exists ('message')) {
+  write_csv (x    = message,
+             file = sprintf ('./messages/%s.csv', 
+                             format (Sys.time (), "%Y-%m-%d_%H")),
+             row.names = FALSE)
+} 
 
-
-# generate new messages concerning climatic events
+# Save unused messages and figures in tmp/ folder for next iteration
 #---------------------------------------------------------------------------------------#
+write_csv (x    = messages,
+           file = './messages/messages.csv',
+           row.names = FALSE)
 
-
-# save messages in tmp/ folder for next iteration
+# Create log files
 #---------------------------------------------------------------------------------------#
-
+write_csv (x = sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M")),
+             file = './tmp/logfile.csv')
 
 #=======================================================================================#
