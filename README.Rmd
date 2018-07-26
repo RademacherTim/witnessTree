@@ -32,7 +32,7 @@ The repository and code are organised following a specific directory structure. 
 
 In a second step, the selected message with accompanying figures and images is passed to twitter by python scripts, which themselves are stored in the pythonScripts/ folder. The python and R scripts are run every hour using a task scheduler, such as CRON on Unix-like operating systems, to generate, select and potentially post messages. 
 
-The messages/ folder also contains a logfile with all posted messages and an oldMessages file, which contains messages that were generate during previous iterations, but were not selected for posting. Every iteration the priority of each message is updated, and their expire date is checked.
+The messages/ folder also contains a logfile (in csv format) with all posted messages and an oldMessages file, which contains messages that were generate during previous iterations, but were not selected for posting. Every iteration the priority of each message is updated, and their expire date is checked.
 
 The config.example provides an example for how to connect to a twitter account. A copy of this file with updated account information needs to be saved as config.file in the working directory for the witness tree to work. 
 
