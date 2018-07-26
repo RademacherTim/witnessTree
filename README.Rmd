@@ -9,34 +9,35 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## What is the witnessTree project?
-
-The witnessTree project is an open-source project that enables trees fitted with a simple monitoring system to automatically post messages, figures and images about the functioning of the tree and its environment on social media in near-real-time. Currently, the implementation focusses on twitter as a platform, but expansion to instagram, snap chat and facebook are explored. 
-
 # What is a witnessTree?
 
-A witness tree is a tree that describes its life as apart of the natural environment commenting on climatic, ecological, and physiological events. The tree is enabled to speak for itself, using sensors and software that translates data into easily interpretable messages for the general public.
+A witness tree witnesses life as a tree and its natural environment commenting on climatic, ecological, and physiological events. The tree is enabled to speak for itself, using sensors and software that automatically translate data into easily interpretable messages for the general public in near-real-time.
 
-# What is the aim of the witnessTree project?
+# What is the witnessTree project?
 
-The aim is to provide an untainted voice about climate and how it is experienced by the dominant form of life on earth, trees. The messages and figures are descriptive in nature, such as comparison between current and previous states. Overall, the witnessTree is a means to reach out, inform and educate the general public about what is happening in the forests around them.
+The witnessTree project is an open-source project that enables trees fitted with a simple monitoring system to become a witness tree. Currently, the implementation focusses on twitter as a platform, but expansion to other media such as instagram, snap chat and facebook are being explored. 
 
-# Who is the team behind the witnessTree?
+# Why make a tree talk?
 
-Tim Rademacher is the project lead. Kyle Wyche is developing the first implementation. David Basler has contributed to the project with ideas and code. Tim developed the idea based on the twittering trees from Europe and the book "Witness Tree: Seasons of Change with a Century-Old Oak" by Lynda V. Mapes.
+Trees are the dominant form of life on earth and we want to give them a voice. We want to enable humans to understand the life experiences and how they witness changes in their environment over their long lifetimes, that can stretch over several centuries. Created messages and figures are descriptive in nature, such as comparison between current and previous states. The first witness tree at Harvard Forest will additionally highlight some of the ongoing research. Overall, the witness tree project attempts to inform and educate the general public about what is happening in the forests around us.
 
-## How does it work?
+# How does the tree talk?
 
-The project is divided into several hardware and software components that are undergoing active development and can easily be customised. Overall, necessities for a witness tree are sensors on a tree, which transfer acquired data to the server that hosts the softwware, which is publicly available in this github repository.
+The project is divided into several hardware and software components that are undergoing active development and have been customised to a certain degree. Overall, necessities for a witness tree are, at least, one sensor, which transfer acquired data to a server that hosts the R and python scripts contained in <a href="https://github.com/TTRademacher/witnessTree">this github repository</a>.
 
-The repository and code are organised following a specific folder structure. There is a data/ folder containing the raw data. R scripts, which analyse the data and create messages, are stored in the RScripts/ folder. The R scripts are divided into various functions that can be linked in the main script called witnessTree.R. The R functions also generate figures and store them as png-files in the figures/ folder. Additionally, stock photos stored in the images/ folder are used with certain recurring messages.
+The repository and code are organised following a specific directory structure. There is a data/ folder containing the raw data. R scripts are stored in the RScripts/ folder. These scripts analyse the data and create messages and figures. The R scripts are divided into various functions that can be linked in the main script called witnessTree.R. The R functions also generate figures and store them as png-files in the figures/ folder. Additionally, stock photos from the images/ folder can also be used with messages. Once all the funfctions have been run, one message is selected depending on determined priority. 
 
 # witnessTree directory structure
 ![Fig. 1 shows the project project durectory structure. ](figures/directory_structure.001.png)
 
-In a second step the generated figures and messages are passed to twitter by python scripts, which are stored in the pythonScript/ folder. The python and R scripts are run at regular intervals to generate and post messages. 
+In a second step, the selected message with accompanying figures and images is passed to twitter by python scripts, which themselves are stored in the pythonScripts/ folder. The python and R scripts are run every hour using a task scheduler, such as CRON on Unix-like operating systems, to generate, select and potentially post messages. 
+
+The messages/ folder also contains a logfile with all posted messages and an oldMessages file, which contains messages that were generate during previous iterations, but were not selected for posting. Every iteration the priority of each message is updated, and their expire date is checked.
+
+The config.example provides an example for how to connect to a twitter account. A copy of this file with updated account information needs to be saved as config.file in the working directory for the witness tree to work. 
 
 Finally, a tmp/ folder exists for temporary storage of file, results, logs, etc.
 
-# Messages
+# Who is the team behind the witnessTree?
 
+Tim Rademacher is the project lead. Kyle Wyche is a summer student, who is currently developing the first implementation. David Basler has contributed to the project with ideas and code. Clarisse Hart and Hannah Robbins have assisted in formulating a messages and working with social media. Tim developed the idea based on the <a href = "https://twitter.com/treewatchnet?lang=en">network of twittering trees from Europe</a> and the book "Witness Tree: Seasons of Change with a Century-Old Oak" by Lynda V. Mapes.
