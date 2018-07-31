@@ -17,10 +17,15 @@
 #
 #---------------------------------------------------------------------------------------#
 
+
+# Load dependencies
+#---------------------------------------------------------------------------------------#
+require ('RcppBDT')
+
 # New Years (annual post on 1st of January)
 #---------------------------------------------------------------------------------------#
 checkNewYears <- function (mtable) {
-  if (substring (Sys.time (), 6, 10) == '01-01') {
+  if (substring (Sys.Date (), 6, 10) == '01-01') {
     newyearsmes <- 'Happy New Years!! I'd join you in celebration but at the moment my roots are quite fixed. What are your plans for the day?''
     priority    <- 10
     hashtag     <- '#NewYears'
@@ -34,7 +39,7 @@ checkNewYears <- function (mtable) {
 # Pi Day (annual post on 14th of March)
 #---------------------------------------------------------------------------------------#
 checkPiDay <- function (mtable) {
-  if (substring (Sys.time (), 6, 10) == '03-14') {
+  if (substring (Sys.Date (), 6, 10) == '03-14') {
     pidaymes  <- c (sprintf ('Happy Pi Day! How many digits of Pi do you know? Tweet below!'),
                              'Happy Pi Day! Thanks to Pi I can estimate my stem diameter from its girth, if we assume that my stem is a circle.')
     pidaymes  <- sample (pidaymessage, 1)
@@ -50,7 +55,7 @@ checkPiDay <- function (mtable) {
 # Birthday 
 #---------------------------------------------------------------------------------------#
 checkBirthday <- function (mtable) { ## calculate stats for how much witnesstree has grown in a year
-  if (substring (Sys.time (), 6, 10) == "07-09") {
+  if (substring (Sys.Date (), 6, 10) == "07-09") {
     birthdaymessage <- sprintf ("Do you know what day it is??? Today is my Birthday! %s",substring(date(),1,10)) # will remove date format from message
     priority  <- 10
     hashtag   <- ("#It'sMyBirthday")
@@ -63,17 +68,23 @@ checkBirthday <- function (mtable) { ## calculate stats for how much witnesstree
 
 # Arbor Day Script (annual post falls on the last Friday in April)
 #---------------------------------------------------------------------------------------#
-checkArborday<-function(mtable){
-  if(substring(Sys.time(),6,10)=="04-27"){
-  arbordaymessage<-("Happy Arbor day everyone! Did you plant a tree today? Share your comments below")
-  #calulate priority
-  priority<-1
-  hashtag<-("#ArborDay") # will remove date format from hashtag
-  expirDate<-format(Sys.Date(),"%m %d %Y")
-  mtable<-rbind(mtable,c(priority,TRUE,arbordaymessage,hashtag,expirDate))
+checkArborday <- function (mtable) {
+  if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # leap year
+    doy <- 90 
+  } else { # not a leap year
+    doy <- 91
+  }
+  if ((weekdays (Sys.Date ()) == 'Friday') & 
+      (months   (Sys.Date ()) == 'April' ) &
+      (as.numeric (strftime (Sys.Date (), format = '%j')) > (doy - 6))) {
+    arbordaymessage <- ("Happy Arbor day everyone! Did you plant a tree today? Share your comments below")
+    priority <- 10
+    hashtag <- "#ArborDay" # will remove date format from hashtag
+    expirDate <- format (Sys.Date (), "%m %d %Y")
+    mtable <- rbind (mtable, c (priority, TRUE, arbordaymessage, hashtag, expirDate))
   } 
-  return(mtable)
-}
+  return (mtable)
+} # TTR To do: Include some better message!
 
 #Earth Day Script (annual post)
 #---------------------------------------------------------------------------------------#
