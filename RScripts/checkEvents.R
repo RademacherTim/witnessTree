@@ -157,7 +157,8 @@ checkAutumnEquinox <- function (mtable) {
   if (       Sys.time ()  >=        autumnalDate  & 
       month (Sys.Date ()) == month (autumnalDate) & 
       day   (Sys.Date ()) == day   (autumnalDate)) { 
-    message   <- sprintf ("It's the last day of summer and the first of autumn! My trunk has grown ______ this season!!")
+    message   <- sprintf ("Astronomically it is the first day of autmn since %s:%sh. I will keep the leaf peepers posted about colour changes to come.",
+                          hour (autumnalDate), minute (autumnalDate))
     priority  <- 10
     hashtag   <- "#1stdayofautumn"
     expirDate <- format (Sys.Date (), "%m %d %Y")
