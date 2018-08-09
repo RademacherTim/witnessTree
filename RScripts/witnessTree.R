@@ -16,6 +16,7 @@
 require ('tibble')
 require ('dplyr')
 require ('readr')
+require ('lubridate')
 source  ('./RScripts/selectMessage.R')
 source  ('./RScripts/checkEvents.R')
 source  ('./RScripts/checkExpiration.R')
