@@ -109,37 +109,61 @@ checkEarthday <- function (mtable) {
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkSpringEquinox <- function (mtable) {
+  timezone <- 'EST' # TTR Should be passed as parameter
   solarDates <- read_csv (file = './messages/solarDates.csv', 
                           skip = 3)
-  solarDates [['Vernal Equinox']] <- as.POSIXct (paste (solarDates [['Year']], 
-                                                        solarDates [['Vernal Equinox']]), 
+  solarDates [['Vernal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
+                                                          solarDates [['Year']], 
+                                                          solarDates [['Vernal Equinox']]), 
                                                  format = '%Y %m/%d %H:%M', 
                                                  tz = 'GMT')
   index <- which (solarDates [['Year']] == year (Sys.time ()))
   vernalDate <- solarDates [['Vernal Equinox']] [index]
-  if (Sys.time () >= vernalDate) { 
-    message   <- "It's the first day of spring! Get ready for bulking season!!"
+
+  # Change timezone
+  attributes (vernalDate)$tzone <- timezone
+
+  # Check whether it is that day
+  if (       Sys.time ()  >= vernalDate         & 
+      month (Sys.Date ()) == month (vernalDate) & 
+      day   (Sys.Date ()) == day   (vernalDate)) { 
+    message   <- sprintf ("The first day of spring just started at %s:%sh today! Get ready for bulking season!!", 
+                          hour (vernalDate), minute (vernalDate))
     priority  <- 10
     hashtag   <- "#1stdayofspring"
     expirDate <- format (Sys.Date (),"%m %d %Y")
     mtable <- rbind (mtable, c (priority, TRUE, message, hashtag, expirDate))
   } 
   return (mtable)
-} # I could add something about the exact timing of the equinox. 
+} 
 
 
-#Autumn Equinox (annual post)
+# Autumn Equinox (annual post)
 #---------------------------------------------------------------------------------------#
 checkAutumnEquinox <- function (mtable) {
-  if (substring (Sys.time (), 6, 10) == "09-23") { # Date needs to be adjusted to account for annual shifts in equinox date
-    autumnequinoxmessage<-("It's the last day of summer and the first of autumn! My trunk has grown ______ this season!!")
-    #calulate priority
-    priority<-1
-    hashtag<-("#1stdayofautumn")
-    expirDate<-format(Sys.Date(),"%m %d %Y")
-    mtable<-rbind(mtable,c(priority,TRUE,springequinoxmessage,hashtag,expirDate))
+  timezone <- 'EST'  # TTR Should be passed as parameter
+  solarDates <- read_csv (file = './messages/solarDates.csv', 
+                          skip = 3)
+  solarDates [['Autumnal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
+                                                          solarDates [['Year']], 
+                                                          solarDates [['Autumnal Equinox']]), 
+                                                 format = '%Y %m/%d %H:%M', 
+                                                 tz = 'GMT')
+  index <- which (solarDates [['Year']] == year (Sys.time ()))
+  autumnalDate <- solarDates [['Autumnal Equinox']] [index]
+  
+  # Change timezone
+  attributes (autumnalDate)$tzone <- timezone
+  if (       Sys.time ()  >=        autumnalDate  & 
+      month (Sys.Date ()) == month (autumnalDate) & 
+      day   (Sys.Date ()) == day   (autumnalDate)) { 
+    message   <- sprintf ("It's the last day of summer and the first of autumn! My trunk has grown ______ this season!!")
+    priority  <- 10
+    hashtag   <- "#1stdayofautumn"
+    expirDate <- format (Sys.Date (), "%m %d %Y")
+    mtable <- rbind (mtable, c (priority, TRUE, message, hashtag, expirDate))
   } 
-  return(mtable)
+  return (mtable)
 }
 
 #Summer Solstice (annual post)
