@@ -57,10 +57,10 @@ checkPiDay <- function (mtable) {
 # Birthday 
 #---------------------------------------------------------------------------------------#
 checkBirthday <- function (mtable) { ## calculate stats for how much witnesstree has grown in a year
-  if (substring (Sys.Date (), 6, 10) == "07-09") {
+  if (substring (Sys.Date (), 6, 10) == "04-12") { # TTR This date needs to be changed.
     message   <- sprintf ("Do you know what day it is??? Today is my Birthday! %s",substring(date(),1,10)) # will remove date format from message
     priority  <- 10
-    hashtag   <- ("#It'sMyBirthday")
+    hashtag   <- "#It'sMyBirthday"
     expirDate <- as.POSIXct (Sys.Date (), format = "%Y-%m-%d")
     mtable    <- rbind (mtable, c (priority, FALSE, message, hashtag, expirDate))
   }
@@ -79,7 +79,7 @@ checkArborday <- function (mtable) {
   if ((weekdays (Sys.Date ()) == 'Friday') & 
       (months   (Sys.Date ()) == 'April' ) &
       (as.numeric (strftime (Sys.Date (), format = '%j')) > (doy - 6))) {
-    message   <- ("Happy Arbor day everyone! Did you plant a tree today? Share your comments below")
+    message   <- "Happy Arbor day everyone! Did you plant a tree today? Share your comments below"
     priority  <- 10
     hashtag   <- "#ArborDay" # will remove date format from hashtag
     expirDate <- format (Sys.Date (), "%m %d %Y")
@@ -118,10 +118,8 @@ checkSpringEquinox <- function (mtable) {
                                                  format = '%Y %m/%d %H:%M', 
                                                  tz = 'GMT')
   index <- which (solarDates [['Year']] == year (Sys.time ()))
-  vernalDate <- solarDates [['Vernal Equinox']] [index]
-
-  # Change timezone
-  attributes (vernalDate)$tzone <- timezone
+  vernalDate <- solarDates [['Vernal Equinox']] [index] # Extract this years date 
+  attributes (vernalDate)$tzone <- timezone             # Change timezone
 
   # Check whether it is that day
   if (       Sys.time ()  >= vernalDate         & 
@@ -140,6 +138,10 @@ checkSpringEquinox <- function (mtable) {
 
 # Autumn Equinox (annual post)
 #---------------------------------------------------------------------------------------#
+# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
+# 2068. The original file is not comma-separated.
+#---------------------------------------------------------------------------------------#
 checkAutumnEquinox <- function (mtable) {
   timezone <- 'EST'  # TTR Should be passed as parameter
   solarDates <- read_csv (file = './messages/solarDates.csv', 
@@ -150,10 +152,8 @@ checkAutumnEquinox <- function (mtable) {
                                                  format = '%Y %m/%d %H:%M', 
                                                  tz = 'GMT')
   index <- which (solarDates [['Year']] == year (Sys.time ()))
-  autumnalDate <- solarDates [['Autumnal Equinox']] [index]
-  
-  # Change timezone
-  attributes (autumnalDate)$tzone <- timezone
+  autumnalDate <- solarDates [['Autumnal Equinox']] [index] # Extract this years date
+  attributes (autumnalDate)$tzone <- timezone               # Change timezone
   if (       Sys.time ()  >=        autumnalDate  & 
       month (Sys.Date ()) == month (autumnalDate) & 
       day   (Sys.Date ()) == day   (autumnalDate)) { 
@@ -169,50 +169,80 @@ checkAutumnEquinox <- function (mtable) {
 
 #Summer Solstice (annual post)
 #---------------------------------------------------------------------------------------#
-checkSummersolstice<-function(mtable){
-  if(substring(Sys.time(),6,10)=="06-21"){
-    summersolsticemessage<-("Soak up that sun and photosynthesis! It's the longest day of the year!")
-    #calulate priority
-    priority<-1
-    hashtag<-("#summersolstice%s!")
-    expirDate<-format(Sys.Date(),"%m %d %Y")
-    mtable<-rbind(mtable,c(priority,TRUE,summersolsticemessage,hashtag,expirDate))
+# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
+# 2068. The original file is not comma-separated.
+#---------------------------------------------------------------------------------------#
+checkSummerSolstice <- function (mtable) {
+  timezone <- 'EST'  # TTR Should be passed as parameter
+  solarDates <- read_csv (file = './messages/solarDates.csv', 
+                          skip = 3)
+  solarDates [['Summer Solstice']] <- as.POSIXct (sprintf ('%s %s', 
+                                                           solarDates [['Year']], 
+                                                           solarDates [['Summer Solstice']]), 
+                                                   format = '%Y %m/%d %H:%M', 
+                                                   tz = 'GMT')
+  index <- which (solarDates [['Year']] == year (Sys.time ()))
+  solsticeDate <- solarDates [['Summer Solstice']] [index] # Extract this years date 
+  attributes (solsticeDate)$tzone <- timezone              # Change timezone
+  if (       Sys.time ()  >=        solsticeDate  & 
+      month (Sys.Date ()) == month (solsticeDate) & 
+      day   (Sys.Date ()) == day   (solsticeDate)) { 
+    message   <- c ("Soak up that sun and photosynthesis! It's the longest day of the year!",
+                    "It is mid-summer and this is the time when wood growth tends to be highest!")
+    selectedMessage <- sample (message, 1)
+    priority  <- 10
+    hashtag   <- "#summersolstice #midsummer"
+    expirDate <- format (Sys.Date (), "%m %d %Y")
+    mtable    <- rbind (mtable, c (priority, TRUE, selectedMessage, hashtag, expirDate))
   } 
-  return(mtable)
+  return (mtable)
 }
 
 
-#Winter Solstices (annual post)
+# Winter Solstices (annual post)
 #---------------------------------------------------------------------------------------#
-checkWintersolstice<-function(mtable){
-  if(substring(Sys.time(),6,10)=="12-21"){
-    wintersolsticemessage<-c("Shortest day of the year! Not too much sunlight today so get as much as you can!", 
-                             "Happy midwinter! Finally, the days will start getting longer again.", 
-                             "Well it's the shortest day of the year here in Massachusetts, 
-                             but for those trees in the Southern hemisphere where today's the longest day: 
-                             Soak up that sun and photosynthesis!")
-    selectedMessage<-sample(wintersolsticemessage,1)
-    #calulate priority
-    priority<-1
-    hashtag<-("#Wintersolstice")
-    expirDate<-format(Sys.Date(),"%m %d %Y")
-    mtable<-rbind(mtable,c(priority,TRUE,selectedMessage,hashtag,expirDate))
+# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
+# 2068. The original file is not comma-separated.
+#---------------------------------------------------------------------------------------#
+checkWinterSolstice <- function (mtable) {
+  timezone <- 'EST'  # TTR Should be passed as parameter
+  solarDates <- read_csv (file = './messages/solarDates.csv', 
+                          skip = 3)
+  solarDates [['Winter Solstice']] <- as.POSIXct (sprintf ('%s %s', 
+                                                           solarDates [['Year']], 
+                                                           solarDates [['Winter Solstice']]), 
+                                                  format = '%Y %m/%d %H:%M', 
+                                                  tz = 'GMT')
+  index <- which (solarDates [['Year']] == year (Sys.time ()))
+  solsticeDate <- solarDates [['Winter Solstice']] [index] # Extract this years date 
+  attributes (solsticeDate)$tzone <- timezone              # Change timezone
+  if (       Sys.time ()  >=        solsticeDate  & 
+      month (Sys.Date ()) == month (solsticeDate) & 
+      day   (Sys.Date ()) == day   (solsticeDate)) { 
+    message   <- c ("Shortest day of the year! Not too much sunlight today so get as much as you can!",
+                    "Happy midwinter! Finally, the days will start getting longer again.",
+                    "Well it's the shortest day of the year here in Massachusetts, 
+                    but for trees in the Southern hemisphere today's the longest day.")
+    selectedMessage <- sample (message, 1)
+    priority        <- 10
+    hashtag         <- "#Wintersolstice #midwinter"
+    expirDate       <- format (Sys.Date (), "%m %d %Y")
+    mtable          <- rbind (mtable, c (priority, TRUE, selectedMessage, hashtag, expirDate))
   } 
-  return(mtable)
+  return (mtable)
 }
 
-#Halloween (annual post)
+# Halloween (annual post)
 #---------------------------------------------------------------------------------------#
-checkHalloween<-function(mtable){
-  if(substring(Sys.time(),6,10)=="10-31"){
-    halloweenmessage<-("Happy Halloween! What's your costume? Tweet below!")
-    #selectedMessage<-sample(pidaymessage,1)
-    #calulate priority
-    #figure<- Halloween related image
-    priority<-1
-    hashtag<-("#Halloween%s!")
-    expirDate<-format(Sys.Date(),"%m %d %Y")
-    mtable<-rbind(mtable,c(priority,TRUE,halloweenmessage,hashtag,expirDate))
+checkHalloween <- function (mtable) {
+  if (substring (Sys.time (), 6, 10) == "10-31") {
+    message   <- "Happy Halloween! What's your costume? Tweet below!"
+    priority  <- 10
+    hashtag   <- "#Halloween"
+    expirDate <- format (Sys.Date (), "%m %d %Y")
+    mtable    <- rbind (mtable, c (priority, TRUE, message, hashtag, expirDate))
   } 
-  return(mtable)
+  return (mtable)
 }
