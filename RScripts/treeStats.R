@@ -5,7 +5,8 @@
 birthDay         <- as.POSIXct ("1919/04/12", format = "%Y/%m/%d") # in years C.E.    
 age              <- floor (time_length (Sys.time () - birthDay, "years"))
   
-# LIDAR-derived quantities from scan by Peter Boucher with LEICA instrument on 2018/ 
+# LIDAR-derived quantities from scan by Peter Boucher (PhD Candidate, School of 
+# Environment, University of Massachusetts Boston) with LEICA BLK360 on 2018/07/27 
 #---------------------------------------------------------------------------------------#
 totalVolume      <- 13937                                     # L
 trunkVolume      <- 5624                                      # L
@@ -16,8 +17,12 @@ branchLength     <- 2589.0                                    # m
 branchNumber     <- 2015                                      # m
 maxBranchOrder   <- 9                                         # unitless
 totalSurfaceArea <- 437.0                                     # m2
-dbh_qsm          <- 96.5                                      # cm
-dbh_cyl          <- 78.0                                      # cm
+dbh_qsm          <- 96.5                                      # cm of cylinder at 1.3m height
+dbh_cyl          <- 78.0                                      # cm mean of cylinders fitted between 1.1 and 1.5 m height
+
+# Values measured in the field
+#---------------------------------------------------------------------------------------#
+cbh <- 
 
 # Values from literature
 #---------------------------------------------------------------------------------------#

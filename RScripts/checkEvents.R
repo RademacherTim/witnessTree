@@ -21,30 +21,40 @@
 # Load dependencies
 #---------------------------------------------------------------------------------------#
 require ('RcppBDT')
-require ('readr')
-require ('lubridate')
 
 # New Years (annual post on 1st of January)
 #---------------------------------------------------------------------------------------#
 checkNewYears <- function (mtable) {
   if (substring (Sys.Date (), 6, 10) == '01-01') {
-    message   <- 'Happy New Years!! I would join you in celebration but at the moment my roots are quite fixed. What are your plans for the day?'
+    message   <- sprintf ('Happy New Year!! During my life I fixed roughly %s kg of carbon per year. My resolution for %s is to beat that. What is your resolution?', round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     priority  <- 10
-    hashtag   <- '#NewYears'
+    hashtag   <- c ('#NewYears', '#happynewyear')
     expirDate <- as.POSIXct (Sys.Date (), format = '%Y-%m-%d')
     mtable    <- rbind (mtable, c (priority, F, message, hashtag, expirDate))
   } 
   return (mtable)
-} # TTR To do: - change to include growth in terms of CO2 sequestered of previous year 
-  #              and a new year resolution!
+} # TTR To do: - maybe change to comparison to CO2 sequester in last year?
+
+# National Wildlife Day (annual post on 4th of March)
+#---------------------------------------------------------------------------------------#
+checkNationalWildLifeDay <- function (mtable) {
+  if (substring (Sys.Date (), 6, 10) == '03-04') {
+    message   <- sprintf ("Look who's visited me earlier this year! Happy National Wildlife Day!")
+    priority  <- 10
+    hashtag   <- c ('#Nationalwildlifeday', '#wildlife')
+    expirDate <- as.POSIXct (Sys.Date (), format = '%Y-%m-%d')
+    mtable    <- rbind (mtable, c (priority, F, message, hashtag, expirDate))
+  } 
+  return (mtable)
+} # TTR To do: - Ought to have an image or even several images from the wild life camera at the tree!
 
 # Pi Day (annual post on 14th of March)
 #---------------------------------------------------------------------------------------#
 checkPiDay <- function (mtable) {
   if (substring (Sys.Date (), 6, 10) == '03-14') {
-    message   <- c (sprintf ('Happy Pi Day! How many digits of Pi do you know? Tweet below!'),
-                             'Happy Pi Day! Thanks to Pi I can estimate my stem diameter from its girth, if we assume that my stem is a circle.')
-    pidaymes  <- sample (pidaymessage, 1)
+    pidaymessages <- c ('Happy Pi Day! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!',
+                        sprintf ('Happy Pi Day! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).', dbh_cyl, sapFlowArea))
+    pidaymes  <- sample (pidaymessages, 1)
     priority  <- 10
     hashtag   <- '#PiDay'
     expirDate <- as.POSIXct (Sys.Date (), format = '%Y-%m-%d')
@@ -57,10 +67,18 @@ checkPiDay <- function (mtable) {
 # Birthday 
 #---------------------------------------------------------------------------------------#
 checkBirthday <- function (mtable) { ## calculate stats for how much witnesstree has grown in a year
-  if (substring (Sys.Date (), 6, 10) == "04-12") { # TTR This date needs to be changed.
-    message   <- sprintf ("Do you know what day it is??? Today is my Birthday! %s",substring(date(),1,10)) # will remove date format from message
+  if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10)) {
+    len <- nchar (as.character (age))
+    if (as.character (age) [len-1:len] == 1) {
+      subst <- 'st'
+    } else if (as.character (age) [len-1:len] == 2) {
+      subst <- 'nd'
+    } else {
+      subst <- 'th'
+    }
+    message   <- sprintf ("Do you know what day it is??? Today is my %s%s birthday!", age, subst) # will remove date format from message
     priority  <- 10
-    hashtag   <- "#It'sMyBirthday"
+    hashtag   <- "#birthday"
     expirDate <- as.POSIXct (Sys.Date (), format = "%Y-%m-%d")
     mtable    <- rbind (mtable, c (priority, FALSE, message, hashtag, expirDate))
   }

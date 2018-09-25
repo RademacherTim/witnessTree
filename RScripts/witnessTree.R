@@ -20,6 +20,7 @@ require ('lubridate')
 source  ('./RScripts/selectMessage.R')
 source  ('./RScripts/checkEvents.R')
 source  ('./RScripts/checkExpiration.R')
+source  ('./RScripts/treeStats.R')
 
 # Set working directory to the parent directory (witnessTree/)
 #---------------------------------------------------------------------------------------#
@@ -49,16 +50,17 @@ messages <- reEvaluatePriorityOf (messages)
 
 # Generate new messages concerning regularly recurrent events
 #---------------------------------------------------------------------------------------#
-messages <- checkNewYears       (messages) #  01-01
-messages <- checkPiDay          (messages) #  14-03
-messages <- checkBirthday       (messages) #  12-04
-messages <- checkArborDay       (messages) #  Last Friday in April
-messages <- checkEarthDay       (messages) #  22-04
-messages <- checkSpringEquinox  (messages) # ~20-03 
-messages <- checkAutumnEquinox  (messages) # ~22-09
-messages <- checkSummerSolstice (messages) #  21-06
-messages <- checkWinterSolstice (messages) #  21-12
-messages <- checkHalloween      (messages) #  31-10
+messages <- checkNewYears            (messages) #  01-01
+messages <- checkNationalWildLifeDay (meassges) # 04-03
+messages <- checkPiDay               (messages) #  14-03
+messages <- checkBirthday            (messages) #  12-04
+messages <- checkArborDay            (messages) #  Last Friday in April
+messages <- checkEarthDay            (messages) #  22-04
+messages <- checkSpringEquinox       (messages) # ~20-03 
+messages <- checkAutumnEquinox       (messages) # ~22-09
+messages <- checkSummerSolstice      (messages) #  21-06
+messages <- checkWinterSolstice      (messages) #  21-12
+messages <- checkHalloween           (messages) #  31-10
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#
