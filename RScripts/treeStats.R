@@ -27,9 +27,15 @@ cbh <-
 # Values from literature
 #---------------------------------------------------------------------------------------#
 rhoWood       <- 740  # kg/m3 TTR guesstimate which needs to be based of literature eventually.
-carbonContent <- 0.47 # % TTR guesstimate which needs to be based of literature eventually.
+carbonContent <- 0.463 # % For Quercus rubra from Lamlom & Savidge (2003)
 RSRatio       <- 0.5 # unitless TTR guesstimate which needs to be based of literature eventually.
 totalMass     <- (totalVolume / 1000.0 * rhoWood) / RSRatio     # kg
 totalCarbon   <- totalMass * carbonContent
 meanAnnualCarbonSequestration <- totalCarbon / age
+
+# Location
+#---------------------------------------------------------------------------------------#
+treeLocationName <- "Harvard Forest"
+treeLon <-
+treeLat <-
 #=======================================================================================#
