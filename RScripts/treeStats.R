@@ -38,4 +38,5 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 treeLocationName <- "Harvard Forest"
 treeLon <-
 treeLat <-
+treeTimeZone <- 'EST'
 #=======================================================================================#

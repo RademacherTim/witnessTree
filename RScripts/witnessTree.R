@@ -50,17 +50,19 @@ messages <- reEvaluatePriorityOf (messages)
 
 # Generate new messages concerning regularly recurrent events
 #---------------------------------------------------------------------------------------#
-messages <- checkNewYears            (messages) #  01-01
-messages <- checkNationalWildLifeDay (meassges) # 04-03
-messages <- checkPiDay               (messages) #  14-03
-messages <- checkBirthday            (messages) #  12-04
-messages <- checkArborDay            (messages) #  Last Friday in April
-messages <- checkEarthDay            (messages) #  22-04
-messages <- checkSpringEquinox       (messages) # ~20-03 
-messages <- checkAutumnEquinox       (messages) # ~22-09
-messages <- checkSummerSolstice      (messages) #  21-06
-messages <- checkWinterSolstice      (messages) #  21-12
-messages <- checkHalloween           (messages) #  31-10
+messages <- checkNewYears                  (messages) #  01-01
+messages <- checkNationalWildLifeDay       (meassges) #  04-03
+messages <- checkPiDay                     (messages) #  14-03
+messages <- checkInternationalDayOfForests (messages) #  21-03
+messages <- checkWorldWaterDay             (messages) #  22-03
+messages <- checkBirthday                  (messages) #  12-04
+messages <- checkArborDay                  (messages) #  Last Friday in April
+messages <- checkEarthDay                  (messages) #  22-04
+messages <- checkSpringEquinox             (messages) # ~20-03 
+messages <- checkAutumnEquinox             (messages) # ~22-09
+messages <- checkSummerSolstice            (messages) #  21-06
+messages <- checkWinterSolstice            (messages) #  21-12
+messages <- checkHalloween                 (messages) #  31-10
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#

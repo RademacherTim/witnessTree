@@ -83,6 +83,44 @@ checkPiDay <- function (mtable, TEST = F) {
 } # TTR To do: - find out how to render pi as the greek letter on twitter. 
   #            - add the diameter and circumference to the second message 
 
+# International Day of Forests Script (annual post falls on the 21st of March)
+#---------------------------------------------------------------------------------------#
+checkInternationalDayOfForests <- function (mtable, TEST = F) {
+  if (substring (Sys.Date (), 6, 10) == "03-21" | TEST) {
+    messages   <- c (sprintf ("It's the international day of forests! How many types of forests do you know?"),
+                    sprintf ("Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!"))
+    priority  <- 10
+    hashtags  <- sprintf ("#witnessTree")
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+    if (!TEST) {
+      message  <- sample (messages, 1)
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    } else {
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate))
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate))
+    }  } 
+  return (mtable)
+}
+
+# World Water Day Script (annual post falls on the 22nd of March)
+#---------------------------------------------------------------------------------------#
+checkWorldWaterDay <- function (mtable, TEST = F) {
+  if (substring (Sys.Date (), 6, 10) == "03-22" | TEST) {
+    messages   <- c (sprintf ("Did you know that roughly %s of me is water? Every day lots of water flows through my trunk to my leaves."),
+                     sprintf ("Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire."))
+    priority  <- 10
+    hashtags  <- sprintf ("#WorldWaterDay #witnessTree")
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+    if (!TEST) {
+      message  <- sample (messages, 1)
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    } else {
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate))
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate))
+    }  } 
+  return (mtable)
+}
+
 # Birthday 
 #---------------------------------------------------------------------------------------#
 checkBirthday <- function (mtable, TEST = F) { ## calculate stats for how much witnesstree has grown in a year
@@ -107,7 +145,7 @@ checkBirthday <- function (mtable, TEST = F) { ## calculate stats for how much w
 
 # Arbor Day Script (annual post falls on the last Friday in April)
 #---------------------------------------------------------------------------------------#
-checkArborday <- function (mtable, TEST = F) {
+checkArborDay <- function (mtable, TEST = F) {
   if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # leap year
     doy <- 90 
   } else { # not a leap year
