@@ -27,9 +27,9 @@ require ('RcppBDT')
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '04-15' | TEST) {
-    message   <- sprintf ("Hello World! I am a witness tree at %s. Follow me to learn more about life as a tree and the environment.", treeLocationName)
+    message   <- sprintf ("Hello World! I am a #witnessTree at %s. Follow me to learn more about life as a tree and the environment.", treeLocationName)
     priority  <- 10
-    hashtags  <- sprintf ("#IAmAlive #witnessTree")
+    hashtags  <- sprintf ("#IAmAlive #HarvardForest")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- rbind (mtable, c (priority, F, message, hashtags, expirDate))
   } 
@@ -42,7 +42,7 @@ checkNewYears <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST) {
     message   <- sprintf ("Happy #NewYear!! During my life I fixed roughly %s kg of carbon per year. My #resolution for %s is to beat that. What is your resolution?", round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     priority  <- 10
-    hashtags  <- sprintf ("#")
+    hashtags  <- sprintf ("#witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
   } 
@@ -75,8 +75,8 @@ checkPiDay <- function (mtable, TEST = F) {
       piDayMes  <- sample (piDayMessages, 1)
       mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = piDayMes, hashtags = hashtags, expires = expirDate))
     } else {
-      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = piDayMes [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = piDayMes [2], hashtags = hashtags, expires = expirDate))
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = piDayMessages [1], hashtags = hashtags, expires = expirDate))
+      mtable <- rbind (mtable, c (priority = priority, fFigure = F, message = piDayMessages [2], hashtags = hashtags, expires = expirDate))
     }  
   } 
   return (mtable)
@@ -106,7 +106,7 @@ checkInternationalDayOfForests <- function (mtable, TEST = F) {
 #---------------------------------------------------------------------------------------#
 checkWorldWaterDay <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST) {
-    messages   <- c (sprintf ("Did you know that roughly %s of me is water? Every day lots of water flows through my trunk to my leaves."),
+    messages   <- c (sprintf ("Did you know that roughly %s%% of me is water? Every day lots of water flows through my trunk to my leaves.", percentWaterContent),
                      sprintf ("Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire."))
     priority  <- 10
     hashtags  <- sprintf ("#WorldWaterDay #witnessTree")
@@ -165,7 +165,7 @@ checkArborDay <- function (mtable, TEST = F) {
 
 # Earth Day Script (annual post)
 #---------------------------------------------------------------------------------------#
-checkEarthday <- function (mtable, TEST = F) {
+checkEarthDay <- function (mtable, TEST = F) {
   if (substring (Sys.time (), 6, 10) == "04-22" | TEST) {
     earthDayMessages  <- c ("Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans.",
                             "You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home.")

@@ -50,19 +50,20 @@ messages <- reEvaluatePriorityOf (messages)
 
 # Generate new messages concerning regularly recurrent events
 #---------------------------------------------------------------------------------------#
-messages <- checkNewYears                  (messages) #  01-01
-messages <- checkNationalWildLifeDay       (meassges) #  04-03
-messages <- checkPiDay                     (messages) #  14-03
-messages <- checkInternationalDayOfForests (messages) #  21-03
-messages <- checkWorldWaterDay             (messages) #  22-03
-messages <- checkBirthday                  (messages) #  12-04
+messages <- helloWorld                     (messages) # on the launch date (2019-04-15) only
+messages <- checkNewYears                  (messages) #  1st  of January
+messages <- checkNationalWildLifeDay       (meassges) #  4th  of March
+messages <- checkPiDay                     (messages) #  14th of March
+messages <- checkInternationalDayOfForests (messages) #  21st of March
+messages <- checkWorldWaterDay             (messages) #  22nd of March
+messages <- checkBirthday                  (messages) #  12th of April
 messages <- checkArborDay                  (messages) #  Last Friday in April
-messages <- checkEarthDay                  (messages) #  22-04
-messages <- checkSpringEquinox             (messages) # ~20-03 
-messages <- checkAutumnEquinox             (messages) # ~22-09
-messages <- checkSummerSolstice            (messages) #  21-06
-messages <- checkWinterSolstice            (messages) #  21-12
-messages <- checkHalloween                 (messages) #  31-10
+messages <- checkEarthDay                  (messages) #  22nd of April
+messages <- checkSpringEquinox             (messages) # ~20th of March 
+messages <- checkAutumnEquinox             (messages) # ~22nd of September
+messages <- checkSummerSolstice            (messages) #  21st of June
+messages <- checkWinterSolstice            (messages) #  21st of December
+messages <- checkHalloween                 (messages) #  31st of October
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#

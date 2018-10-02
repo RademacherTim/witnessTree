@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Copy all files from the data directory
-cp ${DATAPATH}* ${WITNESSTREEPATH}/data/
+# Read WITNESSTREEPATH from config file
+source config
 
 # Run the witnessTree RScript to generate messages
-RScript ${WITNESSTREEPATH}RScripts/witnessTree.R
+Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R
 
 # Write time and date into log file in the tmp/ folder
-echo date >> tmp/logfile.txt
+DATE=$(date +%Y-%m-%d" "%H:%M:%S)
+echo ${DATE} >> tmp/logfile.txt

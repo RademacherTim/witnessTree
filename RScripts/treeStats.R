@@ -23,6 +23,8 @@ dbh_cyl          <- 78.0                                      # cm mean of cylin
 # Values measured in the field
 #---------------------------------------------------------------------------------------#
 cbh <- 
+sapFlowArea <- 0.8 # TTR Made up
+percentWaterContent <- 60 # TTR Made up
 
 # Values from literature
 #---------------------------------------------------------------------------------------#
