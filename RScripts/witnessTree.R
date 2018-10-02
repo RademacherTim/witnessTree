@@ -42,7 +42,7 @@ if (file.exists ('./messages/messages.csv')) {
 
 # Purge expired messages
 #---------------------------------------------------------------------------------------#
-messages <- checkExpirationOf (messages)
+messages <- checkExpirationOfDates (messages)
 
 # Re-evaluate priority of messages
 #---------------------------------------------------------------------------------------#
