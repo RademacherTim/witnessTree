@@ -187,12 +187,12 @@ checkEarthDay <- function (mtable, TEST = F) {
 
 # Spring Equinox (annual post) 
 #---------------------------------------------------------------------------------------#
-# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkSpringEquinox <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './messages/solarDates.csv', 
+  solarDates <- read_csv (file = './data/solarDates.csv', 
                           skip = 3)
   solarDates [['Vernal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
                                                           solarDates [['Year']], 
@@ -229,12 +229,12 @@ checkSpringEquinox <- function (mtable, TEST = F) {
 
 # Autumn Equinox (annual post)
 #---------------------------------------------------------------------------------------#
-# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkAutumnEquinox <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './messages/solarDates.csv', 
+  solarDates <- read_csv (file = './data/solarDates.csv', 
                           skip = 3)
   solarDates [['Autumnal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
                                                           solarDates [['Year']], 
@@ -266,12 +266,12 @@ checkAutumnEquinox <- function (mtable, TEST = F) {
 
 #Summer Solstice (annual post)
 #---------------------------------------------------------------------------------------#
-# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkSummerSolstice <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './messages/solarDates.csv', 
+  solarDates <- read_csv (file = './data/solarDates.csv', 
                           skip = 3)
   solarDates [['Summer Solstice']] <- as.POSIXct (sprintf ('%s %s', 
                                                            solarDates [['Year']], 
@@ -303,12 +303,12 @@ checkSummerSolstice <- function (mtable, TEST = F) {
 
 # Winter Solstices (annual post)
 #---------------------------------------------------------------------------------------#
-# The dates are taken from a file in the messages folder (solarDates.tsv), which contains
+# The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkWinterSolstice <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './messages/solarDates.csv', 
+  solarDates <- read_csv (file = './data/solarDates.csv', 
                           skip = 3)
   solarDates [['Winter Solstice']] <- as.POSIXct (sprintf ('%s %s', 
                                                            solarDates [['Year']], 
