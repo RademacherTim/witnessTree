@@ -6,8 +6,9 @@
 #
 # Project lead: Tim Tito Rademacher (rademacher.tim@gmail.com)
 #
-# Developpers:  Kyle Wyche 
-#               David Basler
+# Developpers:  David Basler
+#
+# Acknowledgements: Thanks to Kyle Wyche.
 #
 #---------------------------------------------------------------------------------------#
  
@@ -63,8 +64,8 @@ messages <- checkHalloween                 (messages) #  31st of October
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#
-messages <- startOfGrowingSeason (messages)
-messages <- endOfGrowingSeason   (messages)
+#messages <- startOfGrowingSeason (messages)
+#messages <- endOfGrowingSeason   (messages)
 
 # Generate new messages concerning climatic events
 #---------------------------------------------------------------------------------------#
@@ -77,22 +78,24 @@ message <- selectMessage (messages)
   
 # Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#
-if (exists ('message')) {
+if (dim (message) [1] > 0) {
   write_csv (x    = message,
-             file = sprintf ('./messages/%s.csv', 
-                             format (Sys.time (), "%Y-%m-%d_%H")),
-             row.names = FALSE)
-} 
+             path = sprintf ('./messages/%s.csv', 
+                             format (Sys.time (), "%Y-%m-%d_%H")))
+}
 
 # Save unused messages and figures in tmp/ folder for next iteration
 #---------------------------------------------------------------------------------------#
-write_csv (x    = messages,
-           file = './messages/messages.csv',
-           row.names = FALSE)
+if (dim (messages) [1] > 0) {
+  write_csv (x    = messages,
+             path = './messages/messages.csv')
+}
 
 # Create log files
 #---------------------------------------------------------------------------------------#
-write_csv (x = sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M")),
-             file = './messages/logfile.csv')
+write_csv (x         = as.tibble (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
+           path      = './messages/logfile.csv',
+           col_names = FALSE,
+           append    = TRUE)
 
 #=======================================================================================#
