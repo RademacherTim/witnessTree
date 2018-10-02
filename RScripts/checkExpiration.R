@@ -17,7 +17,7 @@ checkExpirationDatesOf <- function (mtable) {
 
 # This function re-evaluates the priority of preserved messages
 #---------------------------------------------------------------------------------------#
-reEvaluatePrioriyOf <- function (mtable) {
+reEvaluatePriorityOf <- function (mtable) {
   
   # Increase priority of all messages by 1
   mtable [['prioity']] <- apply (X      = cbind (as.numeric (mtable [['priority']]) + 1, 

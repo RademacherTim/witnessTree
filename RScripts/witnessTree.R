@@ -22,10 +22,6 @@ source  ('./RScripts/checkEvents.R')
 source  ('./RScripts/checkExpiration.R')
 source  ('./RScripts/treeStats.R')
 
-# Set working directory to the parent directory (witnessTree/)
-#---------------------------------------------------------------------------------------#
-setwd ('../') 
-
 # Read in previously generated messages, if not first iteration
 #---------------------------------------------------------------------------------------#
 if (file.exists ('./messages/messages.csv')) {
@@ -52,7 +48,7 @@ messages <- reEvaluatePriorityOf (messages)
 #---------------------------------------------------------------------------------------#
 messages <- helloWorld                     (messages) # on the launch date (2019-04-15) only
 messages <- checkNewYears                  (messages) #  1st  of January
-messages <- checkNationalWildLifeDay       (meassges) #  4th  of March
+messages <- checkNationalWildLifeDay       (messages) #  4th  of March
 messages <- checkPiDay                     (messages) #  14th of March
 messages <- checkInternationalDayOfForests (messages) #  21st of March
 messages <- checkWorldWaterDay             (messages) #  22nd of March
