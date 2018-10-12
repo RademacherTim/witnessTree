@@ -17,14 +17,15 @@ branchLength     <- 2589.0                                    # m
 branchNumber     <- 2015                                      # m
 maxBranchOrder   <- 9                                         # unitless
 totalSurfaceArea <- 437.0                                     # m2
-dbh_qsm          <- 96.5                                      # cm of cylinder at 1.3m height
-dbh_cyl          <- 78.0                                      # cm mean of cylinders fitted between 1.1 and 1.5 m height
+dbh_qsm          <- 0.965                                     # m of cylinder at 1.3m height
+dbh_cyl          <- 0.780                                     # m mean of cylinders fitted between 1.1 and 1.5 m height
 
 # Values measured in the field
 #---------------------------------------------------------------------------------------#
-cbh <- 
-sapFlowArea <- 0.8 # TTR Made up
-percentWaterContent <- 60 # TTR Made up
+cbh                 <- 2.65     # Measured on 2018-10-11
+dbh                 <- cbh / pi
+sapFlowArea         <- 0.8      # TTR Made up
+percentWaterContent <- 60       # TTR Made up
 
 # Values from literature
 #---------------------------------------------------------------------------------------#
@@ -38,7 +39,7 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 # Location
 #---------------------------------------------------------------------------------------#
 treeLocationName <- "Harvard Forest"
-treeLon <-
+treeLon <- 
 treeLat <-
 treeTimeZone <- 'EST'
 #=======================================================================================#

@@ -24,6 +24,7 @@ suppressMessages (require ('readr'))
 suppressMessages (require ('lubridate'))
 source  ('./RScripts/selectMessage.R')
 source  ('./RScripts/checkEvents.R')
+source  ('./RScripts/checkPhysiology.R')
 source  ('./RScripts/checkExpiration.R')
 source  ('./RScripts/treeStats.R')
 
