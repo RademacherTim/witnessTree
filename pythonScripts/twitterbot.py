@@ -1,7 +1,8 @@
 #==============================================================================#
-# This script is the twitterbot. It reads messages and associated information 
-# to transfer it to a linked twitter account with access details for the account
-# in the config file.
+# This script is the twitterbot. It reads messages for a particular hour and 
+# associated information to transfer it to a linked twitter account with access 
+# details for the account in the config file.
+# Each message can only be posted once, so accidental repetition is impossible.
 #------------------------------------------------------------------------------#
 
 # Import dependencies
@@ -10,30 +11,43 @@ import sys        # library to use command line arguments
 import tweepy     # 
 import Tkinter    #
 import csv        # for csv handling
+import os
+from datetime import date
+from datetime import time
+from datetime import datetime
 
+# Check whether there is a file for this hour
+#------------------------------------------------------------------------------#
+#print os.listdir ('./messages/')
+now = datetime.now ()
+fileName = "./messages/%s.csv" % now.strftime ("%Y-%m-%d_%H")
+#filePath = Path (fileName)
+#if filePath.is_file ():
+#print fileName
 
 # Read message TTR Need to include checking for a message in the first place
 #------------------------------------------------------------------------------#
-fileName = './messages/2018-10-05_08.csv'
-with open(fileName) as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        if line_count == 0:
-            #print(row))
-            line_count += 1
-        else:
-            #print(row)
-            line_count += 1
-    #print(line_count)
-priority = row [0]
-fFigure = row [1]
-message = row [2]
-hastags = row [3]
-expires = [4]
-print (message)
-
-
+if os.path.exists(fileName):
+	with open(fileName) as csv_file:
+	    csv_reader = csv.reader(csv_file, delimiter=',')
+	    line_count = 0
+	    for row in csv_reader:
+		if line_count == 0:
+		    #print(row))
+		    line_count += 1
+		else:
+		    #print(row)
+		    line_count += 1
+	    #print(line_count)
+	priority = row [0]
+	fFigure = row [1]
+	message = row [2]
+	hastags = row [3]
+	expires = [4]
+	print message
+else:
+	print ("Error: No file with a message!")
+	sys.exit()
 
 # Linking the Twitter accound with Tweepy through adding credentials. 
 # Twitter handle @awitnesstree
@@ -61,7 +75,7 @@ user = api.me()
 # Putting a message on Twitter
 #------------------------------------------------------------------------------#
 api = tweepy.API(auth)
-api.update_status(message) # TTR Originally this read 'status' instead of message, but I was trying whether the actually message has to be added here before I ran out of time.
+api.update_status(message)
 #api.update_with_media(filename='directory of image', status= 'status')
 
 # To delete a status use:'''

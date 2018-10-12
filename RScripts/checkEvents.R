@@ -21,7 +21,7 @@
 
 # Load dependencies
 #---------------------------------------------------------------------------------------#
-require ('RcppBDT')
+suppressMessages (require ('RcppBDT'))
 
 # Hello world! message (post once on 15th of April)
 #---------------------------------------------------------------------------------------#
@@ -192,8 +192,9 @@ checkEarthDay <- function (mtable, TEST = F) {
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkSpringEquinox <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './data/solarDates.csv', 
-                          skip = 3)
+  solarDates <- suppressWarnings (read_csv (file = './data/solarDates.csv', 
+                                            skip = 3,
+                                            col_types = cols ()))
   solarDates [['Vernal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
                                                           solarDates [['Year']], 
                                                           solarDates [['Vernal Equinox']]), 
@@ -234,8 +235,9 @@ checkSpringEquinox <- function (mtable, TEST = F) {
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkAutumnEquinox <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './data/solarDates.csv', 
-                          skip = 3)
+  solarDates <- suppressWarnings (read_csv (file = './data/solarDates.csv', 
+                                            skip = 3,
+                                            col_types = cols ()))
   solarDates [['Autumnal Equinox']] <- as.POSIXct (sprintf ('%s %s', 
                                                           solarDates [['Year']], 
                                                           solarDates [['Autumnal Equinox']]), 
@@ -271,8 +273,9 @@ checkAutumnEquinox <- function (mtable, TEST = F) {
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkSummerSolstice <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './data/solarDates.csv', 
-                          skip = 3)
+  solarDates <-  suppressWarnings (read_csv (file = './data/solarDates.csv', 
+                                             skip = 3,
+                                             col_types = cols ()))
   solarDates [['Summer Solstice']] <- as.POSIXct (sprintf ('%s %s', 
                                                            solarDates [['Year']], 
                                                            solarDates [['Summer Solstice']]), 
@@ -308,8 +311,9 @@ checkSummerSolstice <- function (mtable, TEST = F) {
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
 checkWinterSolstice <- function (mtable, TEST = F) {
-  solarDates <- read_csv (file = './data/solarDates.csv', 
-                          skip = 3)
+  solarDates <-  suppressWarnings (read_csv (file = './data/solarDates.csv', 
+                                             skip = 3,
+                                             col_types = cols ()))
   solarDates [['Winter Solstice']] <- as.POSIXct (sprintf ('%s %s', 
                                                            solarDates [['Year']], 
                                                            solarDates [['Winter Solstice']]), 

@@ -12,12 +12,16 @@
 #
 #---------------------------------------------------------------------------------------#
  
+# Suppress warning messages 
+#---------------------------------------------------------------------------------------#
+options (warn = -1) # To turn warnings back on use options (warn = 0)
+
 # Load dependencies
 #---------------------------------------------------------------------------------------#
-require ('tibble')
-require ('dplyr')
-require ('readr')
-require ('lubridate')
+suppressMessages (require ('tibble'))
+suppressMessages (require ('dplyr'))
+suppressMessages (require ('readr'))
+suppressMessages (require ('lubridate'))
 source  ('./RScripts/selectMessage.R')
 source  ('./RScripts/checkEvents.R')
 source  ('./RScripts/checkExpiration.R')
