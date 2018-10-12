@@ -18,14 +18,10 @@ from datetime import datetime
 
 # Check whether there is a file for this hour
 #------------------------------------------------------------------------------#
-#print os.listdir ('./messages/')
 now = datetime.now ()
 fileName = "./messages/%s.csv" % now.strftime ("%Y-%m-%d_%H")
-#filePath = Path (fileName)
-#if filePath.is_file ():
-#print fileName
 
-# Read message TTR Need to include checking for a message in the first place
+# Read message, if it exists
 #------------------------------------------------------------------------------#
 if os.path.exists(fileName):
 	with open(fileName) as csv_file:
