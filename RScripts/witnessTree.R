@@ -12,26 +12,40 @@
 #
 #---------------------------------------------------------------------------------------#
  
+# Get the absolute path to the directory 
+#---------------------------------------------------------------------------------------#
+args = commandArgs (trailingOnly=TRUE)
+if (length (args) == 0) {
+  stop ("Error: At least one argument must be supplied (path to wtinessTree directory).n",
+        call.=FALSE)
+} else if (length (args) == 1) {
+  # default output file
+  path = args [1]
+} else {
+  stop ("Error: Too many command line arguments supplied to R.")
+}
+print (path)
+
 # Suppress warning messages 
 #---------------------------------------------------------------------------------------#
 options (warn = -1) # To turn warnings back on use options (warn = 0)
 
 # Load dependencies
 #---------------------------------------------------------------------------------------#
-suppressMessages (require ('tibble'))
-suppressMessages (require ('dplyr'))
-suppressMessages (require ('readr'))
-suppressMessages (require ('lubridate'))
-source  ('./RScripts/selectMessage.R')
-source  ('./RScripts/checkEvents.R')
-source  ('./RScripts/checkPhysiology.R')
-source  ('./RScripts/checkExpiration.R')
-source  ('./RScripts/treeStats.R')
+suppressPackageStartupMessages (library ('tibble'))
+suppressPackageStartupMessages (library ('dplyr'))
+suppressPackageStartupMessages (library ('readr'))
+suppressPackageStartupMessages (library ('lubridate'))
+source  (sprintf ('%sRScripts/selectMessage.R', path))
+source  (sprintf ('%sRScripts/checkEvents.R', path))
+source  (sprintf ('%sRScripts/checkPhysiology.R', path))
+source  (sprintf ('%sRScripts/checkExpiration.R', path))
+source  (sprintf ('%sRScripts/treeStats.R', path))
 
 # Read in previously generated messages, if not first iteration
 #---------------------------------------------------------------------------------------#
-if (file.exists ('./messages/messages.csv')) {
-  messages <- read_csv ('./messages/messages.csv', header = T)
+if (file.exists (sprintf ('%smessages/messages.csv', path))) {
+  messages <- read_csv (sprintf ('%smessages/messages.csv', path), header = T)
 } else { # create a tibble for messages 
   messages <- tibble (priority = 0,  # priority of message to be posted (int; 
                                      # between 0 for low and 10 for highest)
@@ -80,27 +94,27 @@ messages <- checkHalloween                 (messages) #  31st of October
 # Selection of message, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
 message <- selectMessage (messages)
-  
+
 # Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#
 if (dim (message) [1] > 0) {
   write_csv (x    = message,
-             path = sprintf ('./messages/%s.csv', 
-                             format (Sys.time (), "%Y-%m-%d_%H")))
+             path = sprintf ('%smessages/%s.csv', 
+                             format (Sys.time (), "%Y-%m-%d_%H")),
+                             path)
 }
-
+ 
 # Save unused messages and figures in tmp/ folder for next iteration
 #---------------------------------------------------------------------------------------#
 if (dim (messages) [1] > 0) {
   write_csv (x    = messages,
-             path = './messages/messages.csv')
+             path = sprintf ('%smessages/messages.csv', path))
 }
 
 # Create log files
 #---------------------------------------------------------------------------------------#
 write_csv (x         = as.tibble (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
-           path      = './messages/logfile.csv',
+           path      = sprintf ('%smessages/logfile.csv', path),
            col_names = FALSE,
            append    = TRUE)
-
 #=======================================================================================#

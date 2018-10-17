@@ -2,9 +2,12 @@
 # This script does include some statistics of the witness tree. The values have to be 
 # revised.
 #---------------------------------------------------------------------------------------#
+
+# Set birthday and calculate the age
+#---------------------------------------------------------------------------------------#
 birthDay         <- as.POSIXct ("1919/04/12", format = "%Y/%m/%d") # in years C.E.    
-age              <- floor (time_length (Sys.time () - birthDay, "years"))
-  
+age              <- floor (lubridate::time_length (Sys.time () - birthDay, "years"))
+
 # LIDAR-derived quantities from scan by Peter Boucher (PhD Candidate, School of 
 # Environment, University of Massachusetts Boston) with LEICA BLK360 on 2018/07/27 
 #---------------------------------------------------------------------------------------#
@@ -38,8 +41,8 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 
 # Location
 #---------------------------------------------------------------------------------------#
-treeLocationName <- "Harvard Forest"
-treeLon <- 
-treeLat <-
-treeTimeZone <- 'EST'
+treeLocationName <- "Harvard Forest" # name of location of the witnessTree
+treeLon          <-  -72.189706396   # longitude of Koen's camera by the witnessTree measured on 2018/06/02
+treeLat          <-  42.535685326    # lattitude of Koen's camera by the witnessTree measured on 2018/06/02
+treeTimeZone     <- 'EST'            # time zone of the witnessTree 
 #=======================================================================================#

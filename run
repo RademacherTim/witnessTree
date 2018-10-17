@@ -3,15 +3,48 @@
 # Set the path to the directory containing the witnessTree code
 WITNESSTREEPATH='/home/trademacehr/projects/witnessTree/'
 
+# Change to the witnessTree directory
+cd ${WITNESSTREEPATH}
+
+# Check which packages are available
+#Rscript ./RScripts/print.R
+#if [ $? == 0 ]
+#then 
+#   echo 'Ran print.R.' >> ./tmp/logfile.txt
+#else 
+# echo 'Error: print.R did not execute.' >> ./tmp/logfile.txt # write error message into log
+#   exit 1 # terminate script and indicate error
+#fi
+
 # Read WITNESSTREEPATH from config file
-source ${WITNESSTREEPATH}config
+source ./config
+if [ $? == 0 ]
+then
+   echo 'Sourced config.' >> ./tmp/logfile.txt
+else 
+   echo 'Error: Could not source config.' >> ./tmp/logfile.txt # write error message into log
+   exit 1 # terminate script and indicate error
+fi
 
 # Run the witnessTree RScript to generate messages
-Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R
+Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH}
+if [ $? == 0 ]
+then 
+   echo 'Ran witnessTree.R.' >> ./tmp/logfile.txt
+else 
+   echo 'Error: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log
+   exit 1 # terminate script and indicate error
+fi
 
 # Run twitterbot to post generated messages
-python ${WITNESSTREEPATH}pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret}
+if python ./pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret}
+then 
+   echo 'Ran twitterbot.py.' >> ./tmp/logfile.txt
+else 
+   echo 'Error: twitterbot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
+   exit 1 # terminate script and indicate error
+fi
 
 # Write time and date into log file in the tmp/ folder
 DATE=$(date +%Y-%m-%d" "%H:%M:%S)
-echo ${DATE} >> ${WITNESSTREEPATH}tmp/logfile.txt
+echo ${DATE} >> ./tmp/logfile.txt
