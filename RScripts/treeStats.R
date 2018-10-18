@@ -25,17 +25,17 @@ dbh_cyl          <- 0.780                                     # m mean of cylind
 
 # Values measured in the field
 #---------------------------------------------------------------------------------------#
-cbh                 <- 2.65     # Measured on 2018-10-11
-dbh                 <- cbh / pi
+cbh                 <- 2.65     # Circumference at breast height measured on 2018-10-11
+dbh                 <- cbh / pi # Derived diameter at breast height
 sapFlowArea         <- 0.8      # TTR Made up
-percentWaterContent <- 60       # TTR Made up
+percentWaterContent <- 80       # TTR Made up
 
 # Values from literature
 #---------------------------------------------------------------------------------------#
-rhoWood       <- 740  # kg/m3 TTR guesstimate which needs to be based of literature eventually.
-carbonContent <- 0.463 # % For Quercus rubra from Lamlom & Savidge (2003)
-RSRatio       <- 0.5 # unitless TTR guesstimate which needs to be based of literature eventually.
-totalMass     <- (totalVolume / 1000.0 * rhoWood) / RSRatio     # kg
+rhoWood       <- 740            # kg/m3 TTR guesstimate which needs to be based of literature eventually.
+carbonContent <-   0.463        # % For Quercus rubra from Lamlom & Savidge (2003)
+RSRatio       <-   0.5          # unitless TTR guesstimate which needs to be based of literature eventually.
+totalMass     <- (totalVolume / 1000.0 * rhoWood) / RSRatio  # kg
 totalCarbon   <- totalMass * carbonContent
 meanAnnualCarbonSequestration <- totalCarbon / age
 

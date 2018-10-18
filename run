@@ -18,29 +18,24 @@ cd ${WITNESSTREEPATH}
 
 # Read WITNESSTREEPATH from config file
 source ./config
-if [ $? == 0 ]
+if [ $? != 0 ]
 then
-   echo 'Sourced config.' >> ./tmp/logfile.txt
-else 
    echo 'Error: Could not source config.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
 # Run the witnessTree RScript to generate messages
 Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH}
-if [ $? == 0 ]
+if [ $? != 0 ]
 then 
-   echo 'Ran witnessTree.R.' >> ./tmp/logfile.txt
-else 
    echo 'Error: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
 # Run twitterbot to post generated messages
-if python ./pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret}
+python ./pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret}
+if [ $? != 0 ]
 then 
-   echo 'Ran twitterbot.py.' >> ./tmp/logfile.txt
-else 
    echo 'Error: twitterbot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi

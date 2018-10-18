@@ -1,12 +1,12 @@
-#==============================================================================#
+#==============================================================================
 # This script is the twitterbot. It reads messages for a particular hour and 
 # associated information to transfer it to a linked twitter account with access 
 # details for the account in the config file.
 # Each message can only be posted once, so accidental repetition is impossible.
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------
 
 # Import dependencies
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------
 import sys        # library to use command line arguments
 import tweepy     # 
 import Tkinter    #
@@ -16,13 +16,36 @@ from datetime import date
 from datetime import time
 from datetime import datetime
 
+# Linking the Twitter accound with Tweepy through adding credentials. 
+# Twitter handle @hf_tree (later @awitnesstree)
+#------------------------------------------------------------------------------
+consumer_key        = sys.argv [1] # consumer key
+consumer_secret     = sys.argv [2] # consumer secrets
+access_token        = sys.argv [3] # access token
+access_token_secret = sys.argv [4] # access token secret
+#print (consumer_key)
+#print (consumer_secret)
+#print (access_token)
+#print (access_token_secret)
+
+# Authenticate the twitter page with tweepy library
+#------------------------------------------------------------------------------
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+
+# Check points to make sure tweepy is linked to the appropriate twitter page
+#------------------------------------------------------------------------------
+user = api.me()
+#print (user.name)
+
 # Check whether there is a file for this hour
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------
 now = datetime.now ()
 fileName = "./messages/%s.csv" % now.strftime ("%Y-%m-%d_%H")
 
 # Read message, if it exists
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------
 if os.path.exists(fileName):
 	with open(fileName) as csv_file:
 	    csv_reader = csv.reader(csv_file, delimiter=',')
@@ -41,38 +64,46 @@ if os.path.exists(fileName):
 	hastags = row [3]
 	expires = [4]
 	print message
+
+	# Putting a message on Twitter
+	#------------------------------------------------------------------------------
+	api = tweepy.API (auth)
+	api.update_status (message)
+	#api.update_with_media (filename='directory of image', status= 'status')
+
 else:
 	print ("Error: No file with a message!")
-	sys.exit()
 
-# Linking the Twitter accound with Tweepy through adding credentials. 
-# Twitter handle @awitnesstree
-#------------------------------------------------------------------------------#
-consumer_key        = sys.argv [1] # consumer key
-consumer_secret     = sys.argv [2] # consumer secrets
-access_token        = sys.argv [3] # access token
-access_token_secret = sys.argv [4] # access token secret
-#print (consumer_key)
-#print (consumer_secret)
-#print (access_token)
-#print (access_token_secret)
 
-# Authenticate the twitter page with tweepy library
-#------------------------------------------------------------------------------#
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
 
-# Check points to make sure tweepy is linked to the appropriate twitter page
-#------------------------------------------------------------------------------#
-user = api.me()
-#print (user.name)
 
-# Putting a message on Twitter
-#------------------------------------------------------------------------------#
-api = tweepy.API(auth)
-api.update_status(message)
-#api.update_with_media(filename='directory of image', status= 'status')
+# Look for tweets containing the words "How are you"
+#------------------------------------------------------------------------------
+twts = api.search(q="@%s How are you" % (user.screen_name), show_user = True)
+#print (user.screen_name)
+#print (twts)
+
+# Create list of tweets that we respond to
+#------------------------------------------------------------------------------
+t = ['How are you?',
+     'how are you?',
+     'How are you doing?',
+     'how are you doing?',
+     'How are you feeling?',
+     'how are you feeling?']
+#print (t)
+
+for s in twts:
+    for i in t:
+        #print (s.text)
+        #print (i)
+        if i == s.text:
+            sn = s.user.screen_name
+            m = "@%s I am feeling..." % (sn)
+            s = api.update_status (m, s.id) # This does fail, if it has already replied.
+            #print (s.user.screen_name)
+            #print (m)
+            #print (s)
 
 # To delete a status use:'''
 #------------------------------------------------------------------------------#
