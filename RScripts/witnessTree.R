@@ -95,16 +95,19 @@ messages <- checkHalloween                 (messages) #  31st of October
 #---------------------------------------------------------------------------------------#
 message <- selectMessage (messages)
 
+# Delete the selected message from the messages tibble 
+#---------------------------------------------------------------------------------------#
+messages <- # TTR write function to delete the selected message from the messages tibble
+
 # Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#
 if (dim (message) [1] > 0) {
   write_csv (x    = message,
-             path = sprintf ('%smessages/%s.csv', 
-                             format (Sys.time (), "%Y-%m-%d_%H")),
-                             path)
+             path = sprintf ('%smessages/%s.csv', path,
+                             format (Sys.time (), "%Y-%m-%d_%H")))
 }
  
-# Save unused messages and figures in tmp/ folder for next iteration
+# Save unused messages and figures in tmp/ folder for next iteration # TTR Does actually save all messages. Could solve it by deleting it when it is selected in selectMessage().
 #---------------------------------------------------------------------------------------#
 if (dim (messages) [1] > 0) {
   write_csv (x    = messages,
