@@ -36,7 +36,7 @@ suppressPackageStartupMessages (library ('tibble'))
 suppressPackageStartupMessages (library ('dplyr'))
 suppressPackageStartupMessages (library ('readr'))
 suppressPackageStartupMessages (library ('lubridate'))
-source  (sprintf ('%sRScripts/selectMessage.R', path))
+source  (sprintf ('%sRScripts/messageHandling.R', path))
 source  (sprintf ('%sRScripts/checkEvents.R', path))
 source  (sprintf ('%sRScripts/checkPhysiology.R', path))
 source  (sprintf ('%sRScripts/checkExpiration.R', path))
@@ -80,6 +80,7 @@ messages <- checkAutumnEquinox             (messages) # ~22nd of September
 messages <- checkSummerSolstice            (messages) #  21st of June
 messages <- checkWinterSolstice            (messages) #  21st of December
 messages <- checkHalloween                 (messages) #  31st of October
+# TTR Something seems to go wrong when I already have a message and want to add one!
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#
@@ -97,7 +98,7 @@ message <- selectMessage (messages)
 
 # Delete the selected message from the messages tibble 
 #---------------------------------------------------------------------------------------#
-messages <- # TTR write function to delete the selected message from the messages tibble
+messages <- deleteMessage (messages, message)# TTR write function to delete the selected message from the messages tibble
 
 # Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#

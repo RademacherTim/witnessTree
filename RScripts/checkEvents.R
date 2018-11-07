@@ -15,6 +15,7 @@
 #   8)  Autumn Equinox                          23rd of September
 #   9)  Halloween                               31st of October
 #   10) Winter Solstice                         21st of December
+# Changing of times! Spring forward and fall back!
 #
 #---------------------------------------------------------------------------------------#
 
@@ -30,7 +31,7 @@ helloWorld <- function (mtable, TEST = F) {
     priority  <- 10
     hashtags  <- sprintf ("#IAmAlive #HarvardForest")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   } 
   return (mtable)
 } 
@@ -43,7 +44,7 @@ checkNewYears <- function (mtable, TEST = F) {
     priority  <- 10
     hashtags  <- sprintf ("#witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   } 
   return (mtable)
 } # TTR To do: - maybe change to comparison to CO2 sequester in last year?
@@ -56,7 +57,7 @@ checkNationalWildLifeDay <- function (mtable, TEST = F) {
     priority  <- 10
     hashtags  <- sprintf ("#wildlife #witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   } 
   return (mtable)
 } # TTR To do: - Ought to have an image or even several images from the wild life camera at the tree!
@@ -72,10 +73,10 @@ checkPiDay <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       piDayMes  <- sample (piDayMessages, 1)
-      mtable    <- rbind (mtable, list (priority = priority, fFigure = F, message = piDayMes, hashtags = hashtags, expires = expirDate))
+      mtable    <- add_row (mtable, priority = priority, fFigure = F, message = piDayMes, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = piDayMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = piDayMessages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = piDayMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = piDayMessages [2], hashtags = hashtags, expires = expirDate)
     }  
   } 
   return (mtable)
@@ -93,10 +94,10 @@ checkInternationalDayOfForests <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       message  <- sample (messages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate)
     }  } 
   return (mtable)
 }
@@ -112,10 +113,10 @@ checkWorldWaterDay <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       message  <- sample (messages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate)
     }  } 
   return (mtable)
 }
@@ -136,7 +137,7 @@ checkBirthday <- function (mtable, TEST = F) { ## calculate stats for how much w
     priority  <- 10
     hashtags  <- sprintf ("#witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   }
   return(mtable)
 } # TTR To do: Set birthday (ask John O'Keefe, maybe?)
@@ -157,7 +158,7 @@ checkArborDay <- function (mtable, TEST = F) {
     priority  <- 10
     hashtags  <- sprintf ("#witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   } 
   return (mtable)
 } # TTR To do: Include some better message!
@@ -174,10 +175,10 @@ checkEarthDay <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       earthDayMes  <- sample (earthDayMessages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = earthDayMessage, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessage, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = earthDayMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = earthDayMessages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessages [2], hashtags = hashtags, expires = expirDate)
     }
   } 
   return (mtable)
@@ -216,11 +217,11 @@ checkSpringEquinox <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       sprEquMes  <- sample (sprEquMessages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sprEquMessage, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessage, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sprEquMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sprEquMessages [2], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sprEquMessages [3], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [2], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [3], hashtags = hashtags, expires = expirDate)
     }
   } 
   return (mtable)
@@ -256,10 +257,10 @@ checkAutumnEquinox <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       autEquMes  <- sample (autEquMessages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = autEquMessage, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessage, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = autEquMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = autEquMessages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessages [2], hashtags = hashtags, expires = expirDate)
     }
   } 
   return (mtable)
@@ -293,10 +294,10 @@ checkSummerSolstice <- function (mtable, TEST = F) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       sumSolMes  <- sample (sumSolMessages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sumSolMessage, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessage, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sumSolMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = sumSolMessages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessages [2], hashtags = hashtags, expires = expirDate)
     }
   } 
   return (mtable)
@@ -332,10 +333,10 @@ checkWinterSolstice <- function (mtable, TEST = F) {
     expirDate       <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (!TEST) {
       winSolMes  <- sample (winSolMessages, 1)
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = winSolMessage, hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessage, hashtags = hashtags, expires = expirDate)
     } else {
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = winSolMessages [1], hashtags = hashtags, expires = expirDate))
-      mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = winSolMessages [2], hashtags = hashtags, expires = expirDate))
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessages [1], hashtags = hashtags, expires = expirDate)
+      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessages [2], hashtags = hashtags, expires = expirDate)
     }
   } 
   return (mtable)
@@ -349,7 +350,7 @@ checkHalloween <- function (mtable, TEST = F) {
     priority  <- 10
     hashtags  <- sprintf ("#witnessTree")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- rbind (mtable, list (priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate))
+    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
   } 
   return (mtable)
 }
