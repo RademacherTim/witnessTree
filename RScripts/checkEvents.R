@@ -26,7 +26,7 @@ suppressMessages (require ('RcppBDT'))
 # Hello world! message (post once on 15th of April)
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = F) {
-  if (substring (Sys.Date (), 6, 10) == '04-15' | TEST) {
+  if (substring (Sys.Date (), 6, 10) == '05-17' | TEST) {
     message   <- sprintf ("Hello World! I am a #witnessTree at %s. Follow me to learn more about life as a tree and the environment.", treeLocationName)
     priority  <- 10
     hashtags  <- sprintf ("#IAmAlive #HarvardForest")

@@ -37,15 +37,18 @@ suppressPackageStartupMessages (library ('dplyr'))
 suppressPackageStartupMessages (library ('readr'))
 suppressPackageStartupMessages (library ('lubridate'))
 source  (sprintf ('%sRScripts/messageHandling.R', path))
-source  (sprintf ('%sRScripts/checkEvents.R', path))
+source  (sprintf ('%sRScripts/checkEvents.R',     path))
+source  (sprintf ('%sRScripts/readClimate.R',     path))
+source  (sprintf ('%sRScripts/checkClimate.R',    path))
 source  (sprintf ('%sRScripts/checkPhysiology.R', path))
 source  (sprintf ('%sRScripts/checkExpiration.R', path))
-source  (sprintf ('%sRScripts/treeStats.R', path))
+source  (sprintf ('%sRScripts/treeStats.R',       path))
 
 # Read in previously generated messages, if not first iteration
 #---------------------------------------------------------------------------------------#
 if (file.exists (sprintf ('%smessages/messages.csv', path))) {
-  messages <- read_csv (sprintf ('%smessages/messages.csv', path), header = T)
+  messages <- read_csv (sprintf ('%smessages/messages.csv', path), 
+                        col_names = T, col_types = cols())
 } else { # create a tibble for messages 
   messages <- tibble (priority = 0,  # priority of message to be posted (int; 
                                      # between 0 for low and 10 for highest)
@@ -80,18 +83,18 @@ messages <- checkAutumnEquinox             (messages) # ~22nd of September
 messages <- checkSummerSolstice            (messages) #  21st of June
 messages <- checkWinterSolstice            (messages) #  21st of December
 messages <- checkHalloween                 (messages) #  31st of October
-# TTR Something seems to go wrong when I already have a message and want to add one!
 
 # Generate new messages concerning phenology
 #---------------------------------------------------------------------------------------#
 #messages <- startOfGrowingSeason (messages)
 #messages <- endOfGrowingSeason   (messages)
 
-# Generate new messages concerning climatic events
+# Read climate data and generate new messages concerning meteorological & climatic events
 #---------------------------------------------------------------------------------------#
-#messages <- checkFrost    (messages) # TTR Does not exist yet
-#messages <- checkHeatwave (messages) # TTR Does not exist yet
- 
+readClimate ()
+messages <- extremeTemperatures (messages, TEST = T) # Test whether it is the hottest or coldest 
+                                           # temperature on record (in memory). 
+
 # Selection of message, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
 message <- selectMessage (messages)
