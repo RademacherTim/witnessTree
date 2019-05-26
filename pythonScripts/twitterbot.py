@@ -68,7 +68,7 @@ if os.path.exists(fileName):
 	# Putting a message on Twitter
 	#------------------------------------------------------------------------------
 	api = tweepy.API (auth)
-	api.update_status (message)
+	api.update_status (message + hastags)
 	#api.update_with_media (filename='directory of image', status= 'status')
 
 else:

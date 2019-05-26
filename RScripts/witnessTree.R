@@ -6,9 +6,7 @@
 #
 # Project lead: Tim Tito Rademacher (rademacher.tim@gmail.com)
 #
-# Developpers:  David Basler
-#
-# Acknowledgements: Thanks to Kyle Wyche.
+# Acknowledgements: Thanks to David Basler, Clarisse Hart, Hannah Robbins and Kyle Wyche.
 #
 #---------------------------------------------------------------------------------------#
  
@@ -92,7 +90,7 @@ messages <- checkHalloween                 (messages) #  31st of October
 # Read climate data and generate new messages concerning meteorological & climatic events
 #---------------------------------------------------------------------------------------#
 readClimate ()
-messages <- extremeTemperatures (messages, TEST = T) # Test whether it is the hottest or coldest 
+messages <- extremeTemperatures (messages) # Test whether it is the hottest or coldest 
                                            # temperature on record (in memory). 
 
 # Selection of message, figure and images for the current iterations
