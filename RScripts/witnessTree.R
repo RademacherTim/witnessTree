@@ -6,10 +6,17 @@
 #
 # Project lead: Tim Tito Rademacher (rademacher.tim@gmail.com)
 #
-# Acknowledgements: Thanks to David Basler, Clarisse Hart, Hannah Robbins and Kyle Wyche.
+# Acknowledgements: Thanks to David Basler, Clarisse Hart, Hannah Robbins, Kyle Wyche, 
+#                   Shawna Greyeyes.
 #
 #---------------------------------------------------------------------------------------#
  
+
+# To-do list:
+#---------------------------------------------------------------------------------------#
+# TR - Change function names to have one name per function per message
+# TR - Check that each function has an fFigure boolean
+
 # Get the absolute path to the directory 
 #---------------------------------------------------------------------------------------#
 args = commandArgs (trailingOnly=TRUE)
@@ -30,16 +37,13 @@ options (warn = -1) # To turn warnings back on use options (warn = 0)
 
 # Load dependencies
 #---------------------------------------------------------------------------------------#
-suppressPackageStartupMessages (library ('tibble'))
-suppressPackageStartupMessages (library ('dplyr'))
-suppressPackageStartupMessages (library ('readr'))
+suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
 source  (sprintf ('%sRScripts/messageHandling.R', path))
 source  (sprintf ('%sRScripts/checkEvents.R',     path))
 source  (sprintf ('%sRScripts/readClimate.R',     path))
 source  (sprintf ('%sRScripts/checkClimate.R',    path))
 source  (sprintf ('%sRScripts/checkPhysiology.R', path))
-source  (sprintf ('%sRScripts/checkExpiration.R', path))
 source  (sprintf ('%sRScripts/treeStats.R',       path))
 
 # Read in previously generated messages, if not first iteration
@@ -65,6 +69,10 @@ messages <- checkExpirationDatesOf (messages)
 #---------------------------------------------------------------------------------------#
 messages <- reEvaluatePriorityOf (messages)
 
+# Read climate data
+#---------------------------------------------------------------------------------------#
+readClimate ()
+
 # Generate new messages concerning regularly recurrent events
 #---------------------------------------------------------------------------------------#
 messages <- helloWorld                     (messages) # on the launch date (2019-04-15) only
@@ -87,11 +95,15 @@ messages <- checkHalloween                 (messages) #  31st of October
 #messages <- startOfGrowingSeason (messages)
 #messages <- endOfGrowingSeason   (messages)
 
-# Read climate data and generate new messages concerning meteorological & climatic events
+# Generate new messages concerning meteorological & climatic events
 #---------------------------------------------------------------------------------------#
-readClimate ()
-messages <- extremeTemperatures (messages) # Test whether it is the hottest or coldest 
-                                           # temperature on record (in memory). 
+messages <- checkExtremeTemperatures (messages) # Test whether it is the hottest or coldest 
+                                                # temperature on record (in memory).
+messages <- monthlyClimateSummary (messages) # If it is the beginning of the month 
+                                             # summarise and compare last months climate 
+                                             # to the long term average.
+messages <- checkFrost (messages) # Check for first frost of the autumn and late frost 
+                                  # events.
 
 # Selection of message, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
@@ -99,7 +111,7 @@ message <- selectMessage (messages)
 
 # Delete the selected message from the messages tibble 
 #---------------------------------------------------------------------------------------#
-messages <- deleteMessage (messages, message)# TTR write function to delete the selected message from the messages tibble
+messages <- deleteMessage (messages, message)
 
 # Write message to messages/ folder named after date and time when it should be scheduled 
 #---------------------------------------------------------------------------------------#

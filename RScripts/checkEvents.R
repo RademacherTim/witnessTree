@@ -27,11 +27,15 @@ suppressMessages (require ('RcppBDT'))
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '05-17' | TEST) {
-    message   <- sprintf ("Hello World! I am a #witnessTree at %s. Follow me to learn more about life as a tree and the environment.", treeLocationName)
-    priority  <- 10
-    hashtags  <- sprintf ("#IAmAlive #HarvardForest")
+    messageDetails <- getMessageDetails ("helloWorld")
+    message   <- sprintf (messageDetails [["Message"]], treeLocationName)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
   } 
   return (mtable)
 } 
@@ -40,65 +44,69 @@ helloWorld <- function (mtable, TEST = F) {
 #---------------------------------------------------------------------------------------#
 checkNewYears <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST) {
-    message   <- sprintf ("Happy #NewYear!! During my life I fixed roughly %s kg of carbon per year. My #resolution for %s is to beat that. What is your resolution?", round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ("checkNewYears")
+    message   <- sprintf (messageDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
-  } 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
+    } 
   return (mtable)
-} # TTR To do: - maybe change to comparison to CO2 sequester in last year?
+} # TTR To do: - maybe change to comparison to CO2 sequestered in last year?
 
 # National Wildlife Day (annual post on 4th of March)
 #---------------------------------------------------------------------------------------#
 checkNationalWildLifeDay <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '03-04' | TEST) {
-    message   <- sprintf ("Look who's visited me earlier this year! Happy #NationalWildlifeDay!")
-    priority  <- 10
-    hashtags  <- sprintf ("#wildlife #witnessTree")
+    messageDetails <- getMessageDetails ("checkNationalWildLifeDay")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
-  } 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
+    } 
   return (mtable)
-} # TTR To do: - Ought to have an image or even several images from the wild life camera at the tree!
+} # TTR To do: - Ought to have an image from the wild life camera at the tree!
 
 # Pi Day (annual post on 14th of March)
 #---------------------------------------------------------------------------------------#
 checkPiDay <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == '03-14' | TEST) {
-    piDayMessages <- c ('Happy P#iDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!',
-                        sprintf ('Happy #PiDay! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).', dbh_cyl, sapFlowArea))
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ("checkPiDay")
+    message <- ifelse (substring (messageDetails [["Message"]],16,16) == "P", 
+                       messageDetails [["Message"]],
+                       sprintf (messageDetails [["Message"]], dbh_cyl, sapFlowArea))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      piDayMes  <- sample (piDayMessages, 1)
-      mtable    <- add_row (mtable, priority = priority, fFigure = F, message = piDayMes, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = piDayMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = piDayMessages [2], hashtags = hashtags, expires = expirDate)
-    }  
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
   } 
   return (mtable)
 } # TTR To do: - find out how to render pi as the greek letter on twitter. 
   #            - add the diameter and circumference to the second message 
+  #            - add image of LIDAR model 
 
 # International Day of Forests Script (annual post falls on the 21st of March)
 #---------------------------------------------------------------------------------------#
 checkInternationalDayOfForests <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == "03-21" | TEST) {
-    messages   <- c (sprintf ("It's the international day of forests! How many types of forests do you know?"),
-                    sprintf ("Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!"))
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ("checkInternationalDayOfForests")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      message  <- sample (messages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate)
-    }  } 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)  
+  } 
   return (mtable)
 }
 
@@ -106,18 +114,18 @@ checkInternationalDayOfForests <- function (mtable, TEST = F) {
 #---------------------------------------------------------------------------------------#
 checkWorldWaterDay <- function (mtable, TEST = F) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST) {
-    messages   <- c (sprintf ("Did you know that roughly %s%% of me is water? Every day lots of water flows through my trunk to my leaves.", percentWaterContent),
-                     sprintf ("Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire."))
-    priority  <- 10
-    hashtags  <- sprintf ("#WorldWaterDay #witnessTree")
+    messageDetails <- getMessageDetails ("checkWorldWaterDay")
+    message <- ifelse (substring (messageDetails [["Message"]],3,3) == "i", 
+                       sprintf (messageDetails [["Message"]], percentWaterContent),
+                       messageDetails [["Message"]])
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      message  <- sample (messages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = messages [2], hashtags = hashtags, expires = expirDate)
-    }  } 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
+  } 
   return (mtable)
 }
 
@@ -126,18 +134,22 @@ checkWorldWaterDay <- function (mtable, TEST = F) {
 checkBirthday <- function (mtable, TEST = F) { ## calculate stats for how much witnesstree has grown in a year
   if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10) | TEST) {
     len <- nchar (as.character (age))
-    if (as.character (age) [len-1:len] == 1) {
+    if (substring (as.character (age), len, len) == 1) {
       subst <- 'st'
-    } else if (as.character (age) [len-1:len] == 2) {
+    } else if (substring (as.character (age), len, len) == 2) {
       subst <- 'nd'
     } else {
       subst <- 'th'
     }
-    message   <- sprintf ("Do you know what day it is??? Today is my %s%s #birthday!", age, subst)
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ('checkBirthday')
+    message   <- sprintf (messageDetails [["Message"]], age, subst)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   }
   return(mtable)
 } # TTR To do: Set birthday (ask John O'Keefe, maybe?)
@@ -154,11 +166,14 @@ checkArborDay <- function (mtable, TEST = F) {
   if ((weekdays (Sys.Date ()) == 'Friday') & 
       (months   (Sys.Date ()) == 'April' ) &
       (as.numeric (strftime (Sys.Date (), format = '%j')) > (doy - 6)) | TEST) {
-    message   <- "Happy #ArborDay everyone! Did you plant a tree today? Share your comments below."
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ('checkArborDay')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)  
   } 
   return (mtable)
 } # TTR To do: Include some better message!
@@ -167,19 +182,14 @@ checkArborDay <- function (mtable, TEST = F) {
 #---------------------------------------------------------------------------------------#
 checkEarthDay <- function (mtable, TEST = F) {
   if (substring (Sys.time (), 6, 10) == "04-22" | TEST) {
-    earthDayMessages  <- c ("Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans.",
-                            "You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home.")
-    
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ('checkEarthDay')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      earthDayMes  <- sample (earthDayMessages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessage, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = earthDayMessages [2], hashtags = hashtags, expires = expirDate)
-    }
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)  
   } 
   return (mtable)
 }
@@ -208,21 +218,22 @@ checkSpringEquinox <- function (mtable, TEST = F) {
   if (       Sys.time ()  >= vernalDate         & 
       month (Sys.Date ()) == month (vernalDate) & 
       day   (Sys.Date ()) == day   (vernalDate) | TEST) { 
-    sprEquMessages <- c (sprintf ("The first day of spring just started at %s:%sh today! Get ready for bulking season!!", 
-                                  hour (vernalDate), minute (vernalDate)),
-                         sprintf ("First day of #spring and it's %s degree C here in the forest.", temperature, expression (degree)),
-                         sprintf ("Do you already see any oak seedlings, where you live, on this first day of astronomical spring?"))
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree #1stDayOfSpring")
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      sprEquMes  <- sample (sprEquMessages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessage, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [2], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sprEquMessages [3], hashtags = hashtags, expires = expirDate)
+    messageDetails <- getMessageDetails ('checkSpringEquinox')
+    if (substring (messageDetails [['Message']],2,2) == 'D') {
+      message <- messageDetails [['Message']]
+    } else if (substring (messageDetails [['Message']],2,2) == 'F') {
+      temperatureC <- tail (airt [['airt']], n = 1)
+      message <- sprintf (messageDetails [['Message']], temperatureC, treeLocationName)
+    } else if (substring (messageDetails [['Message']],2,2) == 'T') {
+      message <- sprintf (messageDetails [['Message']],  hour (vernalDate), minute (vernalDate))
     }
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   } 
   return (mtable)
 } 
@@ -249,24 +260,24 @@ checkAutumnEquinox <- function (mtable, TEST = F) {
   if (       Sys.time ()  >=        autumnalDate  & 
       month (Sys.Date ()) == month (autumnalDate) & 
       day   (Sys.Date ()) == day   (autumnalDate) | TEST) { 
-    autEquMessages   <- c (sprintf ("Astronomically it is the first day of autmn since %s:%sh. I will keep the leaf peepers posted about colour changes at #HarvardForest.",
-                                    hour (autumnalDate), minute (autumnalDate)),
-                           sprintf ("Leaf colours will be changing soon, as astronomically it is the first day of #autmn today."))
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree #1stDayOfAutumn #winterIsComing")
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      autEquMes  <- sample (autEquMessages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessage, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = autEquMessages [2], hashtags = hashtags, expires = expirDate)
+    messageDetails <- getMessageDetails ('checkAutumnEquinox')
+    if (substring (messageDetails [['Message']],2,2) == 'A') {
+      message <- sprintf (messageDetails [['Message']],  hour (autumnalDate), minute (autumnalDate))
+    } else if (substring (messageDetails [['Message']],2,2) == 'L') {
+      message <- messageDetails [['Message']]
     }
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   } 
   return (mtable)
 }
 
-#Summer Solstice (annual post)
+# Summer Solstice (annual post)
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
@@ -287,18 +298,14 @@ checkSummerSolstice <- function (mtable, TEST = F) {
   if (       Sys.time ()  >=        solsticeDate  & 
       month (Sys.Date ()) == month (solsticeDate) & 
       day   (Sys.Date ()) == day   (solsticeDate) | TEST) { 
-    sumSolMessages   <- c (sprintf ("Soak up that sun and photosynthesis! It's the longest day of the year!"),
-                           sprintf ("It is mid-summer and this is the time when wood growth tends to be highest!"))
-    priority  <- 10
-    hashtags  <- sprintf ("#midsummer #solstice #witnessTree")
+    messageDetails <- getMessageDetails ('checkSummerSolstice')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      sumSolMes  <- sample (sumSolMessages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessage, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = sumSolMessages [2], hashtags = hashtags, expires = expirDate)
-    }
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   } 
   return (mtable)
 }
@@ -325,19 +332,14 @@ checkWinterSolstice <- function (mtable, TEST = F) {
   if (       Sys.time ()  >=        solsticeDate  & 
       month (Sys.Date ()) == month (solsticeDate) & 
       day   (Sys.Date ()) == day   (solsticeDate) | TEST) { 
-    winSolMessages   <- c (sprintf ("Shortest day of the year! Not too much sunlight today so get as much as you can!"),
-                           sprintf ("Happy midwinter! Finally, the days will start getting longer again."),
-                           sprintf ("Well it's the shortest day of the year here in Massachusetts, but for trees in the Southern hemisphere today's the longest day."))
-    priority        <- 10
-    hashtags        <- sprintf ("#midwinter #solstice #witnessTree")
+    messageDetails <- getMessageDetails ('checkWinterSolstice')
     expirDate       <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (!TEST) {
-      winSolMes  <- sample (winSolMessages, 1)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessage, hashtags = hashtags, expires = expirDate)
-    } else {
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessages [1], hashtags = hashtags, expires = expirDate)
-      mtable <- add_row (mtable, priority = priority, fFigure = F, message = winSolMessages [2], hashtags = hashtags, expires = expirDate)
-    }
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   } 
   return (mtable)
 }
@@ -346,11 +348,14 @@ checkWinterSolstice <- function (mtable, TEST = F) {
 #---------------------------------------------------------------------------------------#
 checkHalloween <- function (mtable, TEST = F) {
   if (substring (Sys.time (), 6, 10) == "10-31" | TEST) {
-    message   <- "Happy #Halloween! What's your #costume? Are you going as a tree? Tweet below!"
-    priority  <- 10
-    hashtags  <- sprintf ("#witnessTree")
+    messageDetails <- getMessageDetails ('checkHalloween')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable <- add_row (mtable, priority = priority, fFigure = F, message = message, hashtags = hashtags, expires = expirDate)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)   
   } 
   return (mtable)
 }
