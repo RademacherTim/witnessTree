@@ -9,12 +9,14 @@
 #   2)  Pi Day                                  14th of March
 #   3)  Birthday                                tbd
 #   4)  Spring Equinox                          20th of March
+#    )  World Water Day                         22nd of March
 #   5)  Earth Day                               22nd of April
-#   6)  Arbor Day                               27th of April
-#   7)  Summer Solstice                         21st of June
-#   8)  Autumn Equinox                          23rd of September
-#   9)  Halloween                               31st of October
-#   10) Winter Solstice                         21st of December
+#   6)  Arbor Day                               Last Friday in April
+#   7)  Mother's Day                            Second Sunday of May
+#   8)  Summer Solstice                         21st of June
+#   9)  Autumn Equinox                          23rd of September
+#   10) Halloween                               31st of October
+#   11) Winter Solstice                         21st of December
 # Changing of times! Spring forward and fall back!
 #
 #---------------------------------------------------------------------------------------#
@@ -158,10 +160,10 @@ checkBirthday <- function (mtable, TEST = F) { ## calculate stats for how much w
 # Arbor Day Script (annual post falls on the last Friday in April)
 #---------------------------------------------------------------------------------------#
 checkArborDay <- function (mtable, TEST = F) {
-  if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # leap year
-    doy <- 90 
+  if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define the 30th of April in a leap year
+    doy <- 120 
   } else { # not a leap year
-    doy <- 91
+    doy <- 121
   }
   if ((weekdays (Sys.Date ()) == 'Friday') & 
       (months   (Sys.Date ()) == 'April' ) &
@@ -176,7 +178,30 @@ checkArborDay <- function (mtable, TEST = F) {
                           expires  = expirDate)  
   } 
   return (mtable)
-} # TTR To do: Include some better message!
+}
+
+# Mother's Day Script (annual post falls on the second Sunday in may)
+#---------------------------------------------------------------------------------------#
+checkMothersDay <- function (mtable, TEST = F) {
+  if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define 1st of may in a leap year
+    doy <- 127 
+  } else { # not a leap year
+    doy <- 128 
+  }
+  if ((weekdays (Sys.Date ()) == 'Sunday') & 
+      (months   (Sys.Date ()) == 'May'   ) &
+      (as.numeric (strftime (Sys.Date (), format = '%j')) > doy) | TEST) {
+    messageDetails <- getMessageDetails ('checkMothersDay')
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = messageDetails [["Message"]], 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)  
+  } 
+  return (mtable)
+}
 
 # Earth Day Script (annual post)
 #---------------------------------------------------------------------------------------#

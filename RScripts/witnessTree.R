@@ -14,8 +14,6 @@
 
 # To-do list:
 #---------------------------------------------------------------------------------------#
-# TR - Change function names to have one name per function per message
-# TR - Check that each function has an fFigure boolean
 
 # Get the absolute path to the directory 
 #---------------------------------------------------------------------------------------#
@@ -83,6 +81,7 @@ messages <- checkInternationalDayOfForests (messages) #  21st of March
 messages <- checkWorldWaterDay             (messages) #  22nd of March
 messages <- checkBirthday                  (messages) #  12th of April
 messages <- checkArborDay                  (messages) #  Last Friday in April
+messages <- checkMothersDay                (messages) #  Second Sunday in May
 messages <- checkEarthDay                  (messages) #  22nd of April
 messages <- checkSpringEquinox             (messages) # ~20th of March 
 messages <- checkAutumnEquinox             (messages) # ~22nd of September

@@ -1,0 +1,72 @@
+FunctionID ,Status,Event,Logic,Date,ExpirationDate,Priority ,FigureName,Hashtags,Message
+,,,,,,,,,
+checkEvents.R,,,,,,,,,
+helloWorld,tested,Hello World,First post,tbd,tbd,10,,#IAmAlive #HarvardForest #HelloWorld #witnessTree,"""Hello World! I am a #witnessTree at %s. Follow me to learn more about life as a tree and the environment."""
+checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01 23:59:59,10,,#witnessTree #newyear #newyears #happynewyear #year #wishing #newgoals,"""Happy #NewYear!! During my life I fixed roughly %s kg of carbon per year. My #resolution for %s is to beat that. What is your resolution?"""
+checkNationalWildLifeDay,tested,National Wildlife Day,,yyyy-03-04,yyyy-03-04 23:59:59,10,,#wildlife #witnessTree,"""Look who's visited me earlier this year! Happy #NationalWildlifeDay!"""
+checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,,#witnessTree #piday,Happy #PiDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!'
+checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,,#witnessTree #piday,'Happy #PiDay! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).'
+checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,,#witnesstree,"""It's the international day of forests! How many types of forests do you know?"
+checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,,#witnesstree,"""Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!"""
+checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,,#WorldWaterDay #witnessTree,"""Did you know that roughly %s%% of me is water? Every day lots of water flows through my trunk to my leaves."""
+checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,,#WorldWaterDay #witnessTree,"""Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire."""
+checkBirthday,tested,Birthday,,tbd,tbd,10,,#witnessTree ,"""Do you know what day it is??? Today is my %s%s #birthday!"""
+checkArborDay,tested,Arbor Day,,last Friday in April,last Friday in April,10,,#witnessTree ,"""Happy #ArborDay everyone! Did you plant a tree today? Share your comments below."""
+checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,#witnessTree ,"""Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans."""
+checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,#witnessTree ,"""You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home."""
+checkMothersDay,Nothing done,Mother's Day,,second Sunday in May,second Sunday in May,10,,#witnessTree,""""""
+checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,#witnessTree #1stDayOfSpring,"""The first day of spring just started at %s:%sh today! Get ready for bulking season!!"""
+checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,#witnessTree #1stDayOfSpring,"""First day of #spring and it's %s°C here at %s."""
+checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,#witnessTree #1stDayOfSpring,"""Do you already see any oak seedlings, where you live, on this first day of astronomical spring?"""
+checkAutumnEquinox,tested,Autumn Equinox,,solarDates.tsv,solarDates.tsv,10,,#witnessTree #1stDayOfAutumn #winterIsComing,"""Astronomically it is the first day of autmn since %s:%sh. I will keep the leaf peepers posted about colour changes at #HarvardForest."""
+checkAutumnEquinox,tested,Autumn Equinox,,solarDates.tsv,solarDates.tsv,10,,#witnessTree #1stDayOfAutumn #winterIsComing,"""Leaf colours will be changing soon, as astronomically it is the first day of #autmn today."""
+checkSummerSolstice,tested,Summer Solstice,,solarDates.tsv,solarDates.tsv,10,,#midsummer #solstice #witnessTree,"""Soak up that sun and photosynthesis! It's the longest day of the year!"""
+checkSummerSolstice,tested,Summer Solstice,,solarDates.tsv,solarDates.tsv,10,,#midsummer #solstice #witnessTree,"""It is mid-summer and this is the time when wood growth tends to be highest!"""
+checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,#midwinter #solstice #witnessTree,"""Shortest day of the year! Not too much sunlight today so get as much as you can!"""
+checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,#midwinter #solstice #witnessTree,"""Happy midwinter! Finally, the days will start getting longer again."""
+checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,#midwinter #solstice #witnessTree,"""Well it's the shortest day of the year here in Massachusetts, but for trees in the Southern hemisphere today's the longest day."""
+checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,#witnessTree,"""Happy #Halloween! What's your #costume? Are you going as a tree? Tweet below!"""
+checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,#witnessTree,
+,,,,,,,,,
+checkClimate.R,,,,,,,,,
+hottest,,hottest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,#hot #hottest #HarvardForest #records #sweating,"""This is the hottest temperature I can remember. It is %s ℃ right now!!! That is %s ℉ by the way."""
+coldest,,coldest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,#cold #coldest #HarvardForest #records #freezing,"""It has never been this cold here! I wish I could just run inside. At %s degree ℃ (%s ℉), I am completely frozen!!!"","
+hottestDay,,hottest day on record,,variable,yyyy-mm-dd 23:59:59,9,,#hot #hottest #HarvardForest #records #sweating,
+coldestDay,,coldest day on record,,variable,yyyy-mm-dd 23:59:59,9,,#cold #coldest #HarvardForest #records #freezing,
+hottestWeek,,hottest week on record,,variable,,7,,#hot #hottest #HarvardForest #records #sweating,
+coldestWeek,,coldest week on record,,variable,,7,,#cold #coldest #HarvardForest #records #freezing,
+hottestMonth,,hottest month on record,,variable,,6,,#hot #hottest #HarvardForest #records #sweating,
+coldestMonth,,coldest month on record,,variable,,6,,#cold #coldest #HarvardForest #records #freezing,
+hottestYear,,hottest year on record,,variable,,6,,#hot #hottest #HarvardForest #records #sweating,
+coldestYear,,coldest year on record,,variable,,6,,#cold #coldest #HarvardForest #records #freezing,
+monthlyClimateSummary - normal,tested,First of the month,,xxxx-mm-01,,3,,#HarvardForest #average #completelyAverage,"""Last month was a pretty average month with %s ℃ it was neither particularly warm, nor cold. And %s mm of prefcipitation is aloo neither wet, nor dry for %s."""
+monthlyClimateSummary - cold,tested,First of the month,,xxxx-mm-01,,3,,"""#HarvardForest #cold #chilly""","""Last month was cold with an average temperature of only %s. Normally, it is about %s warmer in %s."""
+monthlyClimateSummary - warm,tested,First of the month,,xxxx-mm-01,,3,,"""#HarvardForest #globalwarming""","""Last month was warmer than usual with an average temperature of %s. In %s, it is on average %s colder in %s."""
+monthlyClimateSummary - wet,needs message,First of the month,,xxxx-mm-01,,3,,#HarvardForest #wet,
+monthlyClimateSummary - dry,needs message,First of the month,,xxxx-mm-01,,3,,#HarvardForest #dry,
+checkFrost - first,tbt, First frost in autumn,,variable,after 5 days,5,,#Frost #Shrinkage,""""""
+checkFrost - late,tbt,Late frost after growing season start,,variable,after 5 days,5,,#Frost #HarvardForest,"""We had %s frost free days, and I was about to really get going for the year, but then we just had a frost day. This is painful."""
+checkHeatwave,N,Heat wave,,variable,,5,,#Heatwave,"""It's a heatwave"",sprintf(""it's hot since %d days"",i),""Heatwave!!!!"""
+checkDrought,N,Drought ,,variable,,,,,"""There's been a frost for %d days now"""
+checkStorm,N,Heavy storm,,variable,,,,,
+checkMapleSugaringSeason,N,Freezing nights with thawing days,,variable,,,,,
+,,,,,,,,,
+checkPhysiology.R,,,,,,,,,
+checkStartOfSapFlow,N,Start of sap flow,,,,,,,"""My juices are rising. The sap flow in my stem started picking up in the past week."""
+checkNearPeakSapFlow,N,Near peak of sap flow,,,,,,,
+checkEndOfSapFlow,N,End of sap flow,,,,,,,
+summariseSapFlow,N,Summarise annual season sap flow,,,,,,,
+,,,,,,,,,
+checkPhenology.R,,,,,,,,,
+checkAccelerationOfWoodGrowth,N,Start of wood growth,,,,,,,
+checkNearPeakWoodGrowth,N,Peak of  wood growth,,,,,,,
+checkSlowDownOfWoodGrowth,N,End of wood growth,,,,,,,
+summariseWoodGrowth,N,Summarise annual wood growth,,,,,,,
+checkLeafUnfolding,N,Leaf unfolding,,,,,,,
+checkMaxCanopyCover,N,Maximum canopy cover,,,,,,,
+checkLeafColourChange,N,Change of leaf colour,,,,,,,
+summariseLeafPhenology,N,Summarise annual leaf phenology,,,,,,,
+,,,,,,,,,
+checkMorphology.R,,,,,,,,,
+,N,Explain early versus latewood formation,,,,,,,
+,N,Explain tree architecture,,,,,,,
