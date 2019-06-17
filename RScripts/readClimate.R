@@ -41,14 +41,16 @@ readClimate <- function (TEST = F) {
   airt [['year']]  <<- floor_date (airt [['TIMESTAMP']], 'year')
   
   # Create mean airt over varying periods (i.e. day, week, month, year)
-  dailyAirt   <- airt %>% group_by (daily) %>% summarise (airt = mean (airt, na.rm = T))
-  dailyAirt   <<- dailyAirt [!is.na (dailyAirt [['daily']]),]
-  weeklyAirt  <<- airt %>% group_by (week) %>% summarise (airt = mean (airt, na.rm = T))
-  weeklyAirt  <<- weeklyAirt [!is.na (weeklyAirt [['week']]), ]
-  monthlyAirt <<- airt %>% group_by (month) %>% summarise (airt = mean (airt, na.rm = T))
-  monthlyAirt <<- monthlyAirt [!is.na (monthlyAirt [['month']]), ]
-  yearlyAirt  <<- airt %>% group_by (year) %>% summarise (airt = mean (airt, na.rm = T))
-  yearlyAirt  <<- yearlyAirt [!is.na (yearlyAirt [['year']]), ]
+  dailyAirt    <<- airt %>% group_by (daily) %>% summarise (airt = mean (airt, na.rm = T))
+  dailyMaxAirt <<- airt %>% group_by (daily) %>% summarise (airt = max  (airt, na.rm = T))
+  dailyAirt    <<- dailyAirt [!is.na (dailyAirt [['daily']]),]
+  dailyMaxAirt <<- dailyMaxAirt [!is.na (dailyMaxAirt [['daily']]),]
+  weeklyAirt   <<- airt %>% group_by (week) %>% summarise (airt = mean (airt, na.rm = T))
+  weeklyAirt   <<- weeklyAirt [!is.na (weeklyAirt [['week']]), ]
+  monthlyAirt  <<- airt %>% group_by (month) %>% summarise (airt = mean (airt, na.rm = T))
+  monthlyAirt  <<- monthlyAirt [!is.na (monthlyAirt [['month']]), ]
+  yearlyAirt   <<- airt %>% group_by (year) %>% summarise (airt = mean (airt, na.rm = T))
+  yearlyAirt   <<- yearlyAirt [!is.na (yearlyAirt [['year']]), ]
   
   
   # Add variable for different period to prec (i.e. day, week, month, year)

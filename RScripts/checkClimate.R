@@ -39,11 +39,11 @@
 
 # Hottest or coldest temperature on record (in memory)
 #---------------------------------------------------------------------------------------#
-checkExtremeTemperatures <- function (mtable, TEST = F) {
+checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the current temperature is the hottest temperature on record 
   #-------------------------------------------------------------------------------------#
-  if (max (airt [['airt']], na.rm = T) < tail (airt [['airt']], n = 1)) {
+  if (max (airt [['airt']], na.rm = T) < tail (airt [['airt']], n = 1) | TEST == 1) {
     HOTTEST <- T
   } else {
     HOTTEST <- F
@@ -51,7 +51,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the yesterday was the warmest day on record
   #-------------------------------------------------------------------------------------#
-  if (max (dailyAirt [['airt']], na.rm = T) < head (tail (dailyAirt [['airt']], n = 2), n = 1)) {
+  if (max (dailyAirt [['airt']], na.rm = T) < head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 2) {
     HOTTESTDAY <- T
   } else {
     HOTTESTDAY <- F
@@ -59,7 +59,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last week was the warmest week on record
   #-------------------------------------------------------------------------------------#
-  if (max (weeklyAirt [['airt']], na.rm = T) < head (tail (weeklyAirt [['airt']], n = 2), n = 1)) { 
+  if (max (weeklyAirt [['airt']], na.rm = T) < head (tail (weeklyAirt [['airt']], n = 2), n = 1) | TEST == 3) { 
     HOTTESTWEEK <- T
   } else {
     HOTTESTWEEK <- F
@@ -67,7 +67,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last month was the warmest month on record
   #-------------------------------------------------------------------------------------#
-  if (max (monthlyAirt [['airt']], na.rm = T) < head (tail (monthlyAirt [['airt']], n = 2), n = 1)) { 
+  if (max (monthlyAirt [['airt']], na.rm = T) < head (tail (monthlyAirt [['airt']], n = 2), n = 1) | TEST == 4) { 
     HOTTESTMONTH <- T
   } else {
     HOTTESTMONTH <- F
@@ -75,7 +75,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last year was the warmest year on record
   #-------------------------------------------------------------------------------------#
-  if (max (yearlyAirt [['airt']], na.rm = T) < head (tail (yearlyAirt [['airt']], n = 2), n = 1)) { 
+  if (max (yearlyAirt [['airt']], na.rm = T) < head (tail (yearlyAirt [['airt']], n = 2), n = 1) | TEST == 5) { 
     HOTTESTYEAR <- T
   } else {
     HOTTESTYEAR <- F
@@ -83,7 +83,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the current temperature is the coldest temperature on record
   #-------------------------------------------------------------------------------------#
-  if (min (airt [['airt']], na.rm = T) > tail (airt [['airt']], n = 1)) {
+  if (min (airt [['airt']], na.rm = T) > tail (airt [['airt']], n = 1) | TEST == 6) {
     COLDEST <- T
   } else {
     COLDEST <- F
@@ -93,7 +93,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the yesterday was the coldest day on record
   #-------------------------------------------------------------------------------------#
-  if (min (dailyAirt$airt, na.rm = T) > head (tail (dailyAirt$airt, n = 2), n = 1)) {
+  if (min (dailyAirt$airt, na.rm = T) > head (tail (dailyAirt$airt, n = 2), n = 1) | TEST == 7) {
     COLDESTDAY <- T
   } else {
     COLDESTDAY <- F
@@ -103,7 +103,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last week was the coldest week on record
   #-------------------------------------------------------------------------------------#
-  if (min (weeklyAirt [['airt']], na.rm = T) > head (tail (weeklyAirt [['airt']], n = 2), n = 1)) { 
+  if (min (weeklyAirt [['airt']], na.rm = T) > head (tail (weeklyAirt [['airt']], n = 2), n = 1) | TEST == 8) { 
     COLDESTWEEK <- T
   } else {
     COLDESTWEEK <- F
@@ -113,7 +113,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last month was the coldest month on record
   #-------------------------------------------------------------------------------------#
-  if (min (monthlyAirt [['airt']], na.rm = T) > head (tail (monthlyAirt [['airt']], n = 2), n = 1)) { 
+  if (min (monthlyAirt [['airt']], na.rm = T) > head (tail (monthlyAirt [['airt']], n = 2), n = 1) | TEST == 9) { 
     COLDESTMONTH <- T
   } else {
     COLDESTMONTH <- F
@@ -123,7 +123,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   
   # Check whether the last year was the warmest year on record
   #-------------------------------------------------------------------------------------#
-  if (max (yearlyAirt [['airt']], na.rm = T) > head (tail (yearlyAirt [['airt']], n = 2), n = 1)) { 
+  if (max (yearlyAirt [['airt']], na.rm = T) > head (tail (yearlyAirt [['airt']], n = 2), n = 1) | TEST == 10) { 
     COLDESTYEAR <- T
   } else {
     COLDESTYEAR <- F
@@ -134,7 +134,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   if (HOTTEST | COLDEST | HOTTESTDAY | COLDESTDAY | HOTTESTWEEK | COLDESTWEEK | HOTTESTMONTH | COLDESTMONTH | TEST) {
     priority  <- 9
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    if (HOTTEST | TEST) {
+    if (HOTTEST) {
       messageDetails <- getMessageDetails ('hottest')
       message    <- sprintf (messageDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
@@ -205,7 +205,7 @@ checkExtremeTemperatures <- function (mtable, TEST = F) {
   return (mtable)
 } 
 
-#extremePrecipitation <- function (mtable, TEST = F) {
+#extremePrecipitation <- function (mtable, TEST = 0) {
   
   # Check whether the yesterday was the wettest day on record
   
@@ -289,7 +289,7 @@ checkFrost <- function (mtable, TEST = 0) {
   
   # Check for first frost (after July)
   #-------------------------------------------------------------------------------------#
-  if (substring (Sys.Date (), 6, 10) >= '07-31' & tail (airt [['airt']], n = 1) < 0.0 | TEST == 1) {
+  if ((substring (Sys.Date (), 6, 10) >= '07-31' & tail (airt [['airt']], n = 1) < 0.0) | TEST == 1) {
     messageDetails <- getMessageDetails ('checkFrost - first')
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
@@ -303,13 +303,13 @@ checkFrost <- function (mtable, TEST = 0) {
   
   # Check for late frosts (after April and with at least three preceeding frost-free days)
   #-------------------------------------------------------------------------------------#
-  if (substring (Sys.Date (), 6, 10) >= '05-01' &         # after April
-      substring (Sys.Date (), 6, 10) <= '08-01' &         # before August
-      tail (airt [['airt']], n = 1) < 0.0 &               # frost, aka air temperature below freezing
-      sum (airt [['airt']] [airt [['daily']] >= format (Sys.Date () - 3, '%Y-%m-%d') & 
-                            airt [['daily']] <  format (Sys.Date (),     '%Y-%m-%d') & 
-                            !is.na  (airt [['airt']])                                &
-                            !is.nan (airt [['airt']])] < 0.0, na.rm = T) < 1 | # no frost in preceeding three days
+  if ((substring (Sys.Date (), 6, 10) >= '05-01' &         # after April
+       substring (Sys.Date (), 6, 10) <= '08-01' &         # before August
+       tail (airt [['airt']], n = 1) < 0.0 &               # frost, aka air temperature below freezing
+       sum (airt [['airt']] [airt [['daily']] >= format (Sys.Date () - 3, '%Y-%m-%d') & 
+                             airt [['daily']] <  format (Sys.Date (),     '%Y-%m-%d') & 
+                             !is.na  (airt [['airt']])                                &
+                             !is.nan (airt [['airt']])] <= 0.0, na.rm = T) < 1 )| # no frost in preceeding three days
       TEST == 2) {                                        # or we are testing
     
     # Determine number of preceeding frost free days
@@ -330,6 +330,55 @@ checkFrost <- function (mtable, TEST = 0) {
     #-------------------------------------------------------------------------------------#
     messageDetails <- getMessageDetails ('checkFrost - first')
     message   <- sprintf (messageDetails [['Message']],  frostFreeDays) 
+    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
+  }
+  
+  return (mtable)
+}
+
+# Check for a heatwave
+#---------------------------------------------------------------------------------------#
+checkHeatWave <- function (mtable, TEST = 0) {
+
+  # Define heatwave threshold
+  #-------------------------------------------------------------------------------------#
+  # Here a heatwave is define as more than two days that have daily maximum temperatures
+  # exceeding the 90th percentile of the Fisher Meterological Station record (Shaler only 
+  # had daily temperatures, thus the mean and max would be identical) for the current month.
+  #-------------------------------------------------------------------------------------#
+  percentile90th <- quantile (dailyMaxAirt [['airt']] [as.numeric (substring (dailyMaxAirt [['daily']], 1, 4)) > 2002 &
+                                                       month (dailyMaxAirt [['daily']]) == month (Sys.Date ())],
+                              probs = 0.9, na.rm = T)
+
+  # Check for a heatwave 
+  #-------------------------------------------------------------------------------------#
+  if ((tail (dailyMaxAirt [['airt']], n = 1)               > percentile90th & 
+       head (tail (dailyMaxAirt [['airt']], n = 2), n = 1) > percentile90th) | TEST == 1) {
+
+    # Count days since the start of the heatwave
+    #-------------------------------------------------------------------------------------#
+    heatWaveDays <- 0
+    HEATWAVE <- T
+    while (HEATWAVE) {
+      temp <- head (tail (dailyMaxAirt [['airt']], n = heatWaveDays+1), n = 1)  
+      if (temp > percentile90th) {
+        heatWaveDays <- heatWaveDays + 1
+      } else {
+        HEATWAVE <- F
+      }
+    }
+    
+    # Parse message and expiration date
+    #-------------------------------------------------------------------------------------#
+    messageDetails <- getMessageDetails ('checkHeatWave')
+    message   <- sprintf (messageDetails [['Message']],  heatWaveDays, month (Sys.Date (), label = T, abbr = F)) 
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
