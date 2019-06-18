@@ -30,9 +30,11 @@ readClimate <- function (TEST = F) {
                                           format = '%Y-%m-%d %H:%M:%S',
                                           tz = 'EST') 
 
-  dates <- c (met_HF_shaler$TIMESTAMP, met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP) 
+  dates  <- c (met_HF_shaler$TIMESTAMP, met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
+  dates2 <- c (met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
   airt <<- tibble (TIMESTAMP = dates, airt = c (as.numeric (met_HF_shaler$airt), met_HF_old$airt, met_HF_current$airt))
   prec <<- tibble (TIMESTAMP = dates, prec = c (as.numeric (met_HF_shaler$prec), met_HF_old$prec, met_HF_current$prec))
+  wind <<- tibble (TIMESTAMP = dates2, wind = c (met_HF_old$wspd, met_HF_current$wspd))
   
   # Add variable for different period to airt (i.e. day, week, month, year)
   airt <<- add_column(airt, daily = format (airt [['TIMESTAMP']], '%Y-%m-%d'))
@@ -69,5 +71,11 @@ readClimate <- function (TEST = F) {
   yearlyPrec  <<- prec %>% group_by (year) %>% summarise (prec = sum (prec, na.rm = T))
   yearlyPrec  <<- yearlyPrec [!is.na (yearlyPrec [['year']]), ]
   
+  # Add variable for different period to wind (i.e. day, week, month, year)
+  wind <<- add_column (wind, daily = format (wind [['TIMESTAMP']], '%Y-%m-%d'))
+
+  # Create daily max wind speed over
+  dailyWind   <<- wind %>% group_by (daily) %>% summarise (wind = max (wind, na.rm = T))
+  dailyWind   <<- dailyWind [!is.na (dailyWind [['daily']]),]
 } 
 #=======================================================================================#

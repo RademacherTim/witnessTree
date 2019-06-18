@@ -391,4 +391,31 @@ checkHeatWave <- function (mtable, TEST = 0) {
   
   return (mtable)
 }
+
+# Check for a windy day/storm (i.e. day with max windspeed above 4 m/s???)
+#---------------------------------------------------------------------------------------#
+checkStorm <- function (mtable, TEST = 0){
+  
+  
+  # Check whether the max wind speed for the day was above 5 m/s 
+  #-------------------------------------------------------------------------------------#
+  if (tail (wind [['wind']], n = 1) > 5.0) {
+    
+    # Parse message and expiration date
+    #-------------------------------------------------------------------------------------#
+    messageDetails <- getMessageDetails ('checkStorm')
+    message   <- sprintf (messageDetails [['Message']],  heatWaveDays, treeLocationName) 
+    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    mtable    <- add_row (mtable, 
+                          priority = messageDetails [["Priority"]], 
+                          fFigure  = messageDetails [["fFigure"]], 
+                          message  = message, 
+                          hashtags = messageDetails [["Hashtags"]], 
+                          expires  = expirDate)
+  }
+  
+  return (mtable)
+}
+
 #=======================================================================================#

@@ -103,6 +103,8 @@ messages <- monthlyClimateSummary (messages) # If it is the beginning of the mon
                                              # to the long term average.
 messages <- checkFrost (messages) # Check for first frost of the autumn and late frost 
                                   # events.
+messages <- checkHeatWave (messages) #
+messages <- checkStorm    (messages) #
 
 # Selection of message, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
