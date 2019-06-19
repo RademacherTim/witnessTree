@@ -104,7 +104,10 @@ getMessageDetails <- function (fName) {
   temp <- input [input [['FunctionID']] == fName &
                  !is.na (input [['FunctionID']]), ]
   
-  # If there is more than one message for an event choose one randomly
+  # If there is more than one message for an event choose a message randomly
+  # N.B.: To make sure that both treatments get choosen with the same probability, we 
+  # need to have the same number of messages for both treatments (sober scientific data 
+  # versus narrative environmental facts).
   #-------------------------------------------------------------------------------------
   if (dim (temp) [1] > 1) {
     temp <- sample_n (temp, 1)
@@ -118,6 +121,11 @@ getMessageDetails <- function (fName) {
   #-------------------------------------------------------------------------------------
   messageDetails <- add_column (messageDetails,
                                 fFigure = ifelse (length (messageDetails [["FigureName"]]) == 0, T, F))
+  
+  # Randomly decide whether we use the accompanying figure or not
+  # N.B. Each message needs to have a figure otherwise this will be biased. 
+  #-------------------------------------------------------------------------------------
+  messageDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
   
   return (messageDetails)
 }

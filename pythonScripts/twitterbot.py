@@ -12,6 +12,7 @@ import tweepy     #
 import Tkinter    #
 import csv        # for csv handling
 import os
+import random     # library to use random number generator
 from datetime import date
 from datetime import time
 from datetime import datetime

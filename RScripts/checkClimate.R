@@ -196,11 +196,11 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 21, format = '%Y-%m-%d'), treeTimeZone)
     }
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                         priority    = messageDetails [["Priority"]], 
+                         figureName  = messageDetails [["FigureName"]], 
+                         message     = message, 
+                         hashtags    = messageDetails [["Hashtags"]], 
+                         expires     = expirDate)
   } 
   return (mtable)
 } 
@@ -294,11 +294,11 @@ checkFrost <- function (mtable, TEST = 0) {
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                          priority    = messageDetails [["Priority"]], 
+                          figureName  = messageDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = messageDetails [["Hashtags"]], 
+                          expires     = expirDate)
   }
   
   # Check for late frosts (after April and with at least three preceeding frost-free days)
@@ -333,11 +333,11 @@ checkFrost <- function (mtable, TEST = 0) {
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                          priority    = messageDetails [["Priority"]], 
+                          figureName  = messageDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = messageDetails [["Hashtags"]], 
+                          expires     = expirDate)
   }
   
   return (mtable)
@@ -382,11 +382,11 @@ checkHeatWave <- function (mtable, TEST = 0) {
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                          priority    = messageDetails [["Priority"]], 
+                          figureName  = messageDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = messageDetails [["Hashtags"]], 
+                          expires     = expirDate)
   }
   
   return (mtable)
@@ -399,20 +399,21 @@ checkStorm <- function (mtable, TEST = 0){
   
   # Check whether the max wind speed for the day was above 5 m/s 
   #-------------------------------------------------------------------------------------#
-  if (tail (wind [['wind']], n = 1) > 5.0) {
+  if (tail (wind [['wind']], n = 1) > 5.0 | TEST == 1) {
     
     # Parse message and expiration date
     #-------------------------------------------------------------------------------------#
     messageDetails <- getMessageDetails ('checkStorm')
-    message   <- sprintf (messageDetails [['Message']],  heatWaveDays, treeLocationName) 
+    message   <- sprintf (messageDetails [['Message']],  round (tail (wind [['wind']], n = 1), 1), 
+                          round (tail (wind [['wind']], n = 1)*2.23694, 1), treeLocationName) 
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                          priority    = messageDetails [["Priority"]], 
+                          figureName  = messageDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = messageDetails [["Hashtags"]], 
+                          expires     = expirDate)
   }
   
   return (mtable)
