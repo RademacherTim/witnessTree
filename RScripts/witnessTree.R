@@ -123,7 +123,7 @@ if (dim (message) [1] > 0) {
                              format (Sys.time (), "%Y-%m-%d_%H")))
 }
  
-# Save unused messages and figures in tmp/ folder for next iteration # TTR Does actually save all messages. Could solve it by deleting it when it is selected in selectMessage().
+# Save unused messages and figures in tmp/ folder for next iteration 
 #---------------------------------------------------------------------------------------#
 if (dim (messages) [1] > 0) {
   write_csv (x    = messages,
