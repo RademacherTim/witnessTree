@@ -53,13 +53,16 @@ deleteMessage <- function (mtable,   # tibble of messages
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
 checkExpirationDatesOf <- function (mtable) {
-  
+ 
   # Loop over messages to check expiration date
-  for (i in 1:dim (mtable) [1]) {
+  i = 1
+  while (i <= dim (mtable) [1]) {
     
-    # If message is expired, delete it. 
+    # If message is expired, delete it.
     if (mtable [['expires']] [i] <  Sys.time ()) {
       mtable <- mtable [-i, ]
+    } else {
+      i = i + 1
     }
   }
   
