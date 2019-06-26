@@ -120,7 +120,8 @@ messages <- deleteMessage (messages, message)
 if (dim (message) [1] > 0) {
   write_csv (x    = message,
              path = sprintf ('%smessages/%s.csv', path,
-                             format (Sys.time (), "%Y-%m-%d_%H")))
+                             format (Sys.time (), "%Y-%m-%d_%H")),
+             na   = "")
 }
  
 # Save unused messages and figures in tmp/ folder for next iteration 

@@ -25,10 +25,10 @@
 #---------------------------------------------------------------------------------------#
 suppressMessages (require ('RcppBDT'))
 
-# Hello world! message (post once on 15th of April)
+# Hello world! message (post once on 15th of July)
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = 0) {
-  if (substring (Sys.Date (), 6, 10) == '05-17' | TEST == 1) {
+  if (Sys.Date () == '2019-06-27' | TEST == 1) {
     messageDetails <- getMessageDetails ("helloWorld")
     message   <- sprintf (messageDetails [["Message"]], treeLocationName)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
