@@ -50,12 +50,13 @@ if (file.exists (sprintf ('%smessages/messages.csv', path))) {
   messages <- read_csv (sprintf ('%smessages/messages.csv', path), 
                         col_names = T, col_types = cols())
 } else { # create a tibble for messages 
-  messages <- tibble (priority = 0,  # priority of message to be posted (int; 
-                                     # between 0 for low and 10 for highest)
-                      fFigure  = F,  # whether it comes with a figure (logical)
-                      message  = '', # the message itself (char) 
-                      hashtags = '', # hastags going with the message (char)
-                      expires  = as.POSIXct (Sys.time ()) - 10e9) # expiration date of the message
+  messages <- tibble (priority    = 0,  # priority of message to be posted (int; 
+                                        # between 0 for low and 10 for highest)
+                      figureName  = '', # text string with the figure name. Automatically 
+                                        # set to FALSE, if the string is empty. 
+                      message     = '', # the message itself (char) 
+                      hashtags    = '', # hastags going with the message (char)
+                      expires     = as.POSIXct (Sys.time ()) - 10e9) # expiration date of the message
   names (messages) <- c ('priority','fFigure','message','hashtags','expires')
 }
 

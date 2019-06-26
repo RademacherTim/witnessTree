@@ -35,8 +35,8 @@ selectMessage <- function (mtable) # tibble of messages with, inter alia, priori
 deleteMessage <- function (mtable,   # tibble of messages
                            message)  # tibble of the selected message
 {
-  # Get line on which the message is
-  nRow <- which (mtable$message == message$message)
+  # Get line on which the message is 
+  nRow <- which (mtable [['message']] == message [['message']])
   
   # Delete row with same message in messages tibble
   mtable <- mtable [-nRow, ]
