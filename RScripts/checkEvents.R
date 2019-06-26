@@ -33,7 +33,8 @@ helloWorld <- function (mtable, TEST = 0) {
     message   <- sprintf (messageDetails [["Message"]], treeLocationName)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -50,7 +51,8 @@ checkNewYears <- function (mtable, TEST = 0) {
     message   <- sprintf (messageDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -66,7 +68,8 @@ checkNationalWildLifeDay <- function (mtable, TEST = 0) {
     messageDetails <- getMessageDetails ("checkNationalWildLifeDay")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -86,6 +89,7 @@ checkPiDay <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -104,6 +108,7 @@ checkInternationalDayOfForests <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -122,7 +127,8 @@ checkWorldWaterDay <- function (mtable, TEST = 0) {
                        messageDetails [["Message"]])
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -147,7 +153,8 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
     message   <- sprintf (messageDetails [["Message"]], age, subst)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -172,6 +179,7 @@ checkArborDay <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -195,6 +203,7 @@ checkMothersDay <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -360,7 +369,8 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
     messageDetails <- getMessageDetails ('checkWinterSolstice')
     expirDate       <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -376,7 +386,8 @@ checkHalloween <- function (mtable, TEST = 0) {
     messageDetails <- getMessageDetails ('checkHalloween')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]], 
+                          priority    = messageDetails [["Priority"]],
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 

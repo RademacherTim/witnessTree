@@ -273,11 +273,12 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
     # Expires after five days
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + 5, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority = messageDetails [["Priority"]], 
-                          fFigure  = messageDetails [["fFigure"]], 
-                          message  = message, 
-                          hashtags = messageDetails [["Hashtags"]], 
-                          expires  = expirDate)
+                          priority   = messageDetails [["Priority"]], 
+                          fFigure    = messageDetails [["fFigure"]],
+                          figureName = messageDetails [["FigureName"]], 
+                          message    = message, 
+                          hashtags   = messageDetails [["Hashtags"]], 
+                          expires    = expirDate)
   }
   
   return (mtable)
@@ -295,6 +296,7 @@ checkFrost <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -334,6 +336,7 @@ checkFrost <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [['fFigure']],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -383,6 +386,7 @@ checkHeatWave <- function (mtable, TEST = 0) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [["fFigure"]],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
@@ -410,6 +414,7 @@ checkStorm <- function (mtable, TEST = 0){
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
+                          fFigure     = messageDetails [["fFigure"]],
                           figureName  = messageDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = messageDetails [["Hashtags"]], 
