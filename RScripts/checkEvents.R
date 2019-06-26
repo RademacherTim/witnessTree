@@ -76,7 +76,7 @@ checkNationalWildLifeDay <- function (mtable, TEST = 0) {
                           expires     = expirDate)
     } 
   return (mtable)
-} # TTR To do: - Ought to have an image from the wild life camera at the tree!
+}
 
 # Pi Day (annual post on 14th of March)
 #---------------------------------------------------------------------------------------#
@@ -96,9 +96,10 @@ checkPiDay <- function (mtable, TEST = 0) {
                           expires     = expirDate)
   } 
   return (mtable)
-} # TTR To do: - find out how to render pi as the greek letter on twitter. 
-  #            - add the diameter and circumference to the second message 
-  #            - add image of LIDAR model 
+} 
+# TTR To do: - find out how to render pi as the greek letter on twitter. 
+#            - add the diameter and circumference to the second message 
+#            - add image of LIDAR model 
 
 # International Day of Forests Script (annual post falls on the 21st of March)
 #---------------------------------------------------------------------------------------#
@@ -161,8 +162,8 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
                           expires     = expirDate)  
   }
   return(mtable)
-} # TTR To do: Set birthday (ask John O'Keefe, maybe?)
-
+} 
+# TTR To do: Set birthday (ask John O'Keefe, maybe?)
 
 # Arbor Day Script (annual post falls on the last Friday in April)
 #---------------------------------------------------------------------------------------#

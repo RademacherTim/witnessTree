@@ -59,17 +59,18 @@ if os.path.exists(fileName):
 		    #print(row)
 		    line_count += 1
 	    #print(line_count)
-	priority = row [0]
-	fFigure = row [1]
-	message = row [2]
-	hastags = row [3]
-	expires = [4]
-	print message
+	priority   = row [0]
+	fFigure    = row [1]
+        figureName = row [2]
+	message    = row [3]
+	hashtags   = row [4]
+	expires    = [5]
+	print message + hashtags
 
 	# Putting a message on Twitter
 	#------------------------------------------------------------------------------
 	api = tweepy.API (auth)
-	api.update_status (message + hastags)
+	api.update_status (message + hashtags)
 	#api.update_with_media (filename='directory of image', status= 'status')
 
 else:
