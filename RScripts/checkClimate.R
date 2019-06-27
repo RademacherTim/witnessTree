@@ -225,7 +225,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
 #  return (mtable)
 #} 
 
-# Summarise and compare last months climate at the beginning of the month
+# Summarise and compare last month's climate at the beginning of the month
 #---------------------------------------------------------------------------------------#
 monthlyClimateSummary <- function (mtable, TEST = 0) {
   
@@ -282,6 +282,33 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
   
   return (mtable)
 } 
+
+# Summarise and compare last year's climate at the beginning of the year
+#---------------------------------------------------------------------------------------#
+annualClimateSummary <- function (mtable, TEST = 0) {
+  
+  # Check whether it is the first day of the year
+  #---------------------------------------------------------------------------------------#
+  if (substring (Sys.Date (), 6, 10) == '01-01' & substring (Sys.time (), 12, 15) == '12:0'| 
+      TEST >= 1) {
+    
+    # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
+    acYearlyAirt <- head (tail (yearlyAirt [['airt']], n = 2), n = 1) 
+    meYearlyAirt <- mean (yearlyAirt [['airt']] [2:31]) # Compare to 1964-1993 mean
+    sdYearlyAirt <- sd   (yearlyAirt [['airt']] [2:31])
+    diYearlyAirt <- acYearlyAirt - meYearlyAirt
+    
+    # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
+    acYearlyPrec <- head (tail (yearlyPrec [['prec']], n = 2), n = 1) 
+    meYearlyPrec <- mean (yearlyPrec [['prec']] [2:31])
+    sdYearlyPrec <- sd   (yearlyPrec [['prec']] [2:31])
+    diYearlyPrec <- acYearlyPrec - meYearlyPrec
+    
+    
+  }
+  
+  return (mtable)
+}
 
 # Check for first frost event of the year and late frosts during the growing season
 #---------------------------------------------------------------------------------------#
