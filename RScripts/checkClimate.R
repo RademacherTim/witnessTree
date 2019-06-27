@@ -403,13 +403,13 @@ checkStorm <- function (mtable, TEST = 0){
   
   # Check whether the max wind speed for the day was above 5 m/s 
   #-------------------------------------------------------------------------------------#
-  if (tail (wind [['wind']], n = 1) > 5.0 | TEST == 1) {
+  if (tail (gust [['gust']], n = 1) > 15.0 | TEST == 1) {
     
     # Parse message and expiration date
     #-------------------------------------------------------------------------------------#
     messageDetails <- getMessageDetails ('checkStorm')
     message   <- sprintf (messageDetails [['Message']],  round (tail (wind [['wind']], n = 1), 1), 
-                          round (tail (wind [['wind']], n = 1)*2.23694, 1), treeLocationName) 
+                          round (tail (gust [['gust']], n = 1)*2.23694, 1), treeLocationName) 
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
