@@ -231,7 +231,7 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
   
   # Check whether it is the first day of the month
   #---------------------------------------------------------------------------------------#
-  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 15) == '12:0'| TEST) {
+  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 15) == '12:0'| TEST >= 1) {
     
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
     acMonthlyAirt <- head (tail (monthlyAirt [['airt']], n = 2), n = 1) 
@@ -269,9 +269,8 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
         #message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       }
     }
-    
-    # Expires after five days
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + 5, format = '%Y-%m-%d'), treeTimeZone) 
+    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
                           priority   = messageDetails [["Priority"]], 
                           fFigure    = messageDetails [["fFigure"]],
