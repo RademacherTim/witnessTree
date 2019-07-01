@@ -42,6 +42,7 @@ source  (sprintf ('%sRScripts/checkEvents.R',     path))
 source  (sprintf ('%sRScripts/readClimate.R',     path))
 source  (sprintf ('%sRScripts/checkClimate.R',    path))
 source  (sprintf ('%sRScripts/checkPhysiology.R', path))
+source  (sprintf ('%sRScripts/checkCommunity.R',  path))
 source  (sprintf ('%sRScripts/treeStats.R',       path))
 
 # Read in previously generated messages, if not first iteration
