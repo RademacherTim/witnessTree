@@ -1,0 +1,10 @@
+# configuration file for the witnessTree bot
+
+# set path to the witnessTree directory 
+WITNESSTREEPATH='/path/to/witnessTree/directory/'
+
+# twitter API passwords
+consumer_key = 'consumerkey'
+consumer_secret ='consumersecret'
+access_token ='accesstoken'
+access_token_secret = 'accesstokensecret'
