@@ -5,32 +5,35 @@
 #---------------------------------------------------------------------------------------#
 #   0)  Hello World!                            14th of April 2019
 #   1)  New Years                               1st of January       
-#   2)  National Houseplant Appreciation Day    10th of January #TTR Not sure we will have this one
-#   2)  Pi Day                                  14th of March
-#   3)  Birthday                                tbd
-#   4)  Spring Equinox                          20th of March
-#    )  World Water Day                         22nd of March
-#   5)  Earth Day                               22nd of April
-#   6)  Arbor Day                               Last Friday in April
-#   7)  Mother's Day                            Second Sunday of May
-#   8)  Summer Solstice                         21st of June
-#   9)  Autumn Equinox                          23rd of September
-#   10) Halloween                               31st of October
-#   11) Winter Solstice                         21st of December
-# Changing of times! Spring forward and fall back!
+#   2)  National Wildlife Day                   4th of March
+#   3)  Pi Day                                  14th of March
+#   4)  International day of forests            21st of March
+#   5)  World Water Day                         22nd of March
+#   6)  Birthday                                tbd
+#   7)  Arbor Day                               Last Friday in April
+#   8)  Mother's Day                            Second Sunday of May
+#   9)  Earth Day                               22nd of April
+#   10) Spring Equinox                          ~20th of March
+#   11) Autumn Equinox                          ~23rd of September
+#   12) Summer Solstice                         ~21st of June
+#   13) Winter Solstice                         ~21st of December
+#   14) Halloween                               31st of October
+#   15) Regular check-in                        third week of each month 
 #
+# Possible additions: - Changing of times! Spring forward and fall back!
+#                     - Thanks Giving
 #---------------------------------------------------------------------------------------#
 
 # Load dependencies
 #---------------------------------------------------------------------------------------#
 suppressMessages (require ('RcppBDT'))
 
-# Hello world! message (post once on 15th of July)
+# 0 - Hello world! message (post once on 15th of July)
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = 0) {
   if (Sys.Date () == '2019-06-27' | TEST == 1) {
     messageDetails <- getMessageDetails ("helloWorld")
-    message   <- sprintf (messageDetails [["Message"]], treeLocationName)
+    message   <- sprintf (messageDetails [["Message"]], treeLocationName, treeWebPage)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]],
@@ -43,7 +46,7 @@ helloWorld <- function (mtable, TEST = 0) {
   return (mtable)
 } 
 
-# New Years (annual post on 1st of January)
+# 1 - New Years (annual post on 1st of January)
 #---------------------------------------------------------------------------------------#
 checkNewYears <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST == 1) {
@@ -61,7 +64,7 @@ checkNewYears <- function (mtable, TEST = 0) {
   return (mtable)
 } # TTR To do: - maybe change to comparison to CO2 sequestered in last year?
 
-# National Wildlife Day (annual post on 4th of March)
+# 2 - National Wildlife Day (annual post on 4th of March)
 #---------------------------------------------------------------------------------------#
 checkNationalWildLifeDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '03-04' | TEST == 1) {
@@ -78,7 +81,7 @@ checkNationalWildLifeDay <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Pi Day (annual post on 14th of March)
+# 3 - Pi Day (annual post on 14th of March)
 #---------------------------------------------------------------------------------------#
 checkPiDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '03-14' | TEST == 1) {
@@ -101,7 +104,7 @@ checkPiDay <- function (mtable, TEST = 0) {
 #            - add the diameter and circumference to the second message 
 #            - add image of LIDAR model 
 
-# International Day of Forests Script (annual post falls on the 21st of March)
+# 4 - International Day of Forests Script (annual post falls on the 21st of March)
 #---------------------------------------------------------------------------------------#
 checkInternationalDayOfForests <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-21" | TEST == 1) {
@@ -118,7 +121,7 @@ checkInternationalDayOfForests <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# World Water Day Script (annual post falls on the 22nd of March)
+# 5 - World Water Day Script (annual post falls on the 22nd of March)
 #---------------------------------------------------------------------------------------#
 checkWorldWaterDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST == 1) {
@@ -138,7 +141,7 @@ checkWorldWaterDay <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Birthday 
+# 6 - Birthday (tbd)
 #---------------------------------------------------------------------------------------#
 checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much witnesstree has grown in a year
   if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10) | TEST == 1) {
@@ -165,7 +168,7 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
 } 
 # TTR To do: Set birthday (ask John O'Keefe, maybe?)
 
-# Arbor Day Script (annual post falls on the last Friday in April)
+# 7- Arbor Day Script (annual post falls on the last Friday in April)
 #---------------------------------------------------------------------------------------#
 checkArborDay <- function (mtable, TEST = 0) {
   if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define the 30th of April in a leap year
@@ -189,7 +192,7 @@ checkArborDay <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Mother's Day Script (annual post falls on the second Sunday in may)
+# 8 - Mother's Day Script (annual post falls on the second Sunday in May)
 #---------------------------------------------------------------------------------------#
 checkMothersDay <- function (mtable, TEST = 0) {
   if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define 1st of may in a leap year
@@ -213,7 +216,7 @@ checkMothersDay <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Earth Day Script (annual post)
+# 9 - Earth Day Script (annual post on 22nd of April)
 #---------------------------------------------------------------------------------------#
 checkEarthDay <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "04-22" | TEST == 1) {
@@ -229,8 +232,7 @@ checkEarthDay <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-
-# Spring Equinox (annual post) 
+# 10 - Spring Equinox (annual post) 
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
@@ -273,8 +275,7 @@ checkSpringEquinox <- function (mtable, TEST = 0) {
   return (mtable)
 } 
 
-
-# Autumn Equinox (annual post)
+# 11 - Autumn Equinox (annual post)
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
@@ -312,7 +313,7 @@ checkAutumnEquinox <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Summer Solstice (annual post)
+# 12 - Summer Solstice (annual post)
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
@@ -346,7 +347,7 @@ checkSummerSolstice <- function (mtable, TEST = 0) {
 }
 
 
-# Winter Solstices (annual post)
+# 13 - Winter Solstices (annual post)
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
@@ -380,7 +381,7 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Halloween (annual post)
+# 14 - Halloween (annual post)
 #---------------------------------------------------------------------------------------#
 checkHalloween <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "10-31" | TEST == 1) {
@@ -393,6 +394,26 @@ checkHalloween <- function (mtable, TEST = 0) {
                           message     = messageDetails [['Message']], 
                           hashtags    = messageDetails [["Hashtags"]], 
                           expires     = expirDate) 
+  } 
+  return (mtable)
+}
+
+# 15 - Check-in (every third week of the month)
+#---------------------------------------------------------------------------------------#
+checkCheckIn <- function (mtable, TEST = 0) {
+  if (ceiling (day (Sys.Date ()) / 7) == 3 | TEST == 1) {
+    messageDetails <- getMessageDetails ('checkCheckIn')
+    message        <- sprintf (messageDetails [["Message"]], treeWebPage)
+    delay          <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
+    expirDate      <- sprintf ("%s 23:59:59 %s", 
+                               format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    mtable         <- add_row (mtable, 
+                               priority    = messageDetails [["Priority"]],
+                               fFigure     = messageDetails [['fFigure']],
+                               figureName  = messageDetails [["FigureName"]], 
+                               message     = message, 
+                               hashtags    = messageDetails [["Hashtags"]], 
+                               expires     = expirDate) 
   } 
   return (mtable)
 }

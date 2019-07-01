@@ -41,8 +41,11 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 
 # Location
 #---------------------------------------------------------------------------------------#
-treeLocationName <- "Harvard Forest" # name of location of the witnessTree
-treeLon          <-  -72.189706396   # longitude of Koen's camera by the witnessTree measured on 2018/06/02
-treeLat          <-  42.535685326    # lattitude of Koen's camera by the witnessTree measured on 2018/06/02
-treeTimeZone     <- 'EST'            # time zone of the witnessTree 
+treeLocationName  <- "Harvard Forest" # name of location of this witnessTree
+treeWebPage       <- "https://harvardforest.fas.harvard.edu" # link to the webpage of this witnessTree
+treePrivacyPolicy <- "https://privacyPolicyLinkNeedsToBeInsertedHere" # link to the privacy policy
+contactEmail      <- "HFoutreach@fas.harvard.edu" # email to contact the person in charge
+treeLon           <-  -72.189706396   # longitude of Koen's camera by the witnessTree measured on 2018/06/02
+treeLat           <-  42.535685326    # lattitude of Koen's camera by the witnessTree measured on 2018/06/02
+treeTimeZone      <- 'EST'            # time zone of the witnessTree 
 #=======================================================================================#
