@@ -304,7 +304,36 @@ annualClimateSummary <- function (mtable, TEST = 0) {
     sdYearlyPrec <- sd   (yearlyPrec [['prec']] [2:31])
     diYearlyPrec <- acYearlyPrec - meYearlyPrec
     
-    
+    # Choose what to talk about
+    if (diYearlyAirt < sdYearlyAirt & diYearlyPrec < sdYearlyPrec | TEST == 1) { # Just an close-to-average Year 
+      messageDetails <- getMessageDetails ('annualClimateSummary - normal')
+      message        <- sprintf (messageDetails [['Message']], round (acYearlyAirt, 1), round (acYearlyPrec, 1), year (Sys.Date ()) - 1)
+    } else if (abs (diYearlyAirt) >= sdYearlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
+      if (diYearlyAirt < 0 | TEST == 2) { # Cold Year
+        messageDetails <- getMessageDetails ('annualClimateSummary - cold')
+        #message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+      } else if (diYearlyAirt > 0 | TEST == 3) { # Warm Year
+        messageDetails <- getMessageDetails ('annualClimateSummary - warm')
+        #message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+      }
+    } else if (abs (diYearlyPrec) >= sdYearlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
+      if (diYearlyPrec < 0  | TEST == 4) { # Dry Year
+        messageDetails <- getMessageDetails ('annualClimateSummary - dry')
+        #message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+      } else if (diYearlyAirt > 0 | TEST == 5) { # Wet Year
+        messageDetails <- getMessageDetails ('annualClimateSummary - wet')
+        #message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+      }
+    }
+    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,8))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    mtable    <- add_row (mtable, 
+                          priority   = messageDetails [["Priority"]], 
+                          fFigure    = messageDetails [["fFigure"]],
+                          figureName = messageDetails [["FigureName"]], 
+                          message    = message, 
+                          hashtags   = messageDetails [["Hashtags"]], 
+                          expires    = expirDate)
   }
   
   return (mtable)

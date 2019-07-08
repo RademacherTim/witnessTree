@@ -1,7 +1,7 @@
 ---
 title: "README.Rmd"
-author: "Tim T. Rademacher, Kyle Wyche & David J. Basler-Chateau"
-date: "June 15, 2018"
+author: "Tim T. Rademacher"
+date: "Last updated on Canada Day 2019"
 output: html_document
 ---
 
