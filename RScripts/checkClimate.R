@@ -258,15 +258,15 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
         message        <- sprintf (messageDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
         messageDetails <- getMessageDetails ('monthlyClimateSummary - warm')
-        #message        <- sprintf (messageDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
+        message        <- sprintf (messageDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       }
     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
         messageDetails <- getMessageDetails ('monthlyClimateSummary - dry')
-        #message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
         messageDetails <- getMessageDetails ('monthlyClimateSummary - wet')
-        #message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       }
     }
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
@@ -311,18 +311,18 @@ annualClimateSummary <- function (mtable, TEST = 0) {
     } else if (abs (diYearlyAirt) >= sdYearlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diYearlyAirt < 0 | TEST == 2) { # Cold Year
         messageDetails <- getMessageDetails ('annualClimateSummary - cold')
-        #message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+        message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 3) { # Warm Year
         messageDetails <- getMessageDetails ('annualClimateSummary - warm')
-        #message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+        message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       }
     } else if (abs (diYearlyPrec) >= sdYearlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diYearlyPrec < 0  | TEST == 4) { # Dry Year
         messageDetails <- getMessageDetails ('annualClimateSummary - dry')
-        #message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+        message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 5) { # Wet Year
         messageDetails <- getMessageDetails ('annualClimateSummary - wet')
-        #message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+        message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       }
     }
     delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,8))
