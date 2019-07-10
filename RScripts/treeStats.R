@@ -42,6 +42,7 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 # Location
 #---------------------------------------------------------------------------------------#
 treeLocationName  <- "Harvard Forest" # name of location of this witnessTree
+treeState         <- "Massachusetts"  # name of the state the tree is located in
 treeWebPage       <- "https://harvardforest.fas.harvard.edu" # link to the webpage of this witnessTree
 treePrivacyPolicy <- "https://privacyPolicyLinkNeedsToBeInsertedHere" # link to the privacy policy
 contactEmail      <- "HFoutreach@fas.harvard.edu" # email to contact the person in charge

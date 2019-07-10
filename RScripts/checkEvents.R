@@ -31,16 +31,18 @@ suppressMessages (require ('RcppBDT'))
 # 0 - Hello world! message (post once on 15th of July)
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = 0) {
-  if (Sys.Date () == '2019-06-27' | TEST == 1) {
-    messageDetails <- getMessageDetails ("helloWorld")
-    message   <- sprintf (messageDetails [["Message"]], treeLocationName, treeWebPage)
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
+  if (substring (Sys.time (), 1, 13) == '2019-07-15 12' | TEST == 1) {
+    postDetails <- getPostDetails ("helloWorld")
+    message     <- sprintf (postDetails [["Message"]], treeLocationName, treeState, 
+                            treeWebPage)
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), 
+                          treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]],
-                          fFigure     = messageDetails [['fFigure']],
-                          figureName  = messageDetails [["FigureName"]], 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
                           message     = message, 
-                          hashtags    = messageDetails [["Hashtags"]], 
+                          hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
   return (mtable)
@@ -50,7 +52,7 @@ helloWorld <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkNewYears <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST == 1) {
-    messageDetails <- getMessageDetails ("checkNewYears")
+    messageDetails <- getPostDetails ("checkNewYears")
     message   <- sprintf (messageDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
@@ -68,7 +70,7 @@ checkNewYears <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkNationalWildLifeDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '03-04' | TEST == 1) {
-    messageDetails <- getMessageDetails ("checkNationalWildLifeDay")
+    messageDetails <- getPostDetails ("checkNationalWildLifeDay")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]],
@@ -85,7 +87,7 @@ checkNationalWildLifeDay <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkPiDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '03-14' | TEST == 1) {
-    messageDetails <- getMessageDetails ("checkPiDay")
+    messageDetails <- getPostDetails ("checkPiDay")
     message <- ifelse (substring (messageDetails [["Message"]],16,16) == "P", 
                        messageDetails [["Message"]],
                        sprintf (messageDetails [["Message"]], dbh_cyl, sapFlowArea))
@@ -108,7 +110,7 @@ checkPiDay <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkInternationalDayOfForests <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-21" | TEST == 1) {
-    messageDetails <- getMessageDetails ("checkInternationalDayOfForests")
+    messageDetails <- getPostDetails ("checkInternationalDayOfForests")
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
@@ -125,7 +127,7 @@ checkInternationalDayOfForests <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkWorldWaterDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST == 1) {
-    messageDetails <- getMessageDetails ("checkWorldWaterDay")
+    messageDetails <- getPostDetails ("checkWorldWaterDay")
     message <- ifelse (substring (messageDetails [["Message"]],3,3) == "i", 
                        sprintf (messageDetails [["Message"]], percentWaterContent),
                        messageDetails [["Message"]])
@@ -153,7 +155,7 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
     } else {
       subst <- 'th'
     }
-    messageDetails <- getMessageDetails ('checkBirthday')
+    messageDetails <- getPostDetails ('checkBirthday')
     message   <- sprintf (messageDetails [["Message"]], age, subst)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
@@ -179,7 +181,7 @@ checkArborDay <- function (mtable, TEST = 0) {
   if ((weekdays (Sys.Date ()) == 'Friday') & 
       (months   (Sys.Date ()) == 'April' ) &
       (as.numeric (strftime (Sys.Date (), format = '%j')) > (doy - 6)) | TEST == 1) {
-    messageDetails <- getMessageDetails ('checkArborDay')
+    messageDetails <- getPostDetails ('checkArborDay')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
@@ -203,7 +205,7 @@ checkMothersDay <- function (mtable, TEST = 0) {
   if ((weekdays (Sys.Date ()) == 'Sunday') & 
       (months   (Sys.Date ()) == 'May'   ) &
       (as.numeric (strftime (Sys.Date (), format = '%j')) > doy) | TEST == 1) {
-    messageDetails <- getMessageDetails ('checkMothersDay')
+    messageDetails <- getPostDetails ('checkMothersDay')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
@@ -220,7 +222,7 @@ checkMothersDay <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkEarthDay <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "04-22" | TEST == 1) {
-    messageDetails <- getMessageDetails ('checkEarthDay')
+    messageDetails <- getPostDetails ('checkEarthDay')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
@@ -255,7 +257,7 @@ checkSpringEquinox <- function (mtable, TEST = 0) {
   if (       Sys.time ()  >= vernalDate         & 
       month (Sys.Date ()) == month (vernalDate) & 
       day   (Sys.Date ()) == day   (vernalDate) | TEST == 1) { 
-    messageDetails <- getMessageDetails ('checkSpringEquinox')
+    messageDetails <- getPostDetails ('checkSpringEquinox')
     if (substring (messageDetails [['Message']],2,2) == 'D') {
       message <- messageDetails [['Message']]
     } else if (substring (messageDetails [['Message']],2,2) == 'F') {
@@ -296,7 +298,7 @@ checkAutumnEquinox <- function (mtable, TEST = 0) {
   if (       Sys.time ()  >=        autumnalDate  & 
       month (Sys.Date ()) == month (autumnalDate) & 
       day   (Sys.Date ()) == day   (autumnalDate) | TEST == 1) { 
-    messageDetails <- getMessageDetails ('checkAutumnEquinox')
+    messageDetails <- getPostDetails ('checkAutumnEquinox')
     if (substring (messageDetails [['Message']],2,2) == 'A') {
       message <- sprintf (messageDetails [['Message']],  hour (autumnalDate), minute (autumnalDate))
     } else if (substring (messageDetails [['Message']],2,2) == 'L') {
@@ -334,7 +336,7 @@ checkSummerSolstice <- function (mtable, TEST = 0) {
   if (       Sys.time ()  >=        solsticeDate  & 
       month (Sys.Date ()) == month (solsticeDate) & 
       day   (Sys.Date ()) == day   (solsticeDate) | TEST == 1) { 
-    messageDetails <- getMessageDetails ('checkSummerSolstice')
+    messageDetails <- getPostDetails ('checkSummerSolstice')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]], 
@@ -368,7 +370,7 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
   if (       Sys.time ()  >=        solsticeDate  & 
       month (Sys.Date ()) == month (solsticeDate) & 
       day   (Sys.Date ()) == day   (solsticeDate) | TEST == 1) { 
-    messageDetails <- getMessageDetails ('checkWinterSolstice')
+    messageDetails <- getPostDetails ('checkWinterSolstice')
     expirDate       <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]],
@@ -385,7 +387,7 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkHalloween <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "10-31" | TEST == 1) {
-    messageDetails <- getMessageDetails ('checkHalloween')
+    messageDetails <- getPostDetails ('checkHalloween')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = messageDetails [["Priority"]],
@@ -402,7 +404,7 @@ checkHalloween <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkCheckIn <- function (mtable, TEST = 0) {
   if (ceiling (day (Sys.Date ()) / 7) == 3 | TEST == 1) {
-    messageDetails <- getMessageDetails ('checkCheckIn')
+    messageDetails <- getPostDetails ('checkCheckIn')
     message        <- sprintf (messageDetails [["Message"]], treeWebPage)
     delay          <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
     expirDate      <- sprintf ("%s 23:59:59 %s", 

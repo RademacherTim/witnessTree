@@ -37,7 +37,7 @@ options (warn = -1) # To turn warnings back on use options (warn = 0)
 #---------------------------------------------------------------------------------------#
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
-source  (sprintf ('%sRScripts/messageHandling.R', path))
+source  (sprintf ('%sRScripts/postHandling.R',    path))
 source  (sprintf ('%sRScripts/checkEvents.R',     path))
 source  (sprintf ('%sRScripts/readClimate.R',     path))
 source  (sprintf ('%sRScripts/checkClimate.R',    path))
@@ -45,101 +45,114 @@ source  (sprintf ('%sRScripts/checkPhysiology.R', path))
 source  (sprintf ('%sRScripts/checkCommunity.R',  path))
 source  (sprintf ('%sRScripts/treeStats.R',       path))
 
-# Read in previously generated messages, if not first iteration
+# Read in previously generated posts, if not first iteration
 #---------------------------------------------------------------------------------------#
-if (file.exists (sprintf ('%smessages/messages.csv', path))) {
-  messages <- read_csv (sprintf ('%smessages/messages.csv', path), 
-                        col_names = T, col_types = cols())
-} else { # create a tibble for messages 
-  messages <- tibble (priority    = 0,  # priority of message to be posted (int; 
-                                        # between 0 for low and 10 for highest)
-                      fFigure     = F,  # boolean whether it comes with a figure or not
-                      figureName  = '', # text string with the figure name.  
-                      message     = '', # the message itself (char) 
-                      hashtags    = '', # hastags going with the message (char)
-                      expires     = as.POSIXct (Sys.time ()) - 10e9) # expiration date of the message
-  names (messages) <- c ('priority','fFigure','figureName','message','hashtags','expires')
+if (file.exists (sprintf ('%sposts/posts.csv', path))) {
+  posts <- read_csv (sprintf ('%sposts/posts.csv', path), 
+                     col_names = T, col_types = cols())
+} else { # create a tibble for posts
+  posts <- tibble (priority    = 0,  # priority of message to be posted (int; 
+                                     # between 0 for low and 10 for highest)
+                   fFigure     = F,  # boolean whether it comes with a figure or not
+                   figureName  = '', # text string with the figure name.  
+                   message     = '', # the message itself (char) 
+                   hashtags    = '', # hastags going with the message (char)
+                   expires     = as.POSIXct (Sys.time ()) - 10e9) # expiration date of the message
+  names (posts) <- c ('priority','fFigure','figureName','message','hashtags','expires')
 }
 
-# Purge expired messages
+# Purge expired posts
 #---------------------------------------------------------------------------------------#
-messages <- checkExpirationDatesOf (messages)
+posts <- checkExpirationDatesOf (posts)
 
-# Re-evaluate priority of messages
+# Re-evaluate priority of posts
 #---------------------------------------------------------------------------------------#
-messages <- reEvaluatePriorityOf (messages)
+posts <- reEvaluatePriorityOf (posts)
 
 # Read climate data
 #---------------------------------------------------------------------------------------#
 readClimate ()
 
-# Generate new messages concerning regularly recurrent events
+# Generate new posts concerning regularly recurrent events
 #---------------------------------------------------------------------------------------#
-messages <- helloWorld                     (messages) # on the launch date (2019-04-15) only
-messages <- checkNewYears                  (messages) #  1st  of January
-messages <- checkNationalWildLifeDay       (messages) #  4th  of March
-messages <- checkPiDay                     (messages) #  14th of March
-messages <- checkInternationalDayOfForests (messages) #  21st of March
-messages <- checkWorldWaterDay             (messages) #  22nd of March
-messages <- checkBirthday                  (messages) #  12th of April
-messages <- checkArborDay                  (messages) #  Last Friday in April
-messages <- checkMothersDay                (messages) #  Second Sunday in May
-messages <- checkEarthDay                  (messages) #  22nd of April
-messages <- checkSpringEquinox             (messages) # ~20th of March 
-messages <- checkAutumnEquinox             (messages) # ~22nd of September
-messages <- checkSummerSolstice            (messages) #  21st of June
-messages <- checkWinterSolstice            (messages) #  21st of December
-messages <- checkHalloween                 (messages) #  31st of October
+posts <- helloWorld                     (posts) # on the launch date (2019-04-15) only
+posts <- checkNewYears                  (posts) #  1st  of January
+posts <- checkNationalWildLifeDay       (posts) #  4th  of March
+posts <- checkPiDay                     (posts) #  14th of March
+posts <- checkInternationalDayOfForests (posts) #  21st of March
+posts <- checkWorldWaterDay             (posts) #  22nd of March
+posts <- checkBirthday                  (posts) #  12th of April
+posts <- checkArborDay                  (posts) #  Last Friday in April
+posts <- checkMothersDay                (posts) #  Second Sunday in May
+posts <- checkEarthDay                  (posts) #  22nd of April
+posts <- checkSpringEquinox             (posts) # ~20th of March 
+posts <- checkAutumnEquinox             (posts) # ~22nd of September
+posts <- checkSummerSolstice            (posts) #  21st of June
+posts <- checkWinterSolstice            (posts) #  21st of December
+posts <- checkHalloween                 (posts) #  31st of October
 
-# Generate new messages concerning phenology
+# Generate new posts concerning phenology
 #---------------------------------------------------------------------------------------#
-#messages <- startOfGrowingSeason (messages)
-#messages <- endOfGrowingSeason   (messages)
+#posts <- startOfGrowingSeason (posts)
+#posts <- endOfGrowingSeason   (posts)
 
-# Generate new messages concerning meteorological & climatic events
+# Generate new posts concerning meteorological & climatic events
 #---------------------------------------------------------------------------------------#
-messages <- checkExtremeTemperatures (messages) # Test whether it is the hottest or coldest 
-                                                # temperature on record (in memory).
-messages <- monthlyClimateSummary (messages) # If it is the beginning of the month 
-                                             # summarise and compare last months climate 
-                                             # to the long term average.
-messages <- checkFrost (messages) # Check for first frost of the autumn and late frost 
-                                  # events.
-messages <- checkHeatWave (messages) # Check for a heat wave
-messages <- checkStorm    (messages) # Check for storm or rather a windy day.
+posts <- checkExtremeTemperatures (posts) # Test whether it is the hottest or coldest 
+                                          # temperature on record (in memory).
+posts <- monthlyClimateSummary (posts) # If it is the beginning of the month summarise 
+                                       # and compare last months climate to the long 
+                                       #term average.
+posts <- checkFrost    (posts) # Check for first frost of the autumn 
+                               # and late frost in early growing season.
+posts <- checkHeatWave (posts) # Check for a heat wave.
+posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 
-# Generate new messages concerning the community surrounding the tree
+# Generate new posts concerning the community surrounding the tree
 #---------------------------------------------------------------------------------------#
-messages <- explainSeedDispersal (messages)
+posts <- explainSeedDispersal (posts)
 
-# Selection of message, figure and images for the current iterations
+# Selection of post, figure and images for the current iterations
 #---------------------------------------------------------------------------------------#
-message <- selectMessage (messages)
+post <- selectPost (posts)
 
-# Delete the selected message from the messages tibble 
+# Delete the selected post from the posts tibble 
 #---------------------------------------------------------------------------------------#
-messages <- deleteMessage (messages, message)
+posts <- deletePost (posts, post)
 
-# Write message to messages/ folder named after date and time when it should be scheduled 
+# Check whether the bot has already posted four messages last week
 #---------------------------------------------------------------------------------------#
-if (dim (message) [1] > 0) {
-  write_csv (x    = message,
-             path = sprintf ('%smessages/%s.csv', path,
-                             format (Sys.time (), "%Y-%m-%d_%H")),
-             na   = "")
+pastPostDates <- as.POSIXct (list.files (sprintf ('%s/messages/', path)),
+                             format = "%Y-%m-%d_%H")
+numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
+                                                !is.na  (pastPostDates)                 &
+                                                !is.nan (pastPostDates)])
+if (numberOfPostsLastWeek >= 4) { # If the bot has already posted four messages
+  # Add post back to posts tibble, as it will not be posted right now
+  #-------------------------------------------------------------------------------------#
+  posts <- rbind (posts, post)
+} else {
+  # Write post to messages/ folder named after date and time when it should be scheduled 
+  #-------------------------------------------------------------------------------------#
+  if (dim (post) [1] > 0) {
+    write_csv (x    = post,
+               path = sprintf ('%sposts/%s.csv', path,
+                               format (Sys.time (), "%Y-%m-%d_%H")),
+               na   = "")
+  }
 }
  
-# Save unused messages and figures in tmp/ folder for next iteration 
+# Save unused posts and figures in tmp/ folder for next iteration 
 #---------------------------------------------------------------------------------------#
-if (dim (messages) [1] > 0) {
-  write_csv (x    = messages,
-             path = sprintf ('%smessages/messages.csv', path))
+if (dim (posts) [1] > 0) {
+  write_csv (x    = posts,
+             path = sprintf ('%sposts/posts.csv', path))
 }
 
 # Create log files
 #---------------------------------------------------------------------------------------#
 write_csv (x         = as.tibble (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
-           path      = sprintf ('%smessages/logfile.csv', path),
+           path      = sprintf ('%sposts/logfile.csv', path),
            col_names = FALSE,
            append    = TRUE)
 #=======================================================================================#
