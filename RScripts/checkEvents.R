@@ -18,7 +18,7 @@
 #   12) Summer Solstice                         ~21st of June
 #   13) Winter Solstice                         ~21st of December
 #   14) Halloween                               31st of October
-#   15) Regular check-in                        third week of each month 
+#   15) Monthly engagement reminder             third week of each month 
 #
 # Possible additions: - Changing of times! Spring forward and fall back!
 #                     - Thanks Giving
@@ -31,7 +31,7 @@ suppressMessages (require ('RcppBDT'))
 # 0 - Hello world! message (post once on 15th of July)
 #---------------------------------------------------------------------------------------#
 helloWorld <- function (mtable, TEST = 0) {
-  if (substring (Sys.time (), 1, 13) == '2019-07-15 12' | TEST == 1) {
+  if (substring (Sys.time (), 1, 13) == '2019-07-17 12' | TEST == 1) {
     postDetails <- getPostDetails ("helloWorld")
     message     <- sprintf (postDetails [["Message"]], treeLocationName, treeState, 
                             treeWebPage)
@@ -348,7 +348,6 @@ checkSummerSolstice <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-
 # 13 - Winter Solstices (annual post)
 #---------------------------------------------------------------------------------------#
 # The dates are taken from a file in the data folder (solarDates.tsv), which contains
@@ -400,22 +399,22 @@ checkHalloween <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# 15 - Check-in (every third week of the month)
+# 15 - Monthly engagement reminder (every third week of the month)
 #---------------------------------------------------------------------------------------#
-checkCheckIn <- function (mtable, TEST = 0) {
+monthlyEngagementReminder <- function (mtable, TEST = 0) {
   if (ceiling (day (Sys.Date ()) / 7) == 3 | TEST == 1) {
-    messageDetails <- getPostDetails ('checkCheckIn')
-    message        <- sprintf (messageDetails [["Message"]], treeWebPage)
-    delay          <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
-    expirDate      <- sprintf ("%s 23:59:59 %s", 
-                               format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable         <- add_row (mtable, 
-                               priority    = messageDetails [["Priority"]],
-                               fFigure     = messageDetails [['fFigure']],
-                               figureName  = messageDetails [["FigureName"]], 
-                               message     = message, 
-                               hashtags    = messageDetails [["Hashtags"]], 
-                               expires     = expirDate) 
+    postDetails <- getPostDetails ('monthlyEngagementReminder')
+    message     <- sprintf (postDetails [["Message"]], treeWebPage)
+    delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+    expirDate   <- sprintf ("%s 23:59:59 %s", 
+                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    mtable      <- add_row (mtable, 
+                            priority    = psotDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = postDetails [["FigureName"]], 
+                            message     = message, 
+                            hashtags    = postDetails [["Hashtags"]], 
+                            expires     = expirDate) 
   } 
   return (mtable)
 }

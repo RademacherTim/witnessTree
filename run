@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Set the path to the directory containing the witnessTree code
+# Set path to the directory containing the witnessTree code
 WITNESSTREEPATH='/home/trademacehr/projects/witnessTree/'
+
+# Set path to the directory containing the images
+IMAGESPATH='/home/rademachert/WitnessTree/images/'
+
+# Set path to the directory containing the data
+DATAPATH='/home/rademachert/WitnessTree/'
 
 # Change to the witnessTree directory
 cd ${WITNESSTREEPATH}
@@ -25,7 +31,7 @@ then
 fi
 
 # Run the witnessTree RScript to generate messages
-Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH}
+Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
 if [ $? != 0 ]
 then 
    echo 'Error: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log

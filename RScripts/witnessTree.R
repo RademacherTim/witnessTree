@@ -15,19 +15,23 @@
 # To-do list:
 #---------------------------------------------------------------------------------------#
 
-# Get the absolute path to the directory 
+# Get the absolute path to the witnessTree, images and data directories 
 #---------------------------------------------------------------------------------------#
 args = commandArgs (trailingOnly=TRUE)
 if (length (args) == 0) {
-  stop ("Error: At least one argument must be supplied (path to wtinessTree directory).n",
+  stop ("Error: At least one argument must be supplied (path to witnessTree directory).",
         call.=FALSE)
-} else if (length (args) == 1) {
+} else if (length (args) >= 1) {
   # default output file
-  path = args [1]
+  path       = args [1]
+  imagesPath = args [2]
+  dataPath   = args [3]
 } else {
   stop ("Error: Too many command line arguments supplied to R.")
 }
 print (path)
+print (imagesPath)
+print (dataPath)
 
 # Suppress warning messages 
 #---------------------------------------------------------------------------------------#

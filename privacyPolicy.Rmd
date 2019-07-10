@@ -10,12 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 source ('RScripts/treeStats.R')
 ```
 
-The witness tree app does not collect any of your personal data. 
 
-In fact, the app is build to do the opposite. We try to share our data with you in a way that is hopefully educational and somewhat entertaining. 
+The Witness Tree social media app (on Twitter and Facebook) does not collect any of your personal data.
 
-Given that we do not collect your data, we also have nothing we could share with third parties. This project is really just a bunch of geeky scientists trying to share our data with you, there are no middlemen or third parties involved. 
+In fact, the app is built to do the opposite. We work to share our data with you in a way that (we hope) is educational and entertaining.
 
-However, because we are geeky scientist we love data, so we do actually look at analytics of the social media pages that are part of the witness tree project to figure out what type of content you like and how to improve the way we communicate.
+Given that we do not collect your data, we also have nothing we could share with third parties. 
 
-The app was developped for the sole pupose of reaching a larger audience and educating them about life as a tree and the environment. If you want to reach us to learn more about how the app works or have any other questions about the witness tree, go to `r treeWebPage` or email us at `r contactEmail`. We would love to hear from you. Maybe there is something that you would like to hear from the witness tree and we can make that happen.
+However, because we are geeky scientists, we love data, so we do actually look at the analytics of the social media pages that are part of the Witness Tree project, to figure out what type of content is most engaging to you, and thus to improve the way we communicate.
+
+The Witness Tree app was developed to educate scientists and non-scientists alike about life as a tree in our changing environment.
+
+If you want to reach us to learn more about how the app works or have any other questions about the Harvard Forest Witness Tree project, go to `r treeWebPage` or email us at `r contactEmail`. We would love to hear from you!
