@@ -1,7 +1,7 @@
 FunctionID ,Status,Event,Logic,Date,ExpirationDate,Priority ,FigureName,FigureDescription,Hashtags,Treatment,ContentTheme,Message,Notes,Numbers 
 ,,,,,,,,,,,,,,
 checkEvents.R,,,,,,,,,,,,,,
-helloWorld,tested,Hello World,First post,tbd,tbd,10,,Witness Tree,,,,"Hello World! I am a more than 100-year-old red oak tree at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. If you want to know more about how I work, to go: %s.",,239
+helloWorld,tested,Hello World,First post,tbd,tbd,10,WitnessTree_higherRes.jpg,Witness Tree,,,,"Hello World! I am a more than 100-year-old red oak tree at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. If you want to know more about how I work, to go: %s.",,239
 checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01 23:59:59,10,,,,SensorData,,Happy #NewYear!! During my life I've stored roughly %s kg (%x lbs) of carbon per year. My #resolution for %s is to beat that. What is your resolution?,,150
 checkNationalWildLifeDay,tested,National Wildlife Day,,yyyy-03-04,yyyy-03-04 23:59:59,10,,Photos from wildlife camera,,,,Look who's visited me earlier this year! Happy #NationalWildlifeDay!,,68
 checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,,3D model of the Witness Tree,,,,Happy #PiDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!,,137
@@ -27,8 +27,8 @@ checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,
 checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,,,"It's the shortest day of the year here in Massachusetts, but for trees in the Southern hemisphere, today's the longest day. Grow on!",,132
 checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,Happy #Halloween! What's your #costume? Are you going as a tree? ,,65
 checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,,,0
-checkCheckIn,tested,Regular check-in with the trees peeps,,third week of the month,after 7 days,1,,,,,,"If you want to find out how I can actually talk to you, to go %s to find out more. And feel free to ask me how I am doing anytime.",,130
-,,,,,,,,,,,,,,0
+monthlyEngagementReminder,tested,Regular check-in with the trees peeps,,third week of the month,after 7 days,1,,,,,,"Ask how I'm doing, and I'll answer! Just type ""@WitnessTree How are you?"" If you want to find out how I can actually talk to you, to go %s to find out more.",,156
+,,,,,,,,,,,,,,156
 checkClimate.R,,,,,,,,,,,,,,0
 hottest,tested,hottest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,,,SensorData,,This is the hottest temperature I can remember. It is %s ℃ right now!!! That is %s ℉ by the way.,,96
 coldest,tested,coldest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,,,SensorData,,"It has never been this cold here! I wish I could just run inside. At %s degree ℃ (%s ℉), I am completely frozen!!!",,114
@@ -93,6 +93,10 @@ checkMorphology.R,,,,,,,,,,,,,,0
 ,N,Explain tree architecture,,,,,,,,,,,,0
 ,,,,,,,,,,,,,,0
 checkCommunity.R,,,,,,,,,,,,,,0
+checkCommunityWildlife - summer,N,,,xxxx-06-21,xxxx-09-21,,,wildlife camera image - summer,,,SensorData,"Can you tell who's visited me this month? In summer, I provide shade and food for many animals.",,
+checkCommunityWildlife - fall,N,,,xxxx-09-22,xxxx-11-21,,,wildlife camera image - fall,,,SensorData,"Can you tell who's visited me? In the fall, I provide important food for many animals preparing for winter.",,
+checkCommunityWildlife - winter,N,,,xxxx-11-22,xxxx-03-21,,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In the winter, I provide food and shelter for many animals.",,
+checkCommunityWildlife - spring,N,,,xxxx-03-22,xxxx-06-22,,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In spring, I provide food and habitat for many animals.",,
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,red oak acorn,,EnviroFact,,"In fall, I drop seeds (acorns) that are food for 100+ types of wildlife. Many of these animals, like squirrels and blue jays, carry my acorns a great distance before storing them underground. They become accidental gardeners of new trees!",,238
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,"red oak & white oak acorns, side by side",,EnviroFact,,"All acorns are not created equal. Mine are packed with protein, fat, & calories, making them a high-value food for wildlife - but they are also high in bad-tasting tannins. Acorns of white oak trees, also found in my neighborhood, are a lower-value food but much tastier, so animals snap them up.",,296
 explainHerbivory,N,Explain herbivory ,Can we connect the tree's growth rate (or an automated reading of LAI) with regular (not gypsy moth) insect herbivory?,spring? summer?,,,,non-gypsy moth insect eating red oak leaf,,SensorData,,"In <Month>, when sapflow is strongest, insects are busily eating my leaves because they are full of water and sugars. By the end of an average summer, insects will have eaten x% of my leaves. ",,192

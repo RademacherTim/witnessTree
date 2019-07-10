@@ -4,10 +4,10 @@
 WITNESSTREEPATH='/home/trademacehr/projects/witnessTree/'
 
 # Set path to the directory containing the images
-IMAGESPATH='/home/rademachert/WitnessTree/images/'
+IMAGESPATH='/home/rademachert/witnessTree/images/'
 
 # Set path to the directory containing the data
-DATAPATH='/home/rademachert/WitnessTree/'
+DATAPATH='/home/rademachert/witnessTree/'
 
 # Change to the witnessTree directory
 cd ${WITNESSTREEPATH}

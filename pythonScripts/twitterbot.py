@@ -8,10 +8,10 @@
 # Import dependencies
 #------------------------------------------------------------------------------
 import sys        # library to use command line arguments
-import tweepy     # 
-import Tkinter    #
+import tweepy     # twitter library
+import Tkinter    # graphical user interface library
 import csv        # for csv handling
-import os
+import os         # 
 import random     # library to use random number generator
 from datetime import date
 from datetime import time

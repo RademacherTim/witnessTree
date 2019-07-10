@@ -15,7 +15,7 @@ The Witness Tree social media app (on Twitter and Facebook) does not collect any
 
 In fact, the app is built to do the opposite. We work to share our data with you in a way that (we hope) is educational and entertaining.
 
-Given that we do not collect your data, we also have nothing we could share with third parties. 
+Given that we do not collect your data, we also have nothing we could share with third parties and no third parties are involved in this project. 
 
 However, because we are geeky scientists, we love data, so we do actually look at the analytics of the social media pages that are part of the Witness Tree project, to figure out what type of content is most engaging to you, and thus to improve the way we communicate.
 
