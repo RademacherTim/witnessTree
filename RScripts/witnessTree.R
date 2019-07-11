@@ -156,7 +156,7 @@ if (dim (posts) [1] > 0) {
 
 # Create log files
 #---------------------------------------------------------------------------------------#
-write_csv (x         = as.tibble (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
+write_csv (x         = as.data.frame (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
            path      = sprintf ('%sposts/logfile.csv', path),
            col_names = FALSE,
            append    = TRUE)

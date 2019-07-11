@@ -93,10 +93,10 @@ checkMorphology.R,,,,,,,,,,,,,,0
 ,N,Explain tree architecture,,,,,,,,,,,,0
 ,,,,,,,,,,,,,,0
 checkCommunity.R,,,,,,,,,,,,,,0
-checkCommunityWildlife - summer,N,,,xxxx-06-21,xxxx-09-21,,,wildlife camera image - summer,,,SensorData,"Can you tell who's visited me this month? In summer, I provide shade and food for many animals.",,
-checkCommunityWildlife - fall,N,,,xxxx-09-22,xxxx-11-21,,,wildlife camera image - fall,,,SensorData,"Can you tell who's visited me? In the fall, I provide important food for many animals preparing for winter.",,
-checkCommunityWildlife - winter,N,,,xxxx-11-22,xxxx-03-21,,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In the winter, I provide food and shelter for many animals.",,
-checkCommunityWildlife - spring,N,,,xxxx-03-22,xxxx-06-22,,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In spring, I provide food and habitat for many animals.",,
+checkCommunityWildlife - summer,tested,,,xxxx-06-21,xxxx-09-21,2,,wildlife camera image - summer,,,SensorData,"Can you tell who's visited me this month? In summer, I provide shade and food for many animals.",,
+checkCommunityWildlife - fall,tested,,,xxxx-09-22,xxxx-11-21,2,,wildlife camera image - fall,,,SensorData,"Can you tell who's visited me? In the fall, I provide important food for many animals preparing for winter.",,
+checkCommunityWildlife - winter,tested,,,xxxx-11-22,xxxx-03-21,2,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In the winter, I provide food and shelter for many animals.",,
+checkCommunityWildlife - spring,tested,,,xxxx-03-22,xxxx-06-22,2,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In spring, I provide food and habitat for many animals.",,
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,red oak acorn,,EnviroFact,,"In fall, I drop seeds (acorns) that are food for 100+ types of wildlife. Many of these animals, like squirrels and blue jays, carry my acorns a great distance before storing them underground. They become accidental gardeners of new trees!",,238
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,"red oak & white oak acorns, side by side",,EnviroFact,,"All acorns are not created equal. Mine are packed with protein, fat, & calories, making them a high-value food for wildlife - but they are also high in bad-tasting tannins. Acorns of white oak trees, also found in my neighborhood, are a lower-value food but much tastier, so animals snap them up.",,296
 explainHerbivory,N,Explain herbivory ,Can we connect the tree's growth rate (or an automated reading of LAI) with regular (not gypsy moth) insect herbivory?,spring? summer?,,,,non-gypsy moth insect eating red oak leaf,,SensorData,,"In <Month>, when sapflow is strongest, insects are busily eating my leaves because they are full of water and sugars. By the end of an average summer, insects will have eaten x% of my leaves. ",,192

@@ -68,6 +68,10 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
+    
+    # Increase the wildlife counter in the memory
+    memory [['numberOfPreviousVisitors']] <- memory [['numberOfPreviousVisitors']] + 1
+    write_csv (memory, 'memory.csv')
   } 
   
   return (mtable)

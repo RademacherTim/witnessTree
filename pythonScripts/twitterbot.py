@@ -43,7 +43,7 @@ user = api.me()
 # Check whether there is a file for this hour
 #------------------------------------------------------------------------------
 now = datetime.now ()
-fileName = "./messages/%s.csv" % now.strftime ("%Y-%m-%d_%H")
+fileName = "./posts/%s.csv" % now.strftime ("%Y-%m-%d_%H")
 
 # Read message, if it exists
 #------------------------------------------------------------------------------
@@ -59,24 +59,33 @@ if os.path.exists(fileName):
 		    #print(row)
 		    line_count += 1
 	    #print(line_count)
+
+        # Extract post information from the file
+        #----------------------------------------------------------------------
 	priority   = row [0]
 	fFigure    = row [1]
         figureName = row [2]
 	message    = row [3]
 	hashtags   = row [4]
-	expires    = [5]
-	print message + hashtags
+	expires    = row [5]
+	print message + hashtags + fFigure
 
-	# Putting a message on Twitter
-	#------------------------------------------------------------------------------
+	# Putting a post on Twitter
+        #----------------------------------------------------------------------
 	api = tweepy.API (auth)
-	api.update_status (message + hashtags)
-	#api.update_with_media (filename='directory of image', status= 'status')
+        
+        # The post is not accompanied by an image
+        #----------------------------------------------------------------------
+        if fFigure == False:
+             api.update_status (message + hashtags)
+        # The post is accompanied by an image
+	#----------------------------------------------------------------------
+        else:
+             api.update_with_media (filename = figureName, 
+                                    status = message + hashtags)
 
 else:
 	print ("Error: No file with a message!")
-
-
 
 
 # Look for tweets containing the words "How are you"
