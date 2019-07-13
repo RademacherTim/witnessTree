@@ -1,27 +1,5 @@
 #!/bin/bash
 
-# Set path to the directory containing the witnessTree code
-WITNESSTREEPATH='/home/trademacehr/projects/witnessTree/'
-
-# Set path to the directory containing the images
-IMAGESPATH='/home/rademachert/witnessTree/images/'
-
-# Set path to the directory containing the data
-DATAPATH='/home/rademachert/witnessTree/'
-
-# Change to the witnessTree directory
-cd ${WITNESSTREEPATH}
-
-# Check which packages are available
-#Rscript ./RScripts/print.R
-#if [ $? == 0 ]
-#then 
-#   echo 'Ran print.R.' >> ./tmp/logfile.txt
-#else 
-# echo 'Error: print.R did not execute.' >> ./tmp/logfile.txt # write error message into log
-#   exit 1 # terminate script and indicate error
-#fi
-
 # Read WITNESSTREEPATH from config file
 source ./config
 if [ $? != 0 ]
@@ -29,6 +7,9 @@ then
    echo 'Error: Could not source config.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
+
+# Change to the witnessTree directory
+cd ${WITNESSTREEPATH}
 
 # Run the witnessTree RScript to generate messages
 Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}

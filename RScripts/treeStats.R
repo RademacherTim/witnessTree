@@ -25,9 +25,11 @@ dbh_cyl          <- 0.780                                     # m mean of cylind
 
 # Values measured in the field
 #---------------------------------------------------------------------------------------#
-cbh                 <- 2.65     # Circumference at breast height measured on 2018-10-11
-dbh                 <- cbh / pi # Derived diameter at breast height
-sapFlowArea         <- 0.8      # TTR Made up
+cbh                 <- 2.65     # Circumference at breast height measured on 2018-10-11 (m)
+dbh                 <- cbh / pi # Derived diameter at breast height (m)
+bark                <- 2.5      # bark thickness (cm)
+rHeartWood          <- 0.5      # heartwood radius (m)
+k                   <- 0.5      # thermal conductivity of sapwood (W mK-1)
 percentWaterContent <- 80       # TTR Made up
 
 # Values from literature
