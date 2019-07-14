@@ -63,7 +63,7 @@ get_calibration_data<-function(pdm_calibration_path){
   cal_data[,1]<-as.character(cal_data[,1])
   cal_data[,c(2:16)] <- apply(cal_data[,c(2:16)], 2, function(x) as.numeric(as.character(x)));
   cal_data<-cal_data[!is.na(cal_data$sensor_id),] # remove invalid sensor ids
-  print (sprintf('imported %i calibration files',nrow(cal_data)))
+  #print (sprintf('imported %i calibration files',nrow(cal_data)))
   return (cal_data)
   }
 

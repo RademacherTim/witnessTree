@@ -29,6 +29,23 @@ monthlySapFlowSummary <- function (mtable, TEST = 0) {
   return (mtable)
 } 
 
+# Monthly sap flow summary
+#----------------------------------------------------------------------------------------
+monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
+  
+  # Check whether it is the second week of the month
+  if (ceiling (day (Sys.Date ()) / 7) == 4 | TEST == 1) {
+
+    # Get radial growth for the last month and the month prior
+    #------------------------------------------------------------------------------------
+    
+    
+    # Compare the sap flow to the previous month
+    #
+  } 
+  return (mtable)
+} 
+
 # Start of sap flow
 #----------------------------------------------------------------------------------------
 startSapFlow <- function (mtable, TEST = 0) {

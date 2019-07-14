@@ -41,13 +41,15 @@ options (warn = -1) # To turn warnings back on use options (warn = 0)
 #---------------------------------------------------------------------------------------#
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
-source  (sprintf ('%sRScripts/postHandling.R',    path))
-source  (sprintf ('%sRScripts/checkEvents.R',     path))
-source  (sprintf ('%sRScripts/readClimate.R',     path))
-source  (sprintf ('%sRScripts/checkClimate.R',    path))
-source  (sprintf ('%sRScripts/checkPhysiology.R', path))
-source  (sprintf ('%sRScripts/checkCommunity.R',  path))
-source  (sprintf ('%sRScripts/treeStats.R',       path))
+source  (sprintf ('%sRScripts/postHandling.R',     path))
+source  (sprintf ('%sRScripts/checkEvents.R',      path))
+source  (sprintf ('%sRScripts/readClimate.R',      path))
+source  (sprintf ('%sRScripts/checkClimate.R',     path))
+source  (sprintf ('%sRScripts/calcSapFlow.R',      path))
+source  (sprintf ('%sRScripts/calcRadialGrowth.R', path))
+source  (sprintf ('%sRScripts/checkPhysiology.R',  path))
+source  (sprintf ('%sRScripts/checkCommunity.R',   path))
+source  (sprintf ('%sRScripts/treeStats.R',        path))
 
 # Read in previously generated posts, if not first iteration
 #---------------------------------------------------------------------------------------#
@@ -70,15 +72,20 @@ if (file.exists (sprintf ('%sposts/posts.csv', path))) {
 posts <- checkExpirationDatesOf (posts)
 
 # Re-evaluate priority of posts
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- reEvaluatePriorityOf (posts)
 
 # Read climate data
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 readClimate ()
 
+# Calculate radial growth for the last 30 days and the previous month
+#----------------------------------------------------------------------------------------
+radGrowth <- calcRadGrowth (pdm_calibration_path = dataPath)
+#sapFlow   <- calcSapFlow ()
+
 # Generate new posts concerning regularly recurrent events
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- helloWorld                     (posts) # on the launch date (2019-04-15) only
 posts <- checkNewYears                  (posts) #  1st  of January
 posts <- checkNationalWildLifeDay       (posts) #  4th  of March
