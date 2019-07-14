@@ -3,62 +3,64 @@
 # (East 30) using the heat pulse method.
 #----------------------------------------------------------------------------------------
 treeName <- 'witnessTree'
+treeName <- 'PinusStrobus1'
 
-calcSapflow <- function (treeName, dataPath) {
+calcSapflow <- function (treeName, dataPath, PLOT = F) {
 
-  # tree dimensions
+  # dimensions of the tree
   #--------------------------------------------------------------------------------------
   if (treeName == 'QuercusRubra1') {
     treeCBH <- 245.6
     rTree   <- treeCBH / (2.0 * pi) 
-    bark    <- 2.5
-    rHeartWood <- 0.0
-  } else if (treeName == 'QuercusRubra2' | treeName = 'witnessTree') {
+    bark    <- 2.0
+    rHeartWood <- 5.0
+  } else if (treeName == 'QuercusRubra2' | treeName == 'witnessTree') {
     ifelse (treeName == 'QuercusRubra2', treeCBH <- 142.8, treeCBH <- 245.6)
+    treeName <- 'QuercusRubra2'
     rTree   <- treeCBH / (2.0 * pi) 
-    bark    <- 2.5
-    rHeartWood <- 0.0
+    bark    <- 2.0
+    rHeartWood <- 5.0
   } else if (treeName == 'QuercusRubra3') {
     treeCBH <- 171.3
     rTree   <- treeCBH / (2.0 * pi) 
-    bark    <- 2.5
-    rHeartWood <- 0.0
+    bark    <- 2.0
+    rHeartWood <- 5.0
   } else if (treeName == 'AcerRubrum1') {
     treeCBH <- 92.0
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 0.5
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   } else if (treeName == 'AcerRubrum2') {
     treeCBH <- 101.0
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 0.5
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   } else if (treeName == 'AcerRubrum3') {
     treeCBH <- 70.8
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 0.5
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   } else if (treeName == 'PinusStrobus1') {
     treeCBH <- 165.8
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 2.0
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   } else if (treeName == 'PinusStrobus2') {
     treeCBH <- 152.8
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 2.0
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   } else if (treeName == 'PinusStrobus3') {
     treeCBH <- 181.0
     rTree   <- treeCBH / (2.0 * pi) 
     bark    <- 2.0
-    rHeartWood <- 0.0
+    rHeartWood <- 5.0
   }
 
 
-  # Load dependencies
+  # Load dependencies, if not already loaded
   #--------------------------------------------------------------------------------------
-  library ('tidyverse')
+  if (!existsFunction ('tibble')) library ('tidyverse')
 
   # Constants
   #--------------------------------------------------------------------------------------
@@ -105,14 +107,14 @@ calcSapflow <- function (treeName, dataPath) {
   # Calculate the sap wood area for each zone
   #--------------------------------------------------------------------------------------
   rXylem <- rTree - bark # radius of xylem
-  AXylem1p5 <- pi * (rXylem^2.0         - (rXylem-0.015)^2.0) # area of the outermost 1.5 
-  # cm of xylem (m2) 
-  AXylem2p5 <- pi * ((rXylem-0.015)^2.0 - (rXylem-0.025)^2.0) # area of the ring between 
-  # 1.5 and 2.5 cm of xylem (m2) 
-  AXylemRem <- pi * ((rXylem-0.025)^2.0 - (rXylem-rHeartWood)^2.0) # area of the ring 
-  # between 2.5cm inside 
-  # of the bark and the
-  # heartwood
+  AXylem1p5 <- pi * (rXylem^2.0       - (rXylem-1.5)^2.0) # area of the outermost 1.5 
+                                                          # cm of xylem (cm2) 
+  AXylem2p5 <- pi * ((rXylem-1.5)^2.0 - (rXylem-2.5)^2.0) # area of the ring between 
+                                                          # 1.5 and 2.5 cm of xylem (cm2) 
+  AXylemRem <- pi * ((rXylem-2.5)^2.0 - (rXylem-rHeartWood)^2.0) # area of the ring 
+                                                                 # between 2.5cm inside 
+                                                                 # of the bark and the
+                                                                 # heartwood (cm2)
 
   # Calculate sap flow velocity and flux in all three zones
   #--------------------------------------------------------------------------------------
@@ -121,7 +123,9 @@ calcSapflow <- function (treeName, dataPath) {
   sapFlu <- tibble (datetime = Tinitial [['datetime']])
   for (i in 1:3) {
     ratio  <- cbind (ratio,  log (deltaT [,i+1] / deltaT [, i+4]))
-    sapVel <- cbind (sapVel, (ratio [,i+1] * 2.0 * k) / ((xd + xu) / Cw)) # Sap flow velocity (cm s-1) for each zone
+    temp   <- (ratio [,i+1] * 2.0 * k) / ((xd + xu) * Cw) 
+    temp   <- pmax (temp, 0.0, na.rm = T) # make sure sap flow velocity is positive 
+    sapVel <- cbind (sapVel, temp) # Sap flow velocity (cm s-1) for each zone
     if (i == 1) {
       area = AXylem1p5
     } else if (i == 2) {
@@ -129,30 +133,29 @@ calcSapflow <- function (treeName, dataPath) {
     } else if (i == 3) {
       area = AXylemRem
     }
-    sapFlu <- cbind (sapFlu, sapVel [, i+1]*3600*area) # Sap flux (cm3 hr-1)
+    sapFlu <- cbind (sapFlu, sapVel [, i+1]*3600.0*area) # Sap flux (cm3 hr-1)
   }
+  names (sapVel) <- c ('datetime','outer','middle','inner')
+  names (sapFlu) <- c ('datetime','outer','middle','inner')
 
-  plot (sapVel [, 1], sapVel [, 2],
-        typ = 'l',
-        xlab = 'time',
-        ylab = 'sap velocity (cm s-1)',
-        col = '#91b9a4',
-        ylim = c (0, 0.8))
-  lines (sapVel [, 1], sapVel [, 3],
-         col = '#106470')
-  lines (sapVel [, 1], sapVel [, 4],
-         col = 'brown')
-  plot (sapFlu [, 1], (sapFlu [, 2] + sapFlu [, 3] +  sapFlu [, 4]) / 1000.0,
-        typ = 'l',
-        xlab = 'time',
-        ylab = 'sap flux (L h-1)',
-        ylim = c (-0, 20))
-  lines (sapFlu [, 1], sapFlu [, 2] / 1000.0,
-         col = '#91b9a4')
-  lines (sapFlu [, 1], sapFlu [, 3] / 1000.0,
-         col = '#106470')
-  lines (sapFlu [, 1], sapFlu [, 4] / 1000.0,
-         col = 'brown')
+  # Sum total sap flux for the day and get the mean sapflux velocity
+  #--------------------------------------------------------------------------------------
+  total <- sapFlu  %>% mutate (date = date(sapFlu [['datetime']])) %>%
+                       group_by (date) %>%
+                       summarize (dailySapFlux = sum (outer + middle + inner))
+  total [['dailySapFlux']] <- total [['dailySapFlux']] / 3.0 / 1000.0
+
+  if (PLOT) {
+    plot (total$date, total$total / 1000.0,
+          typ = 'l',
+          xlab = 'time',
+          ylab = 'sap flux (L day-1)',
+          col = '#91b9a4')
+  }
+  
+  # Determine sap flow in the last 30 days
+  #--------------------------------------------------------------------------------------
+  
   
   return ()
 }

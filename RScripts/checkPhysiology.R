@@ -23,13 +23,14 @@ monthlySapFlowSummary <- function (mtable, TEST = 0) {
   # Check whether it is the second week of the month
   if (ceiling (day (Sys.Date ()) / 7) == 2 | TEST == 1) {
   # Read in sap flow data
+    
   # Compare the sap flow to the previous month
   #
   } 
   return (mtable)
 } 
 
-# Monthly sap flow summary
+# Monthly radial growth (i.e. stem and branch diameter) summary
 #----------------------------------------------------------------------------------------
 monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
   

@@ -121,7 +121,7 @@ posts <- checkCommunityWildlife (posts)
 
 # Generate new posts concerning physiology
 #----------------------------------------------------------------------------------------
-posts <- monthlyRadGrowthSummary (posts)
+posts <- monthlyRadGrowthSummary (posts, PLOT = T)
 
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------
