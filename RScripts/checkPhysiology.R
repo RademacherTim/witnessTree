@@ -36,13 +36,56 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
   # Check whether it is the second week of the month
   if (ceiling (day (Sys.Date ()) / 7) == 4 | TEST == 1) {
 
-    # Get radial growth for the last month and the month prior
+    # Get radial growth for the last 30 days and the 30 days prior to that
     #------------------------------------------------------------------------------------
+    radGrowth <- calcRadGrowth (pdm_calibration_path = dataPath, 
+                                temporalRes = 'monthly',
+                                PLOT = T)
     
-    
-    # Compare the sap flow to the previous month
-    #
-  } 
+    # Check whether radial growth is fast or slower than in the previous month
+    #------------------------------------------------------------------------------------
+    if (radGrowth [1, 1] > radGrowth [1, 2]) { # current month grew more
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - fast")
+      message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
+      delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
+      expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      mtable    <- add_row (mtable, 
+                            priority    = postDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = sprintf ('%s/figures/monthlyGrowth_%s.png',path,Sys.Date ()), 
+                            message     = message, 
+                            hashtags    = postDetails [["Hashtags"]], 
+                            expires     = expirDate)
+    } else if (radGrowth [1, 1] <= radGrowth [1, 2] & 
+               radGrowth [1, 1] > 0.05) { # last month grew as much or less
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - slow")
+      message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
+      delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
+      expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      mtable    <- add_row (mtable, 
+                            priority    = postDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = sprintf ('%s/figures/monthlyGrowth_%s.png',path,Sys.Date ()), 
+                            message     = message, 
+                            hashtags    = postDetails [["Hashtags"]], 
+                            expires     = expirDate)
+    } else if (radGrowth [1,1] <= 0.05) { # tree grew only very little and is dormant?
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - dormant")
+      message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
+      delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
+      expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      mtable    <- add_row (mtable, 
+                            priority    = postDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = sprintf ('%s/figures/monthlyGrowth_%s.png',path,Sys.Date ()), 
+                            message     = message, 
+                            hashtags    = postDetails [["Hashtags"]], 
+                            expires     = expirDate)
+    }
+  }
+  
+  # Return the updated message table
+  #--------------------------------------------------------------------------------------
   return (mtable)
 } 
 

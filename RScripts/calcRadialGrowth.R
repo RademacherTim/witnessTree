@@ -3,7 +3,7 @@
 # script is dependent on calibration files in the data directory.
 #----------------------------------------------------------------------------------------
 
-calcRadGrowth <- function (pdm_calibration_path, PLOT = FALSE) {
+calcRadGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLOT = FALSE) {
   
   # Load dependencies
   #--------------------------------------------------------------------------------------
@@ -52,38 +52,64 @@ calcRadGrowth <- function (pdm_calibration_path, PLOT = FALSE) {
                                        cal_data))
   names (data2) [1] <-'datetime' 
   
-  # Plot growth
+  # If monthly resolution is required
   #--------------------------------------------------------------------------------------
-  if (PLOT) {
-    par (mar = c (5, 5, 1, 1))
-    plot (x = data [['datetime']],
-          y = (data1$pos_lm - data1$pos_lm [1]),
-          ylim = c (0.0, 0.6),
-          xlab = 'date',
-          ylab = 'growth (mm)',
-          las = 1,
-          typ = 'l',
-          col = '#666666')
-    lines (x = data [['datetime']],
-           y = data2$pos_lm - data2$pos_lm [1],
-           lty = 2,
-           col = 'grey')
+  if (temporalRes == 'monthly') {
+    
+    # Compile monthly growth for the last month and previous
+    #------------------------------------------------------------------------------------
+    since         <- format (tail (data [['datetime']], n = 1) - 60*60*24*29, '%Y-%m-%d')   
+    monthlyGrowth <- c (tail (data1 [['pos_lm']], n = 1) - 
+                        data1 [['pos_lm']] [data1 [['datetime']] == since],
+                        tail (data2 [['pos_lm']], n = 1) - 
+                        data2 [['pos_lm']] [data2 [['datetime']] == since])
+    to   <- ymd (since) - 1
+    from <- ymd (since) - 30 
+    if (from < as.POSIXct ('2019-05-24', format = '%Y-%m-%d')) from <- ymd ("2019-05-24") 
+    previousMonthGrowth <- c (data1 [['pos_lm']] [data1 [["datetime"]] == to] - 
+                              data1 [['pos_lm']] [data1 [['datetime']] == from],
+                              data2 [['pos_lm']] [data2 [['datetime']] == to] - 
+                              data2 [['pos_lm']] [data2 [['datetime']] == from])
+  
+    radGrowth <- tibble (monthlyGrowth, previousMonthGrowth)
+
+    # Plot growth of the two previous months
+    #--------------------------------------------------------------------------------------
+    if (PLOT) {
+      png (sprintf ('%s/figures/monthlyGrowth_%s.png',path,Sys.Date ()),
+           width = 955,
+           height = 500)
+      par (mar = c (5, 5, 1, 1))
+      plot (x = data2 [['datetime']] [data2 [['datetime']] >= from & 
+                                        data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)],
+            y = data2$pos_lm [data2 [['datetime']] >= from & 
+                                data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
+              data2$pos_lm [1],
+            lwd = 2,
+            col = 'grey',
+            xlab = 'date',
+            ylab = 'growth (mm)',
+            las = 1,
+            typ = 'l')
+      lines (x = data1 [['datetime']] [data1 [['datetime']] >= from & 
+                                       data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] ,
+             y = data1$pos_lm [data1 [['datetime']] >= from & 
+                               data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] - 
+                 data1$pos_lm [1],
+            lwd = 2,
+            col = '#666666')
+      abline (v = as.POSIXct (to), lwd = 1, lty = 2, col = '#444444')
+      legend (x = data1 [['datetime']] [data1 [['datetime']] == from],
+              y = tail (data2$pos_lm, n = 1) - data2$pos_lm [1],
+              legend = c ('branch', 'stem'),
+              lwd = 2,
+              col = c ('grey','#666666'),
+              box.lty = 0,
+              bg = 'transparent')
+      dev.off ()
+    }
+    
   }
-  
-  # Compile monthly growth for the last month and previous
-  #--------------------------------------------------------------------------------------
-  since         <- format (tail (data [['datetime']], n = 1) - 60*60*24*29, '%Y-%m-%d')   
-  monthlyGrowth <- c (tail (data1 [['pos_lm']], n = 1) - data1 [['pos_lm']] [data1 [['datetime']] == since],
-                      tail (data2 [['pos_lm']], n = 1) - data2 [['pos_lm']] [data2 [['datetime']] == since])
-  to   <- ymd (since) - 1
-  from <- ymd (since) - 30 
-  if (from < as.POSIXct ('2019-05-24', format = '%Y-%m-%d')) from <- ymd ("2019-05-24") 
-  previousMonthGrowth <- c (data1 [['pos_lm']] [data1 [["datetime"]] == to] - 
-                            data1 [['pos_lm']] [data1 [['datetime']] == from],
-                            data2 [['pos_lm']] [data2 [['datetime']] == to] - 
-                            data2 [['pos_lm']] [data2 [['datetime']] == from])
-  
-  radGrowth <- tibble (monthlyGrowth, previousMonthGrowth)
   
   return (radGrowth)
 }

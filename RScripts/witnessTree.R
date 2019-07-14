@@ -79,11 +79,6 @@ posts <- reEvaluatePriorityOf (posts)
 #----------------------------------------------------------------------------------------
 readClimate ()
 
-# Calculate radial growth for the last 30 days and the previous month
-#----------------------------------------------------------------------------------------
-radGrowth <- calcRadGrowth (pdm_calibration_path = dataPath)
-#sapFlow   <- calcSapFlow ()
-
 # Generate new posts concerning regularly recurrent events
 #----------------------------------------------------------------------------------------
 posts <- helloWorld                     (posts) # on the launch date (2019-04-15) only
@@ -120,12 +115,16 @@ posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 
 # Generate new posts concerning the community surrounding the tree
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- explainSeedDispersal   (posts)
 posts <- checkCommunityWildlife (posts)
 
+# Generate new posts concerning physiology
+#----------------------------------------------------------------------------------------
+posts <- monthlyRadGrowthSummary (posts)
+
 # Selection of post, figure and images for the current iterations
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 post <- selectPost (posts)
 
 # Delete the selected post from the posts tibble 

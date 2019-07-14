@@ -59,6 +59,9 @@ checkStorm,N,Heavy storm,daily rainfall exceeding 3 inches,xxxx-05-15,xxxx-10-15
 checkMapleSugaringSeason,N,Freezing nights with thawing days,,variable,,,,,,,,,,0
 ,,,,,,,,,,,,,,0
 checkPhysiology.R,,,,,,,,,,,,,,0
+monthlyRadGrowthSummary - slow,N,Fourth week of the month,,variable,after 7 days,3,,graph of previous month + current month,,,,,,
+monthlyRadGrowthSummary - avg,N,Fourth week of the month,,variable,after 7 days,3,,graph of previous month + current month,,,,,,
+monthlyRadGrowthSummary - fast,N,Fourth week of the month,,variable,after 7 days,3,,graph of previous month + current month,,,,,,
 checkStartOfSapFlow,N,Start of sap flow,,,,,picture of sap flow sensor,,,EnviroFact,,"The sap flow in my stem started picking up in the past week, which means I'm revving up to produce leaves. This sap flow sensor helps you watch my progress in real-time. <web-link to Witness Tree sap flow sensor description & graph>",,232
 checkStartOfSapFlow,N,Start of sap flow,,,,,picture of sap flow sensor,,,SensorData,,"The growing season has begun! My sap is flowing at a rate of % - a slow beginning, but how many of you jump right out of bed in the morning? As I wake up and begin really mobilizing water and nutrients to make leaves, my sap flow will increase.",,244
 checkEndOfSapFlow,N,End of sap flow,,,,,,,,EnviroFact,,,,0
