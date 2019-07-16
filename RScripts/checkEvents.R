@@ -386,14 +386,14 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkHalloween <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "10-31" | TEST == 1) {
-    messageDetails <- getPostDetails ('checkHalloween')
+    postDetails <- getPostDetails ('checkHalloween')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]],
-                          fFigure     = messageDetails [['fFigure']],
-                          figureName  = messageDetails [["FigureName"]], 
-                          message     = messageDetails [['Message']], 
-                          hashtags    = messageDetails [["Hashtags"]], 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = postDetails [['Message']], 
+                          hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate) 
   } 
   return (mtable)

@@ -73,42 +73,88 @@ calcRadGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLOT =
   
     radGrowth <- tibble (monthlyGrowth, previousMonthGrowth)
 
+    # Read precipitation data, if it has not been read in yet
+    #------------------------------------------------------------------------------------
+    if (!exists ('dailyPrec')) readClimate ()
+    
     # Plot growth of the two previous months
-    #--------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------
     if (PLOT) {
       png (sprintf ('%s/figures/monthlyGrowth_%s.png',path,Sys.Date ()),
            width = 955,
            height = 500)
-      par (mar = c (5, 5, 1, 1))
+      par (mar = c (5, 5, 1, 5))
+      condition <- dailyPrec [['daily']] >= from & 
+                   dailyPrec [['daily']] <= tail (data2 [['datetime']], n = 1)
+      barplot (dailyPrec$prec [condition], col = '#91bfdb66', yaxt = 'n',
+               ylim = c (0, 1.1*max (dailyPrec$prec [condition])), border = F)
+      axis (4, las = 1)
+      mtext (4, line = 2.5, text = 'daily total precipitation (mm)')
+      par (new = T)
       plot (x = data2 [['datetime']] [data2 [['datetime']] >= from & 
-                                        data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)],
+                                      data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)],
             y = data2$pos_lm [data2 [['datetime']] >= from & 
                                 data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
               data2$pos_lm [1],
-            lwd = 2,
-            col = 'grey',
+            lwd = 4,
+            col = '#ff9999aa',
             xlab = 'date',
             ylab = 'growth (mm)',
             las = 1,
             typ = 'l')
+      lines (x = data2 [['datetime']] [data2 [['datetime']] >= since & 
+                                       data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] ,
+             y = data2$pos_lm [data2 [['datetime']] >= since & 
+                               data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
+                 data2$pos_lm [1],
+             lwd = 4,
+             col = '#ff9999')
       lines (x = data1 [['datetime']] [data1 [['datetime']] >= from & 
                                        data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] ,
              y = data1$pos_lm [data1 [['datetime']] >= from & 
                                data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] - 
                  data1$pos_lm [1],
-            lwd = 2,
-            col = '#666666')
-      abline (v = as.POSIXct (to), lwd = 1, lty = 2, col = '#444444')
+            lwd = 4,
+            col = '#6a3d9aaa')
+      lines (x = data1 [['datetime']] [data1 [['datetime']] >= since & 
+                                         data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] ,
+             y = data1$pos_lm [data1 [['datetime']] >= since & 
+                                 data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] - 
+               data1$pos_lm [1],
+             lwd = 4,
+             col = '#6a3d9a')
+      abline (v = as.POSIXct (since), lwd = 2, lty = 2, col = '#777777')
       legend (x = data1 [['datetime']] [data1 [['datetime']] == from],
               y = tail (data2$pos_lm, n = 1) - data2$pos_lm [1],
-              legend = c ('branch', 'stem'),
-              lwd = 2,
-              col = c ('grey','#666666'),
+              legend = c ('branch', 'trunk'),
+              lwd = 3,
+              col = c ('#ff9999','#6a3d9a'),
+              box.lty = 0,
+              bg = 'transparent')
+      legend (x = data1 [['datetime']] [data1 [['datetime']] == from],
+              y = (tail (data2$pos_lm, n = 1) - data2$pos_lm [1]) * 0.9,
+              legend = 'precipitation',
+              lwd = 3,
+              col = '#91bfdb66',
               box.lty = 0,
               bg = 'transparent')
       dev.off ()
     }
+  }  else if (temporalRes == 'annual') { # If annual resolution is required
+    #------------------------------------------------------------------------------------
     
+    # Compile monthly growth for the last month and previous
+    #------------------------------------------------------------------------------------
+    since        <- sprintf ('%s-01-01', year (Sys.Date ()))   
+    if (year (Sys.Date ()) == 2019) {
+      annualGrowth <- tail (data1 [['pos_lm']], n = 1) - 
+                      head (data1 [['pos_lm']], n = 1) + 1
+    } else {
+      annualGrowth <- tail (data1 [['pos_lm']], n = 1) - 
+                            data1 [['pos_lm']] [data1 [['datetime']] == since]
+      
+    }
+    radGrowth <- tibble (annualGrowth)
   }
   
   return (radGrowth)

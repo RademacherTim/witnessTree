@@ -10,7 +10,7 @@ age              <- floor (lubridate::time_length (Sys.time () - birthDay, "year
 
 # LIDAR-derived quantities from scan by Peter Boucher (PhD Candidate, School of 
 # Environment, University of Massachusetts Boston) with LEICA BLK360 on 2018/07/27 
-#---------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------------# TR add year nunbers
 totalVolume      <- 13937                                     # L
 trunkVolume      <- 5624                                      # L
 branchVolume     <- 8313                                      # L

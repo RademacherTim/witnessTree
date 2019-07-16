@@ -20,7 +20,7 @@ then
 fi
 
 # Run twitterbot to post generated messages
-python ./pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret}
+python ./pythonScripts/twitterbot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret} ${page_access_token} ${facebook_page_id}
 if [ $? != 0 ]
 then 
    echo 'Error: twitterbot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
