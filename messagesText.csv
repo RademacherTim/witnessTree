@@ -1,19 +1,19 @@
 FunctionID ,Status,Event,Logic,Date,ExpirationDate,Priority ,FigureName,FigureDescription,Hashtags,Treatment,ContentTheme,Message,Notes,Numbers 
 ,,,,,,,,,,,,,,
 checkEvents.R,,,,,,,,,,,,,,
-helloWorld,tested,Hello World,First post,7/17/2019 12:05,7/17/2019 23:59,10,WitnessTree_higherRes.png,Witness Tree,,Audience,,"Hello, World! I am more than a century old red oak tree at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. If you want to know more about how I work, to go: %s.",,239
-checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01 23:59:59,10,,,,SensorData,,Happy #NewYear!! During my life I've stored roughly %s kg (%s lbs) of carbon per year. My #resolution for %s is to beat that. What is your resolution?,,150
-checkNationalWildLifeDay,tested,National Wildlife Day,,yyyy-03-04,yyyy-03-04 23:59:59,10,,Photos from wildlife camera,,,,Look who's visited me earlier this year! Happy #NationalWildlifeDay!,,68
-checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,witnesstree_v3_sideview3.png,3D model of the Witness Tree,,,,Happy #PiDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!,,137
-checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,wittree_grey5.png,,,SensorData,,Happy #PiDay! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).,,117
-checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,BarnTower.png,Drone photo of Harvard Forest,,,,It's the international day of forests! How many types of forests do you know?,,77
-checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,,Timelapse of the changing  forest,,,,Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!,,105
-checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,transpiration.png,Diagram of transpiration,,SensorData,,Did you know that roughly %s % % of me is water? Every day lots of water flows through my trunk to my leaves.,,109
-checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,transpiration.png,Video of  transpiration,,EnviroFact,,Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire.,,149
+helloWorld,tested,Hello World,First post,2019-07-17,2019-07-17,10,WitnessTree_higherRes.jpg,Witness Tree,,Audience,,"Hello, World! I am a century-old red oak at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. For more on info how I work, go to: %s.",,210
+checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01,10,,,,SensorData,,Happy #NewYear!! During my life I've stored roughly %s kg (%s lbs) of carbon per year. My #resolution for %s is to beat that. What is your resolution?,,150
+checkNationalWildLifeDay,tested,National Wildlife Day,,yyyy-03-04,yyyy-03-04,10,,Photos from wildlife camera,,,,Look who's visited me earlier this year! Happy #NationalWildlifeDay!,,68
+checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14,10,witnesstree_v3_sideview3.png,3D model of the Witness Tree,,,,Happy #PiDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!,,137
+checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14,10,wittree_grey5.png,,,SensorData,,Happy #PiDay! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).,,117
+checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21,10,BarnTower.png,Drone photo of Harvard Forest,,,,It's the international day of forests! How many types of forests do you know?,,77
+checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21,10,,Timelapse of the changing  forest,,,,Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!,,105
+checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22,10,transpiration.png,Diagram of transpiration,,SensorData,,Did you know that roughly %s % % of me is water? Every day lots of water flows through my trunk to my leaves.,,109
+checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22,10,transpiration.png,Video of  transpiration,,EnviroFact,,Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire.,,149
 checkBirthday,tested,Birthday,,tbd,tbd,10,,,,,,Do you know what day it is??? Today is my %s%s #birthday!,,57
 checkArborDay,tested,Arbor Day,,last Friday in April,last Friday in April,10,ArborDay.png,,,,,"Happy #ArborDay, everyone! Did you plant a tree today? Share your comments below.",,81
-checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,,,EnviroFact,,Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans.,,158
-checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,Photo of earth with a big oak tree on it,,,,"You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home.",,138
+checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22,10,,,,EnviroFact,,Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans.,,158
+checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22,10,,Photo of earth with a big oak tree on it,,,,"You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home.",,138
 checkMothersDay,tested,Mother's Day,,second Sunday in May,second Sunday in May,10,,Oak species around the world,,EnviroFact,,"Today is Mother's Day! Planet Earth is my mother, she is home to 600 species of oak.  All year long I take in carbon dioxide to produce clean air, in hopes of cooling down my mother. Have you done something for Mother Earth today?",,230
 checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,,,EnviroFact,,The first day of spring just started at %s:%sh today! Get ready for bulking season!!,,84
 checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,,,SensorData,,First day of #spring and it's %s °C here at %s.,,47
@@ -25,8 +25,8 @@ checkSummerSolstice,tested,Summer Solstice,,solarDates.tsv,solarDates.tsv,10,,,,
 checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,,,Shortest day of the year! Not too much sunlight today so get as much as you can!,,80
 checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,,,"Happy midwinter! Finally, the days will start getting longer again.",,67
 checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,,,"It's the shortest day of the year here in Massachusetts, but for trees in the Southern hemisphere, today's the longest day. Grow on!",,132
-checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,Happy #Halloween! What's your #costume? Are you going as a tree? ,,65
-checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,Happy Halloween everyone! Stay safe out there! ,,47
+checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31,10,,,,,,Happy #Halloween! What's your #costume? Are you going as a tree? ,,65
+checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31,10,,,,,,Happy Halloween everyone! Stay safe out there! ,,47
 monthlyEngagementReminder,tested,Regular check-in with the trees peeps,,third week of the month,after 7 days,1,,,,Audience,,"Ask how I'm doing, and I'll answer! Just type ""@WitnessTree How are you?"" If you want to find out how I can actually talk to you, to go %s to find out more.",,156
 ,,,,,,,,,,,,,,156
 checkClimate.R,,,,,,,,,,,,,,0
