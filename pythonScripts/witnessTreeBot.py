@@ -9,6 +9,7 @@
 #------------------------------------------------------------------------------
 import sys        # library to use command line arguments
 import tweepy     # twitter library
+import twitter    # python-twitter library
 import Tkinter    # graphical user interface library
 import facebook   # library for facebook API 
 import csv        # for csv handling
@@ -36,12 +37,17 @@ facebook_page_id    = sys.argv [6] # facebook page ID
 
 # Authenticate the twitter page with tweepy library
 #------------------------------------------------------------------------------
+#api = twitter.Api(consumer_key=consumer_key,
+#                  consumer_secret=consumer_secret,
+#                  access_token_key=access_token,
+#                  access_token_secret=access_token_secret)
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Check points to make sure tweepy is linked to the appropriate twitter page
 #------------------------------------------------------------------------------
+#print(api.VerifyCredentials())
 user = api.me()
 #print (user.name)
 
@@ -77,7 +83,7 @@ if os.path.exists(fileName):
 
 	# Authenticate the Twitter acocunt
         #----------------------------------------------------------------------
-	api = tweepy.API (auth)
+	api = tweepy.API (auth) 
 
         # Get graph for facebook
         #----------------------------------------------------------------------
@@ -87,11 +93,14 @@ if os.path.exists(fileName):
         #----------------------------------------------------------------------
         if fFigure == False:
              api.update_status (message + hashtags)
+             #status = api.PostUpdate(message + hashtags)
              graph.put_object(facebook_page_id, "feed", message='test message')
 
         # The post is accompanied by an image
 	#----------------------------------------------------------------------
         else:
+             #status = api.PostUpdate (message + hashtags,
+             #                         media = figureName)
              api.update_with_media (filename = figureName, 
                                     status = message + hashtags)
 

@@ -135,7 +135,7 @@ getPostDetails <- function (fName)
   # Check whether there is a figure accompanying the post
   #-------------------------------------------------------------------------------------
   postDetails <- add_column (postDetails,
-                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, T, F))
+                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, F, T))
   
   # Randomly decide whether we use the accompanying figure or not
   # N.B. Audience building posts are marked as such and are always posted with pictures
@@ -144,6 +144,13 @@ getPostDetails <- function (fName)
     postDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
   }
   
+  # Add the image path to the figureName, so that the bot can actually find them
+  #-------------------------------------------------------------------------------------
+  postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
+                                           postDetails [['FigureName']])
+  
+  # Return the post'd details
+  #-------------------------------------------------------------------------------------
   return (postDetails)
 }
 #=======================================================================================

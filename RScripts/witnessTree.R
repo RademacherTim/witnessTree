@@ -82,7 +82,7 @@ readClimate ()
 
 # Generate new posts concerning regularly recurrent events
 #----------------------------------------------------------------------------------------
-posts <- helloWorld                     (posts, TEST = 1) # on the launch date (2019-07-17) only
+posts <- helloWorld                     (posts) # on the launch date (2019-07-17) only
 posts <- checkNewYears                  (posts) #  1st  of January
 posts <- checkNationalWildLifeDay       (posts) #  4th  of March
 posts <- checkPiDay                     (posts) #  14th of March
