@@ -1,22 +1,22 @@
 FunctionID ,Status,Event,Logic,Date,ExpirationDate,Priority ,FigureName,FigureDescription,Hashtags,Treatment,ContentTheme,Message,Notes,Numbers 
 ,,,,,,,,,,,,,,
 checkEvents.R,,,,,,,,,,,,,,
-helloWorld,tested,Hello World,First post,tbd,tbd,10,WitnessTree_higherRes.png,Witness Tree,,,,"Hello World! I am a more than 100-year-old red oak tree at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. If you want to know more about how I work, to go: %s.",,239
-checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01 23:59:59,10,,,,SensorData,,Happy #NewYear!! During my life I've stored roughly %s kg (%x lbs) of carbon per year. My #resolution for %s is to beat that. What is your resolution?,,150
+helloWorld,tested,Hello World,First post,7/17/2019 12:05,7/17/2019 23:59,10,WitnessTree_higherRes.png,Witness Tree,,Audience,,"Hello, World! I am more than a century old red oak tree at %s in %s: one of the oldest living organisms on the internet! Follow me to learn more about my life in a changing environment. If you want to know more about how I work, to go: %s.",,239
+checkNewYears,tested,New Years,,yyyy-01-01,yyyy-01-01 23:59:59,10,,,,SensorData,,Happy #NewYear!! During my life I've stored roughly %s kg (%s lbs) of carbon per year. My #resolution for %s is to beat that. What is your resolution?,,150
 checkNationalWildLifeDay,tested,National Wildlife Day,,yyyy-03-04,yyyy-03-04 23:59:59,10,,Photos from wildlife camera,,,,Look who's visited me earlier this year! Happy #NationalWildlifeDay!,,68
 checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,witnesstree_v3_sideview3.png,3D model of the Witness Tree,,,,Happy #PiDay! Pi is extra important to those of us shaped like a cylinder. How many digits of Pi can you recite from memory? Tweet below!,,137
 checkPiDay,tested,Pi Day,,yyyy-03-14,yyyy-03-14 23:59:59,10,wittree_grey5.png,,,SensorData,,Happy #PiDay! Thanks to Pi I can estimate my trunk diameter (%s cm) or even the area through which sap flows (%s m2).,,117
 checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,BarnTower.png,Drone photo of Harvard Forest,,,,It's the international day of forests! How many types of forests do you know?,,77
 checkInternationalDayOfForests,tested,International Day of Forests,,yyyy-03-21,yyyy-03-21 23:59:59,10,,Timelapse of the changing  forest,,,,Some call us the 'lungs of the Earth' but we are much more than that. Happy international day of forests!,,105
-checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,transpiration.png,Diagram of transpiration,,SensorData,,Did you know that roughly %s %% of me is water? Every day lots of water flows through my trunk to my leaves.,,108
+checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,transpiration.png,Diagram of transpiration,,SensorData,,Did you know that roughly %s % % of me is water? Every day lots of water flows through my trunk to my leaves.,,109
 checkWorldWaterDay,tested,World Water Day,,yyyy-03-22,yyyy-03-22 23:59:59,10,transpiration.png,Video of  transpiration,,EnviroFact,,Drink up! At night the pores in my leaves close and my trunk swell with water taken-up by my roots. During the day the pore are open and I transpire.,,149
 checkBirthday,tested,Birthday,,tbd,tbd,10,,,,,,Do you know what day it is??? Today is my %s%s #birthday!,,57
-checkArborDay,tested,Arbor Day,,last Friday in April,last Friday in April,10,,,,,,"Happy #ArborDay, everyone! Did you plant a tree today? Share your comments below.",,81
+checkArborDay,tested,Arbor Day,,last Friday in April,last Friday in April,10,ArborDay.png,,,,,"Happy #ArborDay, everyone! Did you plant a tree today? Share your comments below.",,81
 checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,,,EnviroFact,,Join us as we celebrate #EarthDay! Trees are really important to balancing the amount of carbon dioxide in the air and creating livable conditions for humans.,,158
 checkEarthDay,tested,Earth Day,,yyyy-04-22,yyyy-04-22 23:59:59,10,,Photo of earth with a big oak tree on it,,,,"You don't know how to celebrate #EarthDay? You could plant a tree, or get outside and figure out what species of trees are near your home.",,138
 checkMothersDay,tested,Mother's Day,,second Sunday in May,second Sunday in May,10,,Oak species around the world,,EnviroFact,,"Today is Mother's Day! Planet Earth is my mother, she is home to 600 species of oak.  All year long I take in carbon dioxide to produce clean air, in hopes of cooling down my mother. Have you done something for Mother Earth today?",,230
 checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,,,EnviroFact,,The first day of spring just started at %s:%sh today! Get ready for bulking season!!,,84
-checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,,,SensorData,,First day of #spring and it's %s°C here at %s.,,46
+checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,,,SensorData,,First day of #spring and it's %s °C here at %s.,,47
 checkSpringEquinox,tested,Spring Equinox,,solarDates.tsv,solarDates.tsv,10,,Oak  seedlings,,EnviroFact,,"Do you already see any oak seedlings, where you live, on this first day of astronomical spring?",,95
 checkAutumnEquinox,tested,Autumn Equinox,,solarDates.tsv,solarDates.tsv,10,,,,EnviroFact,,Astronomically it is the first day of autmn since %s:%sh. I will keep the leaf peepers posted about colour changes at #HarvardForest.,,133
 checkAutumnEquinox,tested,Autumn Equinox,,solarDates.tsv,solarDates.tsv,10,,,,EnviroFact,,"Leaf colours will be changing soon, as astronomically it is the first day of #autmn today.",,90
@@ -27,14 +27,14 @@ checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,
 checkWinterSolstice,tested,Winter Solstice,,solarDates.tsv,solarDates.tsv,10,,,,,,"It's the shortest day of the year here in Massachusetts, but for trees in the Southern hemisphere, today's the longest day. Grow on!",,132
 checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,Happy #Halloween! What's your #costume? Are you going as a tree? ,,65
 checkHalloween,tested,Halloween,,yyyy-10-31,yyyy-10-31 23:59:59,10,,,,,,Happy Halloween everyone! Stay safe out there! ,,47
-monthlyEngagementReminder,tested,Regular check-in with the trees peeps,,third week of the month,after 7 days,1,,,,,,"Ask how I'm doing, and I'll answer! Just type ""@WitnessTree How are you?"" If you want to find out how I can actually talk to you, to go %s to find out more.",,156
+monthlyEngagementReminder,tested,Regular check-in with the trees peeps,,third week of the month,after 7 days,1,,,,Audience,,"Ask how I'm doing, and I'll answer! Just type ""@WitnessTree How are you?"" If you want to find out how I can actually talk to you, to go %s to find out more.",,156
 ,,,,,,,,,,,,,,156
 checkClimate.R,,,,,,,,,,,,,,0
 hottest,tested,hottest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,,,SensorData,,This is the hottest temperature I can remember. It is %s ℃ right now!!! That is %s ℉ by the way.,,96
-coldest,tested,coldest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,,,SensorData,,"It has never been this cold here! I wish I could just run inside. At %s degree ℃ (%s ℉), I am completely frozen!!!",,114
-hottestDay,tested,hottest day on record,,variable,yyyy-mm-dd 23:59:59,9,,,,SensorData,,"This is unbelieveable! This is the hottest day I have ever witnessed. It is %℃ (%s ℉) out here. If this heat continues, I'll consider dropping some leaves so I can save some water.",,180
-coldestDay,tested,coldest day on record,,variable,yyyy-mm-dd 23:59:59,9,,,,SensorData,,"This day has been very cold, the last time I remember being this cold was in % it was %℃ (%s ℉) and now it is %℃ (%s ℉) today! I need a blanket!",,144
-hottestWeek,tested,hottest week on record,,variable,,7,,,,SensorData,,"This week has been tiring due to the heat. The average temperature this week was  %℃ (%s ℉). You humans are lucky, you get to go inside and enjoy the nice cool  air while I'm stuck out here in the hot sun.",,205
+coldest,tested,coldest temperature ever recorded,,variable,yyyy-mm-dd HH:MM:SS,9,,,,SensorData,,"It has never been this cold here! I wish I could just run inside. At %s ℃ (%s ℉), I am completely frozen!!!",,107
+hottestDay,tested,hottest day on record,,variable,yyyy-mm-dd 23:59:59,9,,,,SensorData,,"This is unbelieveable! This is the hottest day I have ever witnessed. It is %s ℃ (%s ℉) out here. If this heat continues, I'll consider dropping some leaves so I can save some water.",,182
+coldestDay,tested,coldest day on record,,variable,yyyy-mm-dd 23:59:59,9,,,,SensorData,,"This day has been very cold, the last time I remember being this cold was in %s it was %s ℃ (%s ℉) and now it is %s ℃ (%s ℉) today! I need a blanket!",,149
+hottestWeek,tested,hottest week on record,,variable,,7,,,,SensorData,,"This week has been tiring due to the heat. The average temperature this week was  %s ℃ (%s ℉). You humans are lucky, you get to go inside and enjoy the nice cool  air while I'm stuck out here in the hot sun.",,207
 coldestWeek,tested,coldest week on record,,variable,,7,,,,SensorData,,This week was very cold. It was the coldest week on record! The average temperature this week was  %℃ (%s ℉). ,,110
 hottestMonth,tested,hottest month on record,,variable,,6,,,,SensorData,,NEEDS MESSAGE,,13
 coldestMonth,tested,coldest month on record,,variable,,6,,,,SensorData,,NEEDS MESSAGE,,13
@@ -43,8 +43,8 @@ coldestYear,tested,coldest year on record,,variable,,6,,,,SensorData,,NEEDS MESS
 monthlyClimateSummary - normal,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,"Last month was a pretty average month with %s ℃ it was neither particularly warm, nor cold. And %s mm of precipitation is also neither wet, nor dry for %s.",,155
 monthlyClimateSummary - cold,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,"Last month was cold with an average temperature of only %s. Normally, it is about %s warmer in %s.",,98
 monthlyClimateSummary - warm,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,"Last month was warmer than usual with an average temperature of %s. In %s, it is on average %s colder in %s.",,108
-monthlyClimateSummary - wet,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,"Last month was pretty wet. As of mm-dd at HH:mm, Petersham, MA collected a total of %"" of rain for the month. That rain fell over % of the % days in the month.",,159
-monthlyClimateSummary - dry,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,Last month was dry with temperatures reaching  ℃ (%s ℉) and %s mm of precipitation. ,,84
+monthlyClimateSummary - wet,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,"Last month was pretty wet. As of %s-%s at HH:mm, Petersham, MA collected a total of %s"" of rain for the month. That rain fell over %s of the %s days in the month.",,162
+monthlyClimateSummary - dry,tested,First of the month,,xxxx-mm-01,after 7 days,3,,,,SensorData,,Last month was dry with temperatures reaching %s ℃ (%s ℉) and %s mm of precipitation. ,,86
 annualClimateSummary - normal,tested,First of January,,xxxx-01-01,after 25 days,2,,,,SensorData,,NEEDS MESSAGE,,13
 annualClimateSummary - cold,tested,First of January,,xxxx-01-01,after 25 days,2,,,,SensorData,,NEEDS MESSAGE,,13
 annualClimateSummary - warm,tested,First of January,,xxxx-01-01,after 25 days,2,,,,SensorData,,NEEDS MESSAGE,,13
@@ -55,7 +55,7 @@ checkFrost - late,tested,Late frost after growing season start,,variable,after 5
 checkHeatWave,tested,two or more consecutive days with daily maximum temperature in the 90th percentile for the month. Maybe I should compare this to a base line longer ago.,,variable,after 2 days,5,,,,EnviroFact,,The last %s days were extremely hot for %s. When is this heatwave going to end?,,79
 checkDrought,N,Drought ,,variable,,,,,,,,Oh no! There is drought happening! Less moisture in the soil means less water to convert into glucose (through photosynthsis). This means less energy for my friends and I.  ,,173
 checkStorm,tested,Heavy storm,daily maximum windspeed of gusts above 15 m/s,variable,after 2 days,5,,,,SensorData,,"It was windy recently with maximum wind speeds exceeding %s meter per second or %s mph here at %s, but I will weather the storm.",,128
-checkStorm,N,Heavy storm,daily rainfall exceeding 3 inches,xxxx-05-15,xxxx-10-15,5,,,,SensorData,,"The rainfall over the past 24 hours has exceeded %cm (%inches). Over the next few days, my neighbors and I will drink hundreds of gallons of that water, helping to prevent floods.",,179
+checkStorm,N,Heavy storm,daily rainfall exceeding 3 inches,xxxx-05-15,xxxx-10-15,5,,,,SensorData,,"The rainfall over the past 24 hours has exceeded %s cm (%inches). Over the next few days, my neighbors and I will drink hundreds of gallons of that water, helping to prevent floods.",,181
 checkMapleSugaringSeason,N,Freezing nights with thawing days,,variable,,,,,,,,,,0
 ,,,,,,,,,,,,,,0
 checkPhysiology.R,,,,,,,,,,,,,,0
@@ -97,10 +97,10 @@ explainDimensions,tested,Explain the dimensions of the tree,20th of the month,va
 ,N,Explain tree architecture,,,,,,,,,,NEEDS MESSAGE,,13
 ,,,,,,,,,,,,,,0
 checkCommunity.R,,,,,,,,,,,,,,0
-checkCommunityWildlife - summer,tested,,,xxxx-06-21,xxxx-09-21,2,foxinsummer.jpg,wildlife camera image - summer,,,SensorData,"Can you tell who's visited me this month? In summer, I provide shade and food for many animals.",,
-checkCommunityWildlife - fall,tested,,,xxxx-09-22,xxxx-11-21,2,,wildlife camera image - fall,,,SensorData,"Can you tell who's visited me? In the fall, I provide important food for many animals preparing for winter.",,
-checkCommunityWildlife - winter,tested,,,xxxx-11-22,xxxx-03-21,2,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In the winter, I provide food and shelter for many animals.",,
-checkCommunityWildlife - spring,tested,,,xxxx-03-22,xxxx-06-22,2,,wildlife camera image,,,SensorData,"Can you tell who's visited me? In spring, I provide food and habitat for many animals.",,
+checkCommunityWildlife - summer,tested,,,xxxx-06-21,xxxx-09-21,2,,wildlife camera image - summer,,,Audience,"Can you tell who's visited me this month? In summer, I provide shade and food for many animals.",,
+checkCommunityWildlife - fall,tested,,,xxxx-09-22,xxxx-11-21,2,,wildlife camera image - fall,,,Audience,"Can you tell who's visited me? In the fall, I provide important food for many animals preparing for winter.",,
+checkCommunityWildlife - winter,tested,,,xxxx-11-22,xxxx-03-21,2,,wildlife camera image,,,Audience,"Can you tell who's visited me? In the winter, I provide food and shelter for many animals.",,
+checkCommunityWildlife - spring,tested,,,xxxx-03-22,xxxx-06-22,2,,wildlife camera image,,,Audience,"Can you tell who's visited me? In spring, I provide food and habitat for many animals.",,
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,red oak acorn,,EnviroFact,,"In fall, I drop seeds (acorns) that are food for 100+ types of wildlife. Many of these animals, like squirrels and blue jays, carry my acorns a great distance before storing them underground. They become accidental gardeners of new trees!",,238
 explainSeedDispersal,tested,Explain seed dispersal,,yyyy-09-01,yyyy-12-01,1,,"red oak & white oak acorns, side by side",,EnviroFact,,"All acorns are not created equal. Mine are packed with protein, fat, & calories, making them a high-value food for wildlife - but they are also high in bad-tasting tannins. Acorns of white oak trees, also found in my neighborhood, are a lower-value food but much tastier, so animals snap them up.",,296
 explainHerbivory,N,Explain herbivory ,Can we connect the tree's growth rate (or an automated reading of LAI) with regular (not gypsy moth) insect herbivory?,spring? summer?,,,,non-gypsy moth insect eating red oak leaf,,SensorData,,"In <Month>, when sapflow is strongest, insects are busily eating my leaves because they are full of water and sugars. By the end of an average summer, insects will have eaten x% of my leaves. ",,192

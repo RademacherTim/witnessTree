@@ -73,7 +73,7 @@ if os.path.exists(fileName):
 	message    = row [3]
 	hashtags   = row [4]
 	expires    = row [5]
-	print message + hashtags + fFigure
+	print message + hashtags + fFigure + figureName
 
 	# Authenticate the Twitter acocunt
         #----------------------------------------------------------------------

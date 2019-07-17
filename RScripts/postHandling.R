@@ -107,7 +107,8 @@ reEvaluatePriorityOf <- function (mtable) {
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-getPostDetails <- function (fName) {
+getPostDetails <- function (fName) 
+{
   
   # Read in spreadsheet with message texts
   #-------------------------------------------------------------------------------------
@@ -137,16 +138,12 @@ getPostDetails <- function (fName) {
                              fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, T, F))
   
   # Randomly decide whether we use the accompanying figure or not
-  # N.B. Each message needs to have a figure otherwise this will be biased. 
+  # N.B. Audience building posts are marked as such and are always posted with pictures
   #-------------------------------------------------------------------------------------
-  if (substring (fName, 1, 22) != 'checkCommunityWildlife') {
+  if (postDetails [['Treatment']] != 'Audience') {
     postDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
   }
   
   return (postDetails)
 }
-
-# Comments:
-#---------------------------------------------------------------------------------------
-# TR -  
 #=======================================================================================
