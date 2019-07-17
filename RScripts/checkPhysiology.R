@@ -94,17 +94,23 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
 #----------------------------------------------------------------------------------------
 checkWoodGrowthUpdate <- function (mtable, TEST = 0) {
   
+  # Check whether the function to calculate wood growth exists
+  #--------------------------------------------------------------------------------------
+  if (!existsFunction ('calcRadialGrowth')) {
+    source (sprintf ('%s/RScripts/calcRadialGrowth.R', path))
+  }
+  
   # Check whether it is the 24th of July
   #--------------------------------------------------------------------------------------
   if (substring (Sys.time (), 6, 10) == '07-24' | TEST == 1) {
     postDetails <- getPostDetails ("checkWoodGrowthUpdate")
-    if (substring (postDetails [['Message']], 1, 1) == 'I'){
-      message <- sprintf (postDetails [["Message"]]) 
-    } else {
-      growth <- calcRadGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
+    if (substring (postDetails [['Message']], 1, 1) == 'T'){
+      growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
       message <- sprintf (postDetails [["Message"]], round (growth [['annualGrowth']], 1), 
                           round (growth  [['annualGrowth']] / 25.4, 2)) 
-    }
+    } else {
+      message <- sprintf (postDetails [["Message"]]) 
+    } 
     delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate   <- sprintf ("%s 23:59:59 %s", 
                             format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 

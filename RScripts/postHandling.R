@@ -1,16 +1,24 @@
-#=======================================================================================#
+#========================================================================================
 # Function to select message of highest priority
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 selectPost <- function (mtable) # tibble of posts with, inter alia, priorities 
 {
+  # Delete all messages that are empty or saying "NEEDS MESSAGE"
+  #--------------------------------------------------------------------------------------
+  mtable <- mtable [mtable [['message']] != 'NEEDS MESSAGE', ]
+  mtable <- mtable [mtable [['message']] != '', ]
+  
   # Arrange messages by descending priority
+  #--------------------------------------------------------------------------------------
   mByPriority <- arrange (.data = mtable, desc (priority))
   
   # Subset only highest priority
+  #--------------------------------------------------------------------------------------
   highestPriority <- mByPriority [mByPriority[['priority']] == mByPriority [['priority']] [1] &
                                   !is.na (mByPriority [['priority']]), ]
   
   # Check whether there is more than one post of highest priority
+  #--------------------------------------------------------------------------------------
   if (dim (highestPriority) [1] > 1) { # there are several posts of highest priority, select one at random
     post <- sample_n (highestPriority, 1)
   } else { # there is only one post of highest priority
@@ -18,9 +26,11 @@ selectPost <- function (mtable) # tibble of posts with, inter alia, priorities
   }
   
   # Delete temporary variables
+  #--------------------------------------------------------------------------------------
   rm (mByPriority, highestPriority)
   
   # Return the selected message
+  #--------------------------------------------------------------------------------------
   return (post)
 }
 

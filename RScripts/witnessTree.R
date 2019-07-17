@@ -48,6 +48,7 @@ source  (sprintf ('%sRScripts/checkClimate.R',     path))
 source  (sprintf ('%sRScripts/calcSapFlow.R',      path))
 source  (sprintf ('%sRScripts/calcRadialGrowth.R', path))
 source  (sprintf ('%sRScripts/checkPhysiology.R',  path))
+source  (sprintf ('%sRScripts/checkMorphology.R',  path))
 source  (sprintf ('%sRScripts/checkCommunity.R',   path))
 source  (sprintf ('%sRScripts/treeStats.R',        path))
 

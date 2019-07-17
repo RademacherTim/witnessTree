@@ -10,6 +10,7 @@
 import sys        # library to use command line arguments
 import tweepy     # twitter library
 import Tkinter    # graphical user interface library
+import facebook   # library for facebook API 
 import csv        # for csv handling
 import os         # 
 import random     # library to use random number generator
@@ -20,14 +21,18 @@ from datetime import datetime
 # Linking the Twitter accound with Tweepy through adding credentials. 
 # Twitter handle @hf_tree (later @awitnesstree)
 #------------------------------------------------------------------------------
-consumer_key        = sys.argv [1] # consumer key
-consumer_secret     = sys.argv [2] # consumer secrets
-access_token        = sys.argv [3] # access token
-access_token_secret = sys.argv [4] # access token secret
+consumer_key        = sys.argv [1] # twitter accountconsumer key
+consumer_secret     = sys.argv [2] # twitter accountconsumer secrets
+access_token        = sys.argv [3] # twitter account access token
+access_token_secret = sys.argv [4] # twitter account access token secret
+page_access_token   = sys.argv [5] # facebook page access token
+facebook_page_id    = sys.argv [6] # facebook page ID
 #print (consumer_key)
 #print (consumer_secret)
 #print (access_token)
 #print (access_token_secret)
+#print (page_access_token)
+#print (facebook_page_id)
 
 # Authenticate the twitter page with tweepy library
 #------------------------------------------------------------------------------
@@ -70,14 +75,20 @@ if os.path.exists(fileName):
 	expires    = row [5]
 	print message + hashtags + fFigure
 
-	# Putting a post on Twitter
+	# Authenticate the Twitter acocunt
         #----------------------------------------------------------------------
 	api = tweepy.API (auth)
-        
+
+        # Get graph for facebook
+        #----------------------------------------------------------------------
+        graph = facebook.GraphAPI(page_access_token)        
+
         # The post is not accompanied by an image
         #----------------------------------------------------------------------
         if fFigure == False:
              api.update_status (message + hashtags)
+             graph.put_object(facebook_page_id, "feed", message='test message')
+
         # The post is accompanied by an image
 	#----------------------------------------------------------------------
         else:

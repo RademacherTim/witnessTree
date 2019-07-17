@@ -3,7 +3,7 @@
 # script is dependent on calibration files in the data directory.
 #----------------------------------------------------------------------------------------
 
-calcRadGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLOT = FALSE) {
+calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLOT = FALSE) {
   
   # Load dependencies
   #--------------------------------------------------------------------------------------
