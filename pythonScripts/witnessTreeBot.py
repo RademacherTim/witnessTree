@@ -35,7 +35,7 @@ facebook_page_id    = sys.argv [6] # facebook page ID
 #print (page_access_token)
 #print (facebook_page_id)
 
-# Authenticate the twitter page with tweepy library
+# Authenticate the twitter account
 #------------------------------------------------------------------------------
 #api = twitter.Api(consumer_key=consumer_key,
 #                  consumer_secret=consumer_secret,
@@ -81,20 +81,16 @@ if os.path.exists(fileName):
 	expires    = row [5]
 	print message + hashtags + fFigure + figureName
 
-	# Authenticate the Twitter acocunt
-        #----------------------------------------------------------------------
-	api = tweepy.API (auth) 
-
         # Get graph for facebook
         #----------------------------------------------------------------------
-        graph = facebook.GraphAPI(page_access_token)        
+        #graph = facebook.GraphAPI(page_access_token)        
 
         # The post is not accompanied by an image
         #----------------------------------------------------------------------
         if fFigure == False:
              api.update_status (message + hashtags)
              #status = api.PostUpdate(message + hashtags)
-             graph.put_object(facebook_page_id, "feed", message='test message')
+             #graph.put_object(facebook_page_id, "feed", message='test message')
 
         # The post is accompanied by an image
 	#----------------------------------------------------------------------
