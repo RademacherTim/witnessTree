@@ -46,7 +46,7 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 treeLocationName  <- "Harvard Forest" # name of location of this witnessTree
 treeState         <- "MA"             # name of the state the tree is located in
 treeCountry       <- "USA"            # name of the country the tree is located in
-treeWebPage       <- "https://harvardforest.fas.harvard.edu/witness-tree" # link to the webpage of this witnessTree
+treeWebPage       <- "https://harvardforest.fas.harvard.edu/witness-tree-social-media-project" # link to the webpage of this witnessTree
 treePrivacyPolicy <- "https://harvardforest.fas.harvard.edu/witness-tree-privacy-policy" # link to the privacy policy
 contactEmail      <- "HFoutreach@fas.harvard.edu" # email to contact the person in charge
 treeLon           <-  -72.189706396   # longitude of Koen's camera by the witnessTree measured on 2018/06/02
