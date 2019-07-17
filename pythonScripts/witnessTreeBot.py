@@ -9,7 +9,9 @@
 #------------------------------------------------------------------------------
 import sys        # library to use command line arguments
 import tweepy     # twitter library
+import twitter    # python-twitter library
 import Tkinter    # graphical user interface library
+import facebook   # library for facebook API 
 import csv        # for csv handling
 import os         # 
 import random     # library to use random number generator
@@ -20,23 +22,32 @@ from datetime import datetime
 # Linking the Twitter accound with Tweepy through adding credentials. 
 # Twitter handle @hf_tree (later @awitnesstree)
 #------------------------------------------------------------------------------
-consumer_key        = sys.argv [1] # consumer key
-consumer_secret     = sys.argv [2] # consumer secrets
-access_token        = sys.argv [3] # access token
-access_token_secret = sys.argv [4] # access token secret
+consumer_key        = sys.argv [1] # twitter accountconsumer key
+consumer_secret     = sys.argv [2] # twitter accountconsumer secrets
+access_token        = sys.argv [3] # twitter account access token
+access_token_secret = sys.argv [4] # twitter account access token secret
+page_access_token   = sys.argv [5] # facebook page access token
+facebook_page_id    = sys.argv [6] # facebook page ID
 #print (consumer_key)
 #print (consumer_secret)
 #print (access_token)
 #print (access_token_secret)
+#print (page_access_token)
+#print (facebook_page_id)
 
 # Authenticate the twitter page with tweepy library
 #------------------------------------------------------------------------------
+#api = twitter.Api(consumer_key=consumer_key,
+#                  consumer_secret=consumer_secret,
+#                  access_token_key=access_token,
+#                  access_token_secret=access_token_secret)
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Check points to make sure tweepy is linked to the appropriate twitter page
 #------------------------------------------------------------------------------
+#print(api.VerifyCredentials())
 user = api.me()
 #print (user.name)
 
@@ -68,19 +79,28 @@ if os.path.exists(fileName):
 	message    = row [3]
 	hashtags   = row [4]
 	expires    = row [5]
-	print message + hashtags + fFigure
+	print message + hashtags + fFigure + figureName
 
-	# Putting a post on Twitter
+	# Authenticate the Twitter acocunt
         #----------------------------------------------------------------------
-	api = tweepy.API (auth)
-        
+	api = tweepy.API (auth) 
+
+        # Get graph for facebook
+        #----------------------------------------------------------------------
+        graph = facebook.GraphAPI(page_access_token)        
+
         # The post is not accompanied by an image
         #----------------------------------------------------------------------
         if fFigure == False:
              api.update_status (message + hashtags)
+             #status = api.PostUpdate(message + hashtags)
+             graph.put_object(facebook_page_id, "feed", message='test message')
+
         # The post is accompanied by an image
 	#----------------------------------------------------------------------
         else:
+             #status = api.PostUpdate (message + hashtags,
+             #                         media = figureName)
              api.update_with_media (filename = figureName, 
                                     status = message + hashtags)
 

@@ -41,13 +41,16 @@ options (warn = -1) # To turn warnings back on use options (warn = 0)
 #---------------------------------------------------------------------------------------#
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
-source  (sprintf ('%sRScripts/postHandling.R',    path))
-source  (sprintf ('%sRScripts/checkEvents.R',     path))
-source  (sprintf ('%sRScripts/readClimate.R',     path))
-source  (sprintf ('%sRScripts/checkClimate.R',    path))
-source  (sprintf ('%sRScripts/checkPhysiology.R', path))
-source  (sprintf ('%sRScripts/checkCommunity.R',  path))
-source  (sprintf ('%sRScripts/treeStats.R',       path))
+source  (sprintf ('%sRScripts/postHandling.R',     path))
+source  (sprintf ('%sRScripts/checkEvents.R',      path))
+source  (sprintf ('%sRScripts/readClimate.R',      path))
+source  (sprintf ('%sRScripts/checkClimate.R',     path))
+source  (sprintf ('%sRScripts/calcSapFlow.R',      path))
+source  (sprintf ('%sRScripts/calcRadialGrowth.R', path))
+source  (sprintf ('%sRScripts/checkPhysiology.R',  path))
+source  (sprintf ('%sRScripts/checkMorphology.R',  path))
+source  (sprintf ('%sRScripts/checkCommunity.R',   path))
+source  (sprintf ('%sRScripts/treeStats.R',        path))
 
 # Read in previously generated posts, if not first iteration
 #---------------------------------------------------------------------------------------#
@@ -70,16 +73,16 @@ if (file.exists (sprintf ('%sposts/posts.csv', path))) {
 posts <- checkExpirationDatesOf (posts)
 
 # Re-evaluate priority of posts
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- reEvaluatePriorityOf (posts)
 
 # Read climate data
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 readClimate ()
 
 # Generate new posts concerning regularly recurrent events
-#---------------------------------------------------------------------------------------#
-posts <- helloWorld                     (posts) # on the launch date (2019-04-15) only
+#----------------------------------------------------------------------------------------
+posts <- helloWorld                     (posts) # on the launch date (2019-07-17) only
 posts <- checkNewYears                  (posts) #  1st  of January
 posts <- checkNationalWildLifeDay       (posts) #  4th  of March
 posts <- checkPiDay                     (posts) #  14th of March
@@ -113,12 +116,17 @@ posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 
 # Generate new posts concerning the community surrounding the tree
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- explainSeedDispersal   (posts)
 posts <- checkCommunityWildlife (posts)
 
+# Generate new posts concerning physiology
+#----------------------------------------------------------------------------------------
+posts <- monthlyRadGrowthSummary (posts)
+posts <- checkWoodGrowthUpdate (posts, TEST = 1)
+
 # Selection of post, figure and images for the current iterations
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 post <- selectPost (posts)
 
 # Delete the selected post from the posts tibble 
