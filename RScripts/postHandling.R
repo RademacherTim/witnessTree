@@ -1,16 +1,24 @@
-#=======================================================================================#
+#========================================================================================
 # Function to select message of highest priority
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 selectPost <- function (mtable) # tibble of posts with, inter alia, priorities 
 {
+  # Delete all messages that are empty or saying "NEEDS MESSAGE"
+  #--------------------------------------------------------------------------------------
+  mtable <- mtable [mtable [['message']] != 'NEEDS MESSAGE', ]
+  mtable <- mtable [mtable [['message']] != '', ]
+  
   # Arrange messages by descending priority
+  #--------------------------------------------------------------------------------------
   mByPriority <- arrange (.data = mtable, desc (priority))
   
   # Subset only highest priority
+  #--------------------------------------------------------------------------------------
   highestPriority <- mByPriority [mByPriority[['priority']] == mByPriority [['priority']] [1] &
                                   !is.na (mByPriority [['priority']]), ]
   
   # Check whether there is more than one post of highest priority
+  #--------------------------------------------------------------------------------------
   if (dim (highestPriority) [1] > 1) { # there are several posts of highest priority, select one at random
     post <- sample_n (highestPriority, 1)
   } else { # there is only one post of highest priority
@@ -18,9 +26,11 @@ selectPost <- function (mtable) # tibble of posts with, inter alia, priorities
   }
   
   # Delete temporary variables
+  #--------------------------------------------------------------------------------------
   rm (mByPriority, highestPriority)
   
   # Return the selected message
+  #--------------------------------------------------------------------------------------
   return (post)
 }
 
@@ -53,7 +63,8 @@ deletePost <- function (mtable,   # tibble of posts
 #=======================================================================================
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
-checkExpirationDatesOf <- function (mtable) {
+checkExpirationDatesOf <- function (mtable) 
+{
  
   # Loop over messages to check expiration date
   i = 1
@@ -75,7 +86,8 @@ checkExpirationDatesOf <- function (mtable) {
 #=======================================================================================
 # This function re-evaluates the priority of preserved messages
 #---------------------------------------------------------------------------------------
-reEvaluatePriorityOf <- function (mtable) {
+reEvaluatePriorityOf <- function (mtable) 
+{
   
   # Increase priority of all messages by 1
   mtable [['priority']] <- apply (X      = cbind (as.numeric (mtable [['priority']]) + 1, 
@@ -97,7 +109,8 @@ reEvaluatePriorityOf <- function (mtable) {
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-getPostDetails <- function (fName) {
+getPostDetails <- function (fName) 
+{
   
   # Read in spreadsheet with message texts
   #-------------------------------------------------------------------------------------
@@ -124,19 +137,22 @@ getPostDetails <- function (fName) {
   # Check whether there is a figure accompanying the post
   #-------------------------------------------------------------------------------------
   postDetails <- add_column (postDetails,
-                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, T, F))
+                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, F, T))
   
   # Randomly decide whether we use the accompanying figure or not
-  # N.B. Each message needs to have a figure otherwise this will be biased. 
+  # N.B. Audience building posts are marked as such and are always posted with pictures
   #-------------------------------------------------------------------------------------
-  if (substring (fName, 1, 22) != 'checkCommunityWildlife') {
+  if (postDetails [['Treatment']] != 'Audience') {
     postDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
   }
   
+  # Add the image path to the figureName, so that the bot can actually find them
+  #-------------------------------------------------------------------------------------
+  postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
+                                           postDetails [['FigureName']])
+  
+  # Return the post'd details
+  #-------------------------------------------------------------------------------------
   return (postDetails)
 }
-
-# Comments:
-#---------------------------------------------------------------------------------------
-# TR -  
 #=======================================================================================

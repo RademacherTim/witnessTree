@@ -26,7 +26,8 @@
 
 # Load dependencies
 #---------------------------------------------------------------------------------------#
-suppressMessages (require ('RcppBDT'))
+suppressMessages (library ('RcppBDT'))
+if (!existsFunction ('day')) library ('lubridate')
 
 # 0 - Hello world! message (post once on 15th of July)
 #---------------------------------------------------------------------------------------#
@@ -127,17 +128,19 @@ checkInternationalDayOfForests <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkWorldWaterDay <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST == 1) {
-    messageDetails <- getPostDetails ("checkWorldWaterDay")
-    message <- ifelse (substring (messageDetails [["Message"]],3,3) == "i", 
-                       sprintf (messageDetails [["Message"]], percentWaterContent),
-                       messageDetails [["Message"]])
+    postDetails <- getPostDetails ("checkWorldWaterDay")
+    if (substring (postDetails [["Message"]],2,2) == "i") {
+      message <- sprintf (postDetails [["Message"]], percentWaterContent) 
+    } else {
+      message <- postDetails [["Message"]]      
+    }
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]],
-                          fFigure     = messageDetails [['fFigure']],
-                          figureName  = messageDetails [["FigureName"]], 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
                           message     = message, 
-                          hashtags    = messageDetails [["Hashtags"]], 
+                          hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
   return (mtable)
@@ -386,14 +389,14 @@ checkWinterSolstice <- function (mtable, TEST = 0) {
 #---------------------------------------------------------------------------------------#
 checkHalloween <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 6, 10) == "10-31" | TEST == 1) {
-    messageDetails <- getPostDetails ('checkHalloween')
+    postDetails <- getPostDetails ('checkHalloween')
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
-                          priority    = messageDetails [["Priority"]],
-                          fFigure     = messageDetails [['fFigure']],
-                          figureName  = messageDetails [["FigureName"]], 
-                          message     = messageDetails [['Message']], 
-                          hashtags    = messageDetails [["Hashtags"]], 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = postDetails [['Message']], 
+                          hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate) 
   } 
   return (mtable)

@@ -10,7 +10,7 @@ age              <- floor (lubridate::time_length (Sys.time () - birthDay, "year
 
 # LIDAR-derived quantities from scan by Peter Boucher (PhD Candidate, School of 
 # Environment, University of Massachusetts Boston) with LEICA BLK360 on 2018/07/27 
-#---------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------------# TR add year nunbers
 totalVolume      <- 13937                                     # L
 trunkVolume      <- 5624                                      # L
 branchVolume     <- 8313                                      # L
@@ -25,9 +25,11 @@ dbh_cyl          <- 0.780                                     # m mean of cylind
 
 # Values measured in the field
 #---------------------------------------------------------------------------------------#
-cbh                 <- 2.65     # Circumference at breast height measured on 2018-10-11
-dbh                 <- cbh / pi # Derived diameter at breast height
-sapFlowArea         <- 0.8      # TTR Made up
+cbh                 <- 2.65     # Circumference at breast height measured on 2018-10-11 (m)
+dbh                 <- cbh / pi # Derived diameter at breast height (m)
+bark                <- 2.5      # bark thickness (cm)
+rHeartWood          <- 0.5      # heartwood radius (m)
+k                   <- 0.5      # thermal conductivity of sapwood (W mK-1)
 percentWaterContent <- 80       # TTR Made up
 
 # Values from literature
@@ -42,7 +44,7 @@ meanAnnualCarbonSequestration <- totalCarbon / age
 # Location
 #---------------------------------------------------------------------------------------#
 treeLocationName  <- "Harvard Forest" # name of location of this witnessTree
-treeState         <- "Massachusetts"  # name of the state the tree is located in
+treeState         <- "MA"             # name of the state the tree is located in
 treeCountry       <- "USA"            # name of the country the tree is located in
 treeWebPage       <- "https://harvardforest.fas.harvard.edu/witness-tree-social-media-project" # link to the webpage of this witnessTree
 treePrivacyPolicy <- "https://harvardforest.fas.harvard.edu/witness-tree-privacy-policy" # link to the privacy policy

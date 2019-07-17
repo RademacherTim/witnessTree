@@ -250,33 +250,33 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
     
     # Choose what to talk about
     if (diMonthlyAirt < sdMonthlyAirt & diMonthlyPrec < sdMonthlyPrec | TEST == 1) { # Just an close-to-average month 
-      messageDetails <- getPostDetails ('monthlyClimateSummary - normal')
-      message        <- sprintf (messageDetails [['Message']], round (acMonthlyAirt, 1), round (acMonthlyPrec, 1), prMonth)
+      postDetails <- getPostDetails ('monthlyClimateSummary - normal')
+      message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), round (acMonthlyPrec, 1), prMonth)
     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
-        messageDetails <- getPostDetails ('monthlyClimateSummary - cold')
-        message        <- sprintf (messageDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - cold')
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
-        messageDetails <- getPostDetails ('monthlyClimateSummary - warm')
-        message        <- sprintf (messageDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - warm')
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       }
     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
-        messageDetails <- getPostDetails ('monthlyClimateSummary - dry')
-        message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - dry')
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
-        messageDetails <- getPostDetails ('monthlyClimateSummary - wet')
-        message        <- sprintf (messageDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - wet')
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       }
     }
-    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,7))
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority   = messageDetails [["Priority"]], 
-                          fFigure    = messageDetails [["fFigure"]],
-                          figureName = messageDetails [["FigureName"]], 
+                          priority   = postDetails [["Priority"]], 
+                          fFigure    = postDetails [["fFigure"]],
+                          figureName = postDetails [["FigureName"]], 
                           message    = message, 
-                          hashtags   = messageDetails [["Hashtags"]], 
+                          hashtags   = postDetails [["Hashtags"]], 
                           expires    = expirDate)
   }
   
@@ -306,33 +306,33 @@ annualClimateSummary <- function (mtable, TEST = 0) {
     
     # Choose what to talk about
     if (diYearlyAirt < sdYearlyAirt & diYearlyPrec < sdYearlyPrec | TEST == 1) { # Just an close-to-average Year 
-      messageDetails <- getPostDetails ('annualClimateSummary - normal')
-      message        <- sprintf (messageDetails [['Message']], round (acYearlyAirt, 1), round (acYearlyPrec, 1), year (Sys.Date ()) - 1)
+      postDetails <- getPostDetails ('annualClimateSummary - normal')
+      message        <- sprintf (postDetails [['Message']], round (acYearlyAirt, 1), round (acYearlyPrec, 1), year (Sys.Date ()) - 1)
     } else if (abs (diYearlyAirt) >= sdYearlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diYearlyAirt < 0 | TEST == 2) { # Cold Year
-        messageDetails <- getPostDetails ('annualClimateSummary - cold')
-        message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+        postDetails <- getPostDetails ('annualClimateSummary - cold')
+        message        <- sprintf (postDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 3) { # Warm Year
-        messageDetails <- getPostDetails ('annualClimateSummary - warm')
-        message        <- sprintf (messageDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
+        postDetails <- getPostDetails ('annualClimateSummary - warm')
+        message        <- sprintf (postDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       }
     } else if (abs (diYearlyPrec) >= sdYearlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diYearlyPrec < 0  | TEST == 4) { # Dry Year
-        messageDetails <- getPostDetails ('annualClimateSummary - dry')
-        message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+        postDetails <- getPostDetails ('annualClimateSummary - dry')
+        message        <- sprintf (postDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 5) { # Wet Year
-        messageDetails <- getPostDetails ('annualClimateSummary - wet')
-        message        <- sprintf (messageDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
+        postDetails <- getPostDetails ('annualClimateSummary - wet')
+        message        <- sprintf (postDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       }
     }
-    delay <- as.numeric (substring (messageDetails [['ExpirationDate']], 7 ,8))
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
-                          priority   = messageDetails [["Priority"]], 
-                          fFigure    = messageDetails [["fFigure"]],
-                          figureName = messageDetails [["FigureName"]], 
+                          priority   = postDetails [["Priority"]], 
+                          fFigure    = postDetails [["fFigure"]],
+                          figureName = postDetails [["FigureName"]], 
                           message    = message, 
-                          hashtags   = messageDetails [["Hashtags"]], 
+                          hashtags   = postDetails [["Hashtags"]], 
                           expires    = expirDate)
   }
   
