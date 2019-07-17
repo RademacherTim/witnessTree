@@ -5,7 +5,7 @@
 source ./config
 if [ $? != 0 ]
 then
-   echo 'Error: Could not source config.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error 1: Could not source config.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
@@ -18,7 +18,7 @@ cd ${WITNESSTREEPATH}
 Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
 if [ $? != 0 ]
 then 
-   echo 'Error: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error 2: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
@@ -27,7 +27,7 @@ fi
 python ./pythonScripts/witnessTreeBot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret} ${page_access_token} ${facebook_page_id}
 if [ $? != 0 ]
 then 
-   echo 'Error: witnessTreeBot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error 3: witnessTreeBot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
