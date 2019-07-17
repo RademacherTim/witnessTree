@@ -101,7 +101,13 @@ t = ['How are you?',
      'How are you doing?',
      'how are you doing?',
      'How are you feeling?',
-     'how are you feeling?']
+     'how are you feeling?',
+     'How r u?',
+     'how r u?',
+     'How r u doing?',
+     'how r u doing?',
+     'How do you do?',
+     'how do you do?']
 #print (t)
 
 for s in twts:
