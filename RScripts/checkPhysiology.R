@@ -39,9 +39,9 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
 
     # Get radial growth for the last 30 days and the 30 days prior to that
     #------------------------------------------------------------------------------------
-    radGrowth <- calcRadGrowth (pdm_calibration_path = dataPath, 
-                                temporalRes = 'monthly',
-                                PLOT = TRUE)
+    radGrowth <- calcRadialGrowth (pdm_calibration_path = dataPath, 
+                                   temporalRes = 'monthly',
+                                   PLOT = TRUE)
     
     # Check whether radial growth is fast or slower than in the previous month
     #------------------------------------------------------------------------------------
