@@ -1,32 +1,32 @@
 #!/bin/bash
 
+# Get execution directory from the command line (second argument with index 1)
+WITNESSTREEPATH=$1
+
 # Read WITNESSTREEPATH from config file
-source ./config
+source ${WITNESSTREEPATH}config
 if [ $? != 0 ]
 then
-   echo 'Error: Could not source config.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error: Could not source config.' >> ${WITNESSTREEPATH}tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
-# Change to the witnessTree directory
-cd ${WITNESSTREEPATH}
-
 # Run the witnessTree RScript to generate messages
-Rscript ./RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
+Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
 if [ $? != 0 ]
 then 
-   echo 'Error: witnessTree.R did not execute.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error: witnessTree.R did not execute.' >> ${WITNESSTREEPATH}tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
 # Run twitterbot to post generated messages
-python ./pythonScripts/witnessTreeBot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret} ${page_access_token} ${facebook_page_id}
+python ${WITNESSTREEPATH}pythonScripts/witnessTreeBot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret} ${page_access_token} ${facebook_page_id}
 if [ $? != 0 ]
 then 
-   echo 'Error: witnessTreeBot.py did not execute.' >> ./tmp/logfile.txt # write error message into log
+   echo 'Error: witnessTreeBot.py did not execute.' >> ${WITNESSTREEPATH}tmp/logfile.txt # write error message into log
    exit 1 # terminate script and indicate error
 fi
 
 # Write time and date into log file in the tmp/ folder
 DATE=$(date +%Y-%m-%d" "%H:%M:%S)
-echo ${DATE} >> ./tmp/logfile.txt
+echo ${DATE} >> ${WITNESSTREEPATH}tmp/logfile.txt
