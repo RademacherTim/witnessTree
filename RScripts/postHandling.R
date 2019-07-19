@@ -110,9 +110,25 @@ reEvaluatePriorityOf <- function (mtable) {
 getPostDetails <- function (fName) 
 {
   
+  # load dependencies
+  #-------------------------------------------------------------------------------------
+  if (!existsFunction ('gs_title')) library ('googlesheets')
+
+  # get the witnessTreePosts google sheet
+  #----------------------------------------------------------------------------------------
+  spreadsheet <- gs_title ("witnessTreePosts")
+  
+  # list worksheets
+  #----------------------------------------------------------------------------------------
+  gs_ws_ls(spreadsheet)
+  
+  # get posts spreadsheet
+  #----------------------------------------------------------------------------------------
+  input <- gs_read (ss = spreadsheet, ws = "posts", col_types = cols ())
+  
   # Read in spreadsheet with message texts
   #-------------------------------------------------------------------------------------
-  input <- read_csv (file = 'messagesText.csv', col_types = cols ())  
+  #input <- read_csv (file = 'messagesText.csv', col_types = cols ())  
   
   # Find appropriate lines using the function name
   #-------------------------------------------------------------------------------------
