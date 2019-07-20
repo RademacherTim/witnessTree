@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # Get execution directory from the command line (second argument with index 1)
+#----------------------------------------------------------------------------------------
 WITNESSTREEPATH=$1
 
 # Read WITNESSTREEPATH from config file
+#----------------------------------------------------------------------------------------
 source ${WITNESSTREEPATH}config
 if [ $? != 0 ]
 then
@@ -12,6 +14,7 @@ then
 fi
 
 # Run the witnessTree RScript to generate messages
+#----------------------------------------------------------------------------------------
 Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
 if [ $? != 0 ]
 then 
@@ -20,6 +23,7 @@ then
 fi
 
 # Run twitterbot to post generated messages
+#----------------------------------------------------------------------------------------
 python ${WITNESSTREEPATH}pythonScripts/witnessTreeBot.py ${consumer_key} ${consumer_secret} ${access_token} ${access_token_secret} ${page_access_token} ${facebook_page_id}
 if [ $? != 0 ]
 then 
@@ -28,5 +32,6 @@ then
 fi
 
 # Write time and date into log file in the tmp/ folder
+#----------------------------------------------------------------------------------------
 DATE=$(date +%Y-%m-%d" "%H:%M:%S)
 echo ${DATE} >> ${WITNESSTREEPATH}tmp/logfile.txt
