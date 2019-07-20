@@ -20,7 +20,6 @@ from datetime import time
 from datetime import datetime
 
 # Linking the Twitter accound with Tweepy through adding credentials. 
-# Twitter handle @hf_tree (later @awitnesstree)
 #------------------------------------------------------------------------------
 consumer_key        = sys.argv [1] # twitter accountconsumer key
 consumer_secret     = sys.argv [2] # twitter accountconsumer secrets
