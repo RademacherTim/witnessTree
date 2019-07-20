@@ -38,7 +38,7 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
   
   # Define excitation voltage [V]
   #--------------------------------------------------------------------------------------
-  v_excitation <- 2 # Need to check the excitation voltage
+  v_excitation <- 2.5
   data1 <- cbind (data [['datetime']],
                   voltage_to_position (cal_data$sensor_id [2], 
                                        data [['dbhQuercusRubra1']], 

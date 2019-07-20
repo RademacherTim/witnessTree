@@ -33,12 +33,17 @@ print (path)
 print (imagesPath)
 print (dataPath)
 
+
+# Set the working directory
+#----------------------------------------------------------------------------------------
+setwd (path)
+
 # Suppress warning messages 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 options (warn = -1) # To turn warnings back on use options (warn = 0)
 
 # Load dependencies
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
 source  (sprintf ('%sRScripts/postHandling.R',     path))
@@ -51,6 +56,7 @@ source  (sprintf ('%sRScripts/checkPhysiology.R',  path))
 source  (sprintf ('%sRScripts/checkMorphology.R',  path))
 source  (sprintf ('%sRScripts/checkCommunity.R',   path))
 source  (sprintf ('%sRScripts/treeStats.R',        path))
+print ('Dependencies loaded.')
 
 # Read in previously generated posts, if not first iteration
 #---------------------------------------------------------------------------------------#
@@ -67,18 +73,22 @@ if (file.exists (sprintf ('%sposts/posts.csv', path))) {
                    expires     = as.POSIXct (Sys.time ()) - 10e9) # expiration date of the message
   names (posts) <- c ('priority','fFigure','figureName','message','hashtags','expires')
 }
+print ('Previous messages read.')
 
 # Purge expired posts
 #---------------------------------------------------------------------------------------#
 posts <- checkExpirationDatesOf (posts)
+print ('Expiration dates have been checked.')
 
 # Re-evaluate priority of posts
 #----------------------------------------------------------------------------------------
 posts <- reEvaluatePriorityOf (posts)
+print ('Priorities have been re-evaluated.')
 
 # Read climate data
 #----------------------------------------------------------------------------------------
 readClimate ()
+print ('Climate files have been read.')
 
 # Generate new posts concerning regularly recurrent events
 #----------------------------------------------------------------------------------------
@@ -97,6 +107,7 @@ posts <- checkAutumnEquinox             (posts) # ~22nd of September
 posts <- checkSummerSolstice            (posts) #  21st of June
 posts <- checkWinterSolstice            (posts) #  21st of December
 posts <- checkHalloween                 (posts) #  31st of October
+print ('Events have been checked.')
 
 # Generate new posts concerning phenology
 #---------------------------------------------------------------------------------------#
@@ -114,20 +125,24 @@ posts <- checkFrost    (posts) # Check for first frost of the autumn
                                # and late frost in early growing season.
 posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
+print ('Climatic conditions have been checked.')
 
 # Generate new posts concerning the community surrounding the tree
 #----------------------------------------------------------------------------------------
 posts <- explainSeedDispersal   (posts)
 posts <- checkCommunityWildlife (posts)
+print ('Community related messages have been checked.')
 
 # Generate new posts concerning physiology
 #----------------------------------------------------------------------------------------
 posts <- monthlyRadGrowthSummary (posts)
 posts <- checkWoodGrowthUpdate (posts)
+print ('Physiological conditions have been checked.')
 
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------
 post <- selectPost (posts)
+print ('A post has been selected.')
 
 # Delete the selected post from the posts tibble 
 #---------------------------------------------------------------------------------------#
