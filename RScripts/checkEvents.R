@@ -54,7 +54,8 @@ helloWorld <- function (mtable, TEST = 0) {
 checkNewYears <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST == 1) {
     postDetails <- getPostDetails ("checkNewYears")
-    message   <- sprintf (postDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), year (Sys.time ()))
+    message   <- sprintf (postDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), 
+                          round (2.20462 * meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = postDetails [["Priority"]],
@@ -91,7 +92,7 @@ checkPiDay <- function (mtable, TEST = 0) {
     postDetails <- getPostDetails ("checkPiDay")
     message <- ifelse (substring (postDetails [["Message"]],16,16) == "P", 
                        postDetails [["Message"]],
-                       sprintf (postDetails [["Message"]], dbh_cyl, sapFlowArea))
+                       sprintf (postDetails [["Message"]], round (dbh, 2), round (sapFlowArea,1)))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = postDetails [["Priority"]], 

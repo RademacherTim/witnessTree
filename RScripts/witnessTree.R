@@ -110,12 +110,12 @@ posts <- checkHalloween                 (posts) #  31st of October
 print ('Events have been checked.')
 
 # Generate new posts concerning phenology
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 #posts <- startOfGrowingSeason (posts)
 #posts <- endOfGrowingSeason   (posts)
 
 # Generate new posts concerning meteorological & climatic events
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- checkExtremeTemperatures (posts) # Test whether it is the hottest or coldest 
                                           # temperature on record (in memory).
 posts <- monthlyClimateSummary (posts) # If it is the beginning of the month summarise 
