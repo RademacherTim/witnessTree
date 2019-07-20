@@ -33,12 +33,17 @@ print (path)
 print (imagesPath)
 print (dataPath)
 
+
+# Set the working directory
+#----------------------------------------------------------------------------------------
+setwd (path)
+
 # Suppress warning messages 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 options (warn = -1) # To turn warnings back on use options (warn = 0)
 
 # Load dependencies
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
 source  (sprintf ('%sRScripts/postHandling.R',     path))
