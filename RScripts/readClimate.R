@@ -65,6 +65,7 @@ readClimate <- function (TEST = F) {
   
   # Rank intervals from highest to lowest
   #--------------------------------------------------------------------------------------
+  airt         <<- add_column (airt,         rank = rank (-airt         [['airt']]))
   dailyAirt    <<- add_column (dailyAirt,    rank = rank (-dailyAirt    [['airt']]))
   dailyMaxAirt <<- add_column (dailyMaxAirt, rank = rank (-dailyMaxAirt [['airt']]))
     

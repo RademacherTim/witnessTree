@@ -150,11 +150,13 @@ checkWorldWaterDay <- function (mtable, TEST = 0) {
 checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much witnesstree has grown in a year
   if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10) | TEST == 1) {
     len <- nchar (as.character (age))
-    if (substring (as.character (age), len, len) == 1) {
+    if (substring (as.character (age), len, len) == '1') {
       subst <- 'st'
-    } else if (substring (as.character (age), len, len) == 2) {
+    } else if (substring (as.character (age), len, len) == '2') {
       subst <- 'nd'
-    } else {
+    } else if (substring (as.character (rank), len, len) == '3') {
+      subst <- 'rd'
+    }  else {
       subst <- 'th'
     }
     postDetails <- getPostDetails ('checkBirthday')

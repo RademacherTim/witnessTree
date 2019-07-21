@@ -129,7 +129,7 @@ print ('Climatic conditions have been checked.')
 
 # Generate new posts concerning the morphology of the tree
 #----------------------------------------------------------------------------------------
-posts <- explainDimensions (posts)
+posts <- explainDimensions (posts, TEST = 1)
 
 # Generate new posts concerning the community surrounding the tree
 #----------------------------------------------------------------------------------------
