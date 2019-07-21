@@ -10,7 +10,7 @@
 # Explain dimensions (from LIDAR facts) 
 #----------------------------------------------------------------------------------------
 explainDimensions <- function (mtable, TEST = 0) {
-  if (substring (Sys.time (), 9, 10) == "20" | TEST == 1) {
+  if (substring (Sys.time (), 9, 10) == "22" | TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions')
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
       message <- sprintf (postDetails [["Message"]], surfaceArea)

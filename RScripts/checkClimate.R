@@ -43,7 +43,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the current temperature is the hottest temperature on record 
   #-------------------------------------------------------------------------------------#
-  if (max (airt [['airt']], na.rm = T) < tail (airt [['airt']], n = 1) | TEST == 1) {
+  if (max (airt [['airt']], na.rm = T) <= tail (airt [['airt']], n = 1) | TEST == 1) {
     HOTTEST <- T
   } else {
     HOTTEST <- F
@@ -51,10 +51,12 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the yesterday was the warmest day on record
   #-------------------------------------------------------------------------------------#
-  if (max (dailyAirt [['airt']], na.rm = T) < head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 2) {
+  if (max (dailyAirt [['airt']], na.rm = T) <= 
+      head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 2) {
     HOTTESTDAY <- T
-  } else {
+  } else if (head (tail (dailyAirt [['rank']], n = 2), n = 1) < 30) {
     HOTTESTDAY <- F
+    HOTDAY <- T
   }
   
   # Check whether the last week was the warmest week on record
