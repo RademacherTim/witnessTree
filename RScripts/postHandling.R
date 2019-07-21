@@ -115,6 +115,23 @@ getPostDetails <- function (fName)
   # load dependencies
   #-------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
+  if (!existsFunction ('file.remove')) library ('httr')
+  #options (httr_oob_default = TRUE) 
+  file.remove ('.httr-oauth') # Remove current token
+
+  oauth2.0_token (
+    endpoint = oauth_endpoints("google"),
+    app = oauth_app(
+      "google",
+      key = getOption("googlesheets.client_id"),
+      secret = getOption("googlesheets.client_secret")
+    ),
+    scope = c(
+      "https://spreadsheets.google.com/feeds",
+      "https://www.googleapis.com/auth/drive"),
+    use_oob = TRUE,
+    cache = TRUE
+  )
 
   # get the witnessTreePosts google sheet
   #----------------------------------------------------------------------------------------
@@ -122,7 +139,7 @@ getPostDetails <- function (fName)
   
   # list worksheets
   #----------------------------------------------------------------------------------------
-  gs_ws_ls(spreadsheet)
+  #gs_ws_ls(spreadsheet)
   
   # get posts spreadsheet
   #----------------------------------------------------------------------------------------

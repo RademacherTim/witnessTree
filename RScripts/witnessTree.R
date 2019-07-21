@@ -154,7 +154,7 @@ posts <- deletePost (posts, post)
 
 # Check whether the bot has already posted four messages last week
 #----------------------------------------------------------------------------------------
-pastPostDates <- as.POSIXct (list.files (sprintf ('%s/messages/', path)),
+pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path)),
                              format = "%Y-%m-%d_%H")
 numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
                                                 !is.na  (pastPostDates)                 &
