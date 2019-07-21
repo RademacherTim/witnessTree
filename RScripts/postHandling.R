@@ -63,7 +63,8 @@ deletePost <- function (mtable,   # tibble of posts
 #=======================================================================================
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
-checkExpirationDatesOf <- function (mtable) {
+checkExpirationDatesOf <- function (mtable) 
+{
  
   # Loop over messages to check expiration date
   i = 1
@@ -85,7 +86,8 @@ checkExpirationDatesOf <- function (mtable) {
 #=======================================================================================
 # This function re-evaluates the priority of preserved messages
 #---------------------------------------------------------------------------------------
-reEvaluatePriorityOf <- function (mtable) {
+reEvaluatePriorityOf <- function (mtable) 
+{
   
   # Increase priority of all messages by 1
   mtable [['priority']] <- apply (X      = cbind (as.numeric (mtable [['priority']]) + 1, 
