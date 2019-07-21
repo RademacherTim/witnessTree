@@ -13,7 +13,7 @@ explainDimensions <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 9, 10) == "22" | TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions')
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
-      message <- sprintf (postDetails [["Message"]], surfaceArea)
+      message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
     } else if (substring (postDetails [['Message']], 1, 3) == 'Wow') {
       message <- sprintf (postDetails [["Message"]], round (branchLength / 1609.34, 1), round (branchLength / 1000.0,1))
     } else if (substring (postDetails [['Message']], 1, 3) == 'Sci') {
