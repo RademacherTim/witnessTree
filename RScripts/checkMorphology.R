@@ -11,7 +11,7 @@
 #----------------------------------------------------------------------------------------
 explainDimensions <- function (mtable, TEST = 0) {
   if (substring (Sys.time (), 9, 10) == "22" | TEST == 1) {
-    postDetails <- getPostDetails ('explainDimensions')
+    postDetails <- getPostDetails ('explainDimensions', gs_posts_key = gsPostsKey)
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
       message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
     } else if (substring (postDetails [['Message']], 1, 3) == 'Wow') {

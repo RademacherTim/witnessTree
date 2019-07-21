@@ -153,25 +153,25 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
     priority  <- 9
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     if (HOT | TEST == 2){
-      postDetails <- getPostDetails ('hot')
+      postDetails <- getPostDetails ('hot', gs_posts_key = gsPostsKey)
       message    <- sprintf (postDetails [['Message']])
       
       # Expires four hours after occurance
       expireDate <- sprintf ("%s %s", format (Sys.time () + 4* 60 * 60, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
     } else if (HOTTEST | TEST == 1) {
-      postDetails <- getPostDetails ('hottest')
+      postDetails <- getPostDetails ('hottest', gs_posts_key = gsPostsKey)
       message    <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires four hours after occurance
       expireDate <- sprintf ("%s %s", format (Sys.time () + 4* 60 * 60, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
     } else if (COLDEST) {
-      postDetails <- getPostDetails ('coldest')
+      postDetails <- getPostDetails ('coldest', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires four hours after occurance
       expireDate <- sprintf ("%s %s", format (Sys.time () + 4 * 60 * 60, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
     } else if (HOTDAY | TEST == 4) {
-      postDetails <- getPostDetails ('hotDay')
+      postDetails <- getPostDetails ('hotDay', gs_posts_key = gsPostsKey)
       rank <- head (tail (dailyAirt [['rank']], n = 2), n = 1)
       len <- nchar (as.character (rank))
       if (substring (as.character (rank), len, len) == '1') {
@@ -189,49 +189,49 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
       # Expires at the end of the day
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     } else if (HOTTESTDAY | TEST == 3) {
-      postDetails <- getPostDetails ('hottestDay')
+      postDetails <- getPostDetails ('hottestDay', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires at the end of the day
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     } else if (COLDESTDAY) {
-      postDetails <- getPostDetails ('coldestDay')
+      postDetails <- getPostDetails ('coldestDay', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires at the end of the day
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     } else if (HOTTESTWEEK) {
-      postDetails <- getPostDetails ('hottestWeek')
+      postDetails <- getPostDetails ('hottestWeek', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next three days
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 3, format = '%Y-%m-%d'), treeTimeZone)
     } else if (COLDESTWEEK) {
-      postDetails <- getPostDetails ('coldestWeek')
+      postDetails <- getPostDetails ('coldestWeek', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next three days
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 3, format = '%Y-%m-%d'), treeTimeZone)
     } else if (HOTTESTMONTH) {
-      postDetails <- getPostDetails ('hottestMonth')
+      postDetails <- getPostDetails ('hottestMonth', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next ten days
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 10, format = '%Y-%m-%d'), treeTimeZone)
     } else if (COLDESTMONTH) {
-      postDetails <- getPostDetails ('coldestMonth')
+      postDetails <- getPostDetails ('coldestMonth', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next ten days
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 10, format = '%Y-%m-%d'), treeTimeZone)
     } else if (HOTTESTYEAR) {
-      postDetails <- getPostDetails ('hottestYear')
+      postDetails <- getPostDetails ('hottestYear', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next three weeks
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + 21, format = '%Y-%m-%d'), treeTimeZone)
     } else if (COLDESTYEAR) {
-      postDetails <- getPostDetails ('coldestYear')
+      postDetails <- getPostDetails ('coldestYear', gs_posts_key = gsPostsKey)
       message   <- sprintf (postDetails [['Message']], round (temperatureC, 1), round (temperatureF, 1))
       
       # Expires within the next three weeks
@@ -292,22 +292,22 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
     
     # Choose what to talk about
     if (diMonthlyAirt < sdMonthlyAirt & diMonthlyPrec < sdMonthlyPrec | TEST == 1) { # Just an close-to-average month 
-      postDetails <- getPostDetails ('monthlyClimateSummary - normal')
+      postDetails <- getPostDetails ('monthlyClimateSummary - normal', gs_posts_key = gsPostsKey)
       message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), round (acMonthlyPrec, 1), prMonth)
     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
-        postDetails <- getPostDetails ('monthlyClimateSummary - cold')
+        postDetails <- getPostDetails ('monthlyClimateSummary - cold', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
-        postDetails <- getPostDetails ('monthlyClimateSummary - warm')
+        postDetails <- getPostDetails ('monthlyClimateSummary - warm', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
       }
     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
-        postDetails <- getPostDetails ('monthlyClimateSummary - dry')
+        postDetails <- getPostDetails ('monthlyClimateSummary - dry', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
-        postDetails <- getPostDetails ('monthlyClimateSummary - wet')
+        postDetails <- getPostDetails ('monthlyClimateSummary - wet', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
       }
     }
@@ -348,22 +348,22 @@ annualClimateSummary <- function (mtable, TEST = 0) {
     
     # Choose what to talk about
     if (diYearlyAirt < sdYearlyAirt & diYearlyPrec < sdYearlyPrec | TEST == 1) { # Just an close-to-average Year 
-      postDetails <- getPostDetails ('annualClimateSummary - normal')
+      postDetails <- getPostDetails ('annualClimateSummary - normal', gs_posts_key = gsPostsKey)
       message        <- sprintf (postDetails [['Message']], round (acYearlyAirt, 1), round (acYearlyPrec, 1), year (Sys.Date ()) - 1)
     } else if (abs (diYearlyAirt) >= sdYearlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diYearlyAirt < 0 | TEST == 2) { # Cold Year
-        postDetails <- getPostDetails ('annualClimateSummary - cold')
+        postDetails <- getPostDetails ('annualClimateSummary - cold', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 3) { # Warm Year
-        postDetails <- getPostDetails ('annualClimateSummary - warm')
+        postDetails <- getPostDetails ('annualClimateSummary - warm', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meYearlyAirt, 1), round (-diYearlyAirt, 1), prYear)
       }
     } else if (abs (diYearlyPrec) >= sdYearlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diYearlyPrec < 0  | TEST == 4) { # Dry Year
-        postDetails <- getPostDetails ('annualClimateSummary - dry')
+        postDetails <- getPostDetails ('annualClimateSummary - dry', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       } else if (diYearlyAirt > 0 | TEST == 5) { # Wet Year
-        postDetails <- getPostDetails ('annualClimateSummary - wet')
+        postDetails <- getPostDetails ('annualClimateSummary - wet', gs_posts_key = gsPostsKey)
         message        <- sprintf (postDetails [['Message']], round (meYearlyPrec, 1), round (-diYearlyPrec, 1), prYear)
       }
     }
@@ -388,7 +388,7 @@ checkFrost <- function (mtable, TEST = 0) {
   # Check for first frost (after July)
   #-------------------------------------------------------------------------------------#
   if ((substring (Sys.Date (), 6, 10) >= '07-31' & tail (airt [['airt']], n = 1) < 0.0) | TEST == 1) {
-    postDetails <- getPostDetails ('checkFrost - first')
+    postDetails <- getPostDetails ('checkFrost - first', gs_posts_key = gsPostsKey)
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     mtable    <- add_row (mtable, 
@@ -427,7 +427,7 @@ checkFrost <- function (mtable, TEST = 0) {
     
     # Parse message and expiration date
     #-------------------------------------------------------------------------------------#
-    postDetails <- getPostDetails ('checkFrost - first')
+    postDetails <- getPostDetails ('checkFrost - late', gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
@@ -477,7 +477,7 @@ checkHeatWave <- function (mtable, TEST = 0) {
     
     # Parse message and expiration date
     #-------------------------------------------------------------------------------------#
-    postDetails <- getPostDetails ('checkHeatWave')
+    postDetails <- getPostDetails ('checkHeatWave', gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [['Message']],  heatWaveDays, month (Sys.Date (), label = T, abbr = F)) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
@@ -504,7 +504,7 @@ checkStorm <- function (mtable, TEST = 0){
     
     # Parse message and expiration date
     #-------------------------------------------------------------------------------------#
-    postDetails <- getPostDetails ('checkStorm')
+    postDetails <- getPostDetails ('checkStorm', gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [['Message']],  round (tail (wind [['wind']], n = 1), 1), 
                           round (tail (gust [['gust']], n = 1)*2.23694, 1), treeLocationName) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))

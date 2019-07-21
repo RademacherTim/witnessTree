@@ -26,6 +26,7 @@ if (length (args) == 0) {
   path       = args [1]
   imagesPath = args [2]
   dataPath   = args [3]
+  gsPostsKey = args [4]
 } else {
   stop ("Error: Too many command line arguments supplied to R.")
 }

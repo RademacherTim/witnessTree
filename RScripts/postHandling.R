@@ -109,43 +109,16 @@ reEvaluatePriorityOf <- function (mtable)
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-getPostDetails <- function (fName) 
+getPostDetails <- function (fName, gs_posts_key) 
 {
   
   # load dependencies
   #-------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
-  if (!existsFunction ('oauth2.0_token')) library ('httr')
-  library ('httpuv')
-  options (httr_oob_default = TRUE) 
-
-  # remove current authentication token for google sheets
-  #-------------------------------------------------------------------------------------
-  file.remove ('.httr-oauth') 
-
-  # generate new authentication token for google sheets
-  #-------------------------------------------------------------------------------------
-  oauth2.0_token (
-    endpoint = oauth_endpoints ("google"),
-    app = oauth_app (
-      "google",
-      key = getOption("googlesheets.client_id"),
-      secret = getOption("googlesheets.client_secret")
-    ),
-    scope = c (
-      "https://spreadsheets.google.com/feeds",
-      "https://www.googleapis.com/auth/drive"),
-    use_oob = TRUE,
-    cache = TRUE
-  )
-
-  # get the witnessTreePosts google sheet
-  #----------------------------------------------------------------------------------------
-  spreadsheet <- gs_title ("witnessTreePosts")
   
   # get posts spreadsheet
   #----------------------------------------------------------------------------------------
-  input <- gs_read (ss = spreadsheet, ws = "posts", col_types = cols ())
+  input <- gs_read (gs_key (gs_posts_key) , ws = "posts", col_types = cols ())
   
   # Find appropriate lines using the function name
   #-------------------------------------------------------------------------------------

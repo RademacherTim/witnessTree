@@ -15,7 +15,7 @@ fi
 
 # Run the witnessTree RScript to generate messages
 #----------------------------------------------------------------------------------------
-Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH}
+Rscript ${WITNESSTREEPATH}RScripts/witnessTree.R ${WITNESSTREEPATH} ${IMAGESPATH} ${DATAPATH} ${GSPostsKey}
 if [ $? != 0 ]
 then 
    echo 'Error: witnessTree.R did not execute.' >> ${WITNESSTREEPATH}tmp/logfile.txt # write error message into log

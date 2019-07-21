@@ -46,7 +46,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
     # Check whether radial growth is fast or slower than in the previous month
     #------------------------------------------------------------------------------------
     if (radGrowth [1, 1] > radGrowth [1, 2]) { # current month grew more
-      postDetails <- getPostDetails ("monthlyRadGrowthSummary - fast")
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - fast", gs_posts_key = gsPostsKey)
       message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -59,7 +59,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
                             expires     = expirDate)
     } else if (radGrowth [1, 1] <= radGrowth [1, 2] & 
                radGrowth [1, 1] > 0.05) { # last month grew as much or less
-      postDetails <- getPostDetails ("monthlyRadGrowthSummary - slow")
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - slow", gs_posts_key = gsPostsKey)
       message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -71,7 +71,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
                             hashtags    = postDetails [["Hashtags"]], 
                             expires     = expirDate)
     } else if (radGrowth [1,1] <= 0.05) { # tree grew only very little and is dormant?
-      postDetails <- getPostDetails ("monthlyRadGrowthSummary - dormant")
+      postDetails <- getPostDetails ("monthlyRadGrowthSummary - dormant", gs_posts_key = gsPostsKey)
       message     <- sprintf (postDetails [["Message"]], radGrowth [1, 1])
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -103,7 +103,7 @@ checkWoodGrowthUpdate <- function (mtable, TEST = 0) {
   # Check whether it is the 24th of July
   #--------------------------------------------------------------------------------------
   if (substring (Sys.time (), 6, 10) == '07-24' | TEST == 1) {
-    postDetails <- getPostDetails ("checkWoodGrowthUpdate")
+    postDetails <- getPostDetails ("checkWoodGrowthUpdate", gs_posts_key = gsPostsKey)
     if (substring (postDetails [['Message']], 1, 1) == 'T'){
       growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
       message <- sprintf (postDetails [["Message"]], round (growth [['annualGrowth']], 1), 
