@@ -51,6 +51,7 @@ readClimate <- function (TEST = F) {
   airt <<- add_column (airt, year = floor_date (airt [['TIMESTAMP']], 'year'))
   
   # Create mean airt over varying periods (i.e. day, week, month, year)
+  #--------------------------------------------------------------------------------------
   dailyAirt    <<- airt %>% group_by (daily) %>% summarise (airt = mean (airt, na.rm = T))
   dailyMaxAirt <<- airt %>% group_by (daily) %>% summarise (airt = max  (airt, na.rm = T))
   dailyAirt    <<- dailyAirt [!is.na (dailyAirt [['daily']]),]
@@ -63,10 +64,12 @@ readClimate <- function (TEST = F) {
   yearlyAirt   <<- yearlyAirt [!is.na (yearlyAirt [['year']]), ]
   
   # Rank intervals from highest to lowest
+  #--------------------------------------------------------------------------------------
   dailyAirt    <<- add_column (dailyAirt,    rank = rank (-dailyAirt    [['airt']]))
   dailyMaxAirt <<- add_column (dailyMaxAirt, rank = rank (-dailyMaxAirt [['airt']]))
     
   # Add variable for different period to prec (i.e. day, week, month, year)
+  #--------------------------------------------------------------------------------------
   prec <<- add_column (prec, daily = format (prec [['TIMESTAMP']], '%Y-%m-%d'))
   prec [['week']]  <<- floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1))
   prec [['month']] <<- floor_date (prec [['TIMESTAMP']], 'month')
