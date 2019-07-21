@@ -72,9 +72,9 @@ readClimate <- function (TEST = F) {
   # Add variable for different period to prec (i.e. day, week, month, year)
   #--------------------------------------------------------------------------------------
   prec <<- add_column (prec, daily = format (prec [['TIMESTAMP']], '%Y-%m-%d'))
-  prec [['week']]  <<- floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1))
-  prec [['month']] <<- floor_date (prec [['TIMESTAMP']], 'month')
-  prec [['year']]  <<- floor_date (prec [['TIMESTAMP']], 'year')
+  prec <<- add_column (prec, week = floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1)))
+  prec <<- add_column (prec, month = floor_date (prec [['TIMESTAMP']], 'month'))
+  prec <<- add_column (prec, year = floor_date (prec [['TIMESTAMP']], 'year'))
   
   # Create mean prec over varying periods (i.e. day, week, month, year)
   dailyPrec   <<- prec %>% group_by (daily) %>% summarise (prec = sum (prec, na.rm = T))
@@ -91,7 +91,7 @@ readClimate <- function (TEST = F) {
   gust <<- add_column (gust, daily = format (gust [['TIMESTAMP']], '%Y-%m-%d'))
 
   # Create daily max wind speed over
-  dailyWind   <<- gust %>% group_by (daily) %>% summarise (gust = max (gust, na.rm = T))
-  dailyWind   <<- dailyWind [!is.na (dailyWind [['daily']]),]
+  dailyWind <<- gust %>% group_by (daily) %>% summarise (gust = max (gust, na.rm = T))
+  dailyWind <<- dailyWind [!is.na (dailyWind [['daily']]),]
 } 
 #=======================================================================================#

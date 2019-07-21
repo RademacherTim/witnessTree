@@ -115,7 +115,8 @@ getPostDetails <- function (fName)
   # load dependencies
   #-------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
-  if (!existsFunction ('file.remove')) library ('httr')
+  if (!existsFunction ('oauth2.0_token')) library ('httr')
+  library ('httpuv')
   options (httr_oob_default = TRUE) 
 
   # remove current authentication token for google sheets
@@ -125,13 +126,13 @@ getPostDetails <- function (fName)
   # generate new authentication token for google sheets
   #-------------------------------------------------------------------------------------
   oauth2.0_token (
-    endpoint = oauth_endpoints("google"),
-    app = oauth_app(
+    endpoint = oauth_endpoints ("google"),
+    app = oauth_app (
       "google",
       key = getOption("googlesheets.client_id"),
       secret = getOption("googlesheets.client_secret")
     ),
-    scope = c(
+    scope = c (
       "https://spreadsheets.google.com/feeds",
       "https://www.googleapis.com/auth/drive"),
     use_oob = TRUE,
