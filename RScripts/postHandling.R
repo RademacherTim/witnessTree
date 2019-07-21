@@ -116,9 +116,14 @@ getPostDetails <- function (fName)
   #-------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
   if (!existsFunction ('file.remove')) library ('httr')
-  #options (httr_oob_default = TRUE) 
-  file.remove ('.httr-oauth') # Remove current token
+  options (httr_oob_default = TRUE) 
 
+  # remove current authentication token for google sheets
+  #-------------------------------------------------------------------------------------
+  file.remove ('.httr-oauth') 
+
+  # generate new authentication token for google sheets
+  #-------------------------------------------------------------------------------------
   oauth2.0_token (
     endpoint = oauth_endpoints("google"),
     app = oauth_app(
@@ -137,17 +142,9 @@ getPostDetails <- function (fName)
   #----------------------------------------------------------------------------------------
   spreadsheet <- gs_title ("witnessTreePosts")
   
-  # list worksheets
-  #----------------------------------------------------------------------------------------
-  #gs_ws_ls(spreadsheet)
-  
   # get posts spreadsheet
   #----------------------------------------------------------------------------------------
   input <- gs_read (ss = spreadsheet, ws = "posts", col_types = cols ())
-  
-  # Read in spreadsheet with message texts
-  #-------------------------------------------------------------------------------------
-  #input <- read_csv (file = 'messagesText.csv', col_types = cols ())  
   
   # Find appropriate lines using the function name
   #-------------------------------------------------------------------------------------
