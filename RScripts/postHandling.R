@@ -148,7 +148,7 @@ getPostDetails <- function (fName, gs_posts_key)
   # N.B. Audience building posts are marked as such and are always posted with pictures
   #-------------------------------------------------------------------------------------
   if (postDetails [['Treatment']] != 'Audience' & !is.na (postDetails [['FigureName']])) {
-    postDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
+    postDetails [['fFigure']] <- sample (c (T, F), size = 1)
   }
   
   # Add the image path to the figureName, so that the bot can actually find them

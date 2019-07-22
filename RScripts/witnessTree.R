@@ -34,7 +34,6 @@ print (path)
 print (imagesPath)
 print (dataPath)
 
-
 # Set the working directory
 #----------------------------------------------------------------------------------------
 setwd (path)

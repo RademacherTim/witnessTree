@@ -240,6 +240,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
     mtable    <- add_row (mtable, 
                          priority    = postDetails [["Priority"]], 
                          figureName  = postDetails [["FigureName"]], 
+                         fFigure     = postDetails [["fFigure"]],
                          message     = message, 
                          hashtags    = postDetails [["Hashtags"]], 
                          expires     = expirDate)
