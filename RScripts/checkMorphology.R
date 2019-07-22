@@ -11,13 +11,17 @@
 #----------------------------------------------------------------------------------------
 explainDimensions <- function (mtable, TEST = 0) {
   
+  # load dependencies
+  #--------------------------------------------------------------------------------------
+  if (!existsFunction ('read_csv')) library ('readr')
+  
   # make sure no explain dimension post has been posted yet this month
   #--------------------------------------------------------------------------------------
   memory <- read_csv ('memory.csv', col_types = cols ())
 
   # check whether it is the 22nd 
   #--------------------------------------------------------------------------------------  
-  if (substring (Sys.time (), 9, 10) == "22" & !memory [['dimensionsPosted']] | TEST == 1) {
+  if (substring (Sys.time (), 9, 10) == "22" & memory [['dimensionsPosted']] == "False" | TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions', gs_posts_key = gsPostsKey)
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
       message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
