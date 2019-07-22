@@ -21,7 +21,7 @@ explainDimensions <- function (mtable, TEST = 0) {
 
   # check whether it is the 22nd 
   #--------------------------------------------------------------------------------------  
-  if (substring (Sys.time (), 9, 10) == "22" & memory [['dimensionsPosted']] == "False" | TEST == 1) {
+  if (substring (Sys.time (), 9, 10) == "22" & memory [['dimensionsPosted']] == FALSE | TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions', gs_posts_key = gsPostsKey)
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
       message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
