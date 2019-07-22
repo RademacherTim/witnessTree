@@ -153,9 +153,11 @@ getPostDetails <- function (fName, gs_posts_key)
   
   # Add the image path to the figureName, so that the bot can actually find them
   #-------------------------------------------------------------------------------------
-  if (!is.na (postDetails [['FigureName']])) {
+  if (!is.na (postDetails [['FigureName']]) & fName != 'monthlyRadGrowthSummary') {
     postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
                                              postDetails [['FigureName']])
+  } else if (!is.na (postDetails [['FigureName']]) & fName == 'monthlyRadGrowthSummary') {
+    postDetails [['FigureName']] <- "It is in tmp/!"
   }
   
   # Return the post'd details

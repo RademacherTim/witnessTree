@@ -80,7 +80,7 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
     # Plot growth of the two previous months
     #------------------------------------------------------------------------------------
     if (PLOT) {
-      png (sprintf ('%s/monthlyGrowth_%s.png',imagesPath,Sys.Date ()),
+      png (sprintf ('./tmp/monthlyGrowth_%s.png',Sys.Date ()),
            width = 955,
            height = 500)
       par (mar = c (5, 5, 1, 5))
