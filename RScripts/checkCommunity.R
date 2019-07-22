@@ -78,6 +78,7 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
                             expires     = expirDate)
     
       # Increase the wildlife counter in the memory
+      #----------------------------------------------------------------------------------
       memory [['numberOfPreviousVisitors']] <- memory [['numberOfPreviousVisitors']] + 1
       write_csv (memory, 'memory.csv')
     }
