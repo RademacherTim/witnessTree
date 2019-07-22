@@ -1,4 +1,4 @@
-#=======================================================================================#
+#========================================================================================
 # This is the main script running the witness tree bot. 
 # See README.Rmd for more information.
 #
@@ -9,14 +9,14 @@
 # Acknowledgements: Thanks to David Basler, Clarisse Hart, Hannah Robbins, Kyle Wyche, 
 #                   Shawna Greyeyes for their invaluable contributions.
 #
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
  
 
 # To-do list:
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 
 # Get the absolute path to the witnessTree, images and data directories 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 args = commandArgs (trailingOnly=TRUE)
 if (length (args) == 0) {
   stop ("Error: At least one argument must be supplied (path to witnessTree directory).",
@@ -26,13 +26,13 @@ if (length (args) == 0) {
   path       = args [1]
   imagesPath = args [2]
   dataPath   = args [3]
+  gsPostsKey = args [4]
 } else {
   stop ("Error: Too many command line arguments supplied to R.")
 }
 print (path)
 print (imagesPath)
 print (dataPath)
-
 
 # Set the working directory
 #----------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ source  (sprintf ('%sRScripts/treeStats.R',        path))
 print ('Dependencies loaded.')
 
 # Read in previously generated posts, if not first iteration
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 if (file.exists (sprintf ('%sposts/posts.csv', path))) {
   posts <- read_csv (sprintf ('%sposts/posts.csv', path), 
                      col_names = T, col_types = cols())
@@ -76,7 +76,7 @@ if (file.exists (sprintf ('%sposts/posts.csv', path))) {
 print ('Previous messages read.')
 
 # Purge expired posts
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- checkExpirationDatesOf (posts)
 print ('Expiration dates have been checked.')
 
@@ -110,12 +110,12 @@ posts <- checkHalloween                 (posts) #  31st of October
 print ('Events have been checked.')
 
 # Generate new posts concerning phenology
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 #posts <- startOfGrowingSeason (posts)
 #posts <- endOfGrowingSeason   (posts)
 
 # Generate new posts concerning meteorological & climatic events
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- checkExtremeTemperatures (posts) # Test whether it is the hottest or coldest 
                                           # temperature on record (in memory).
 posts <- monthlyClimateSummary (posts) # If it is the beginning of the month summarise 
@@ -126,6 +126,10 @@ posts <- checkFrost    (posts) # Check for first frost of the autumn
 posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 print ('Climatic conditions have been checked.')
+
+# Generate new posts concerning the morphology of the tree
+#----------------------------------------------------------------------------------------
+posts <- explainDimensions (posts)
 
 # Generate new posts concerning the community surrounding the tree
 #----------------------------------------------------------------------------------------
@@ -145,23 +149,23 @@ post <- selectPost (posts)
 print ('A post has been selected.')
 
 # Delete the selected post from the posts tibble 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 posts <- deletePost (posts, post)
 
 # Check whether the bot has already posted four messages last week
-#---------------------------------------------------------------------------------------#
-pastPostDates <- as.POSIXct (list.files (sprintf ('%s/messages/', path)),
+#----------------------------------------------------------------------------------------
+pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path)),
                              format = "%Y-%m-%d_%H")
 numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
                                                 !is.na  (pastPostDates)                 &
                                                 !is.nan (pastPostDates)])
 if (numberOfPostsLastWeek >= 4) { # If the bot has already posted four messages
   # Add post back to posts tibble, as it will not be posted right now
-  #-------------------------------------------------------------------------------------#
+  #--------------------------------------------------------------------------------------
   posts <- rbind (posts, post)
 } else {
   # Write post to messages/ folder named after date and time when it should be scheduled 
-  #-------------------------------------------------------------------------------------#
+  #--------------------------------------------------------------------------------------
   if (dim (post) [1] > 0) {
     write_csv (x    = post,
                path = sprintf ('%sposts/%s.csv', path,
@@ -171,16 +175,16 @@ if (numberOfPostsLastWeek >= 4) { # If the bot has already posted four messages
 }
  
 # Save unused posts and figures in tmp/ folder for next iteration 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 if (dim (posts) [1] > 0) {
   write_csv (x    = posts,
              path = sprintf ('%sposts/posts.csv', path))
 }
 
 # Create log files
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 write_csv (x         = as.data.frame (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
            path      = sprintf ('%sposts/logfile.csv', path),
            col_names = FALSE,
            append    = TRUE)
-#=======================================================================================#
+#========================================================================================

@@ -109,28 +109,16 @@ reEvaluatePriorityOf <- function (mtable)
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-getPostDetails <- function (fName) 
+getPostDetails <- function (fName, gs_posts_key) 
 {
   
   # load dependencies
   #-------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
-
-  # get the witnessTreePosts google sheet
-  #----------------------------------------------------------------------------------------
-  spreadsheet <- gs_title ("witnessTreePosts")
-  
-  # list worksheets
-  #----------------------------------------------------------------------------------------
-  gs_ws_ls(spreadsheet)
   
   # get posts spreadsheet
   #----------------------------------------------------------------------------------------
-  input <- gs_read (ss = spreadsheet, ws = "posts", col_types = cols ())
-  
-  # Read in spreadsheet with message texts
-  #-------------------------------------------------------------------------------------
-  #input <- read_csv (file = 'messagesText.csv', col_types = cols ())  
+  input <- gs_read (gs_key (gs_posts_key) , ws = "posts", col_types = cols ())
   
   # Find appropriate lines using the function name
   #-------------------------------------------------------------------------------------
@@ -153,19 +141,22 @@ getPostDetails <- function (fName)
   # Check whether there is a figure accompanying the post
   #-------------------------------------------------------------------------------------
   postDetails <- add_column (postDetails,
-                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0, F, T))
+                             fFigure = ifelse (length (postDetails [["FigureName"]]) == 0 |
+                                               is.na (postDetails [['FigureName']]), F, T))
   
   # Randomly decide whether we use the accompanying figure or not
   # N.B. Audience building posts are marked as such and are always posted with pictures
   #-------------------------------------------------------------------------------------
-  if (postDetails [['Treatment']] != 'Audience') {
-    postDetails [['fFigure']] <- sample (c (TRUE, FALSE), size = 1)
+  if (postDetails [['Treatment']] != 'Audience' & !is.na (postDetails [['FigureName']])) {
+    postDetails [['fFigure']] <- sample (c (T, F), size = 1)
   }
   
   # Add the image path to the figureName, so that the bot can actually find them
   #-------------------------------------------------------------------------------------
-  postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
-                                           postDetails [['FigureName']])
+  if (!is.na (postDetails [['FigureName']])) {
+    postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
+                                             postDetails [['FigureName']])
+  }
   
   # Return the post'd details
   #-------------------------------------------------------------------------------------

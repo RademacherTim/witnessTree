@@ -13,7 +13,7 @@
 explainSeedDispersal <- function (mtable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
       TEST == 1) {
-    postDetails <- getPostDetails ("explainSeedDispersal")
+    postDetails <- getPostDetails ("explainSeedDispersal", gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [["Message"]])
     expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     mtable    <- add_row (mtable, 
@@ -51,19 +51,19 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
       if (substring (Sys.Date (), 6, 10) >  '03-21' & 
           substring (Sys.Date (), 6, 10) <= '06-21' | 
           TEST == 1) { # it is spring
-        postDetails <- getPostDetails ("checkCommunityWildlife - spring")
+        postDetails <- getPostDetails ("checkCommunityWildlife - spring", gs_posts_key = gsPostsKey)
       } else if (substring (Sys.Date (), 6, 10) >  '06-21' & 
                  substring (Sys.Date (), 6, 10) <= '09-21' | 
                  TEST == 2) { # it is summer
-        postDetails <- getPostDetails ("checkCommunityWildlife - summer")
+        postDetails <- getPostDetails ("checkCommunityWildlife - summer", gs_posts_key = gsPostsKey)
       } else if (substring (Sys.Date (), 6, 10) >  '09-21' & 
                  substring (Sys.Date (), 6, 10) <= '11-21' | 
                  TEST == 3) { # it is fall
-        postDetails <- getPostDetails ("checkCommunityWildlife - fall")
+        postDetails <- getPostDetails ("checkCommunityWildlife - fall", gs_posts_key = gsPostsKey)
       } else if (substring (Sys.Date (), 6, 10) >  '11-21' & 
                  substring (Sys.Date (), 6, 10) <= '03-21' | 
                  TEST == 4) { # it is winter
-        postDetails <- getPostDetails ("checkCommunityWildlife - winter")
+        postDetails <- getPostDetails ("checkCommunityWildlife - winter", gs_posts_key = gsPostsKey)
       }
       message   <- sprintf (postDetails [["Message"]])
       delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
@@ -78,6 +78,7 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
                             expires     = expirDate)
     
       # Increase the wildlife counter in the memory
+      #----------------------------------------------------------------------------------
       memory [['numberOfPreviousVisitors']] <- memory [['numberOfPreviousVisitors']] + 1
       write_csv (memory, 'memory.csv')
     }

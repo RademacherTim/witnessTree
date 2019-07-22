@@ -19,6 +19,11 @@ readClimate <- function (TEST = F) {
   met_HF_shaler$TIMESTAMP <- as.POSIXct (met_HF_shaler$date, 
                                          format = '%Y-%m-%d',
                                          tz = 'EST') 
+  suppressWarnings (met_HF_gap <- read_csv (file = url ('http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-08-hourly-m.csv'),
+                                            col_types = cols()))
+  met_HF_gap$TIMESTAMP <- as.POSIXct (met_HF_gap$datetime, 
+                                      format = '%Y-%m-%d %H:%M:%S',
+                                      tz = 'EST') 
   suppressWarnings (met_HF_old <- read_csv (file = url ('http://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv'),
                                             col_types = cols()))
   met_HF_old$TIMESTAMP <- as.POSIXct (met_HF_old$datetime, 
@@ -30,20 +35,23 @@ readClimate <- function (TEST = F) {
                                           format = '%Y-%m-%d %H:%M:%S',
                                           tz = 'EST') 
 
-  dates  <- c (met_HF_shaler$TIMESTAMP, met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
-  dates2 <- c (met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
-  airt <<- tibble (TIMESTAMP = dates, airt = c (as.numeric (met_HF_shaler$airt), met_HF_old$airt, met_HF_current$airt))
-  prec <<- tibble (TIMESTAMP = dates, prec = c (as.numeric (met_HF_shaler$prec), met_HF_old$prec, met_HF_current$prec))
-  wind <<- tibble (TIMESTAMP = dates2, wind = c (met_HF_old$wspd, met_HF_current$wspd))
-  gust <<- tibble (TIMESTAMP = dates2, gust = c (met_HF_old$gspd, met_HF_current$gspd))
+  dates  <- c (met_HF_shaler$TIMESTAMP, met_HF_gap$TIMESTAMP, met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
+  dates2 <- c (met_HF_gap$TIMESTAMP, met_HF_old$TIMESTAMP, met_HF_current$TIMESTAMP)
+  airt <<- tibble (TIMESTAMP = dates, airt = c (as.numeric (met_HF_shaler$airt), met_HF_gap$airt, met_HF_old$airt, met_HF_current$airt))
+  prec <<- tibble (TIMESTAMP = dates, prec = c (as.numeric (met_HF_shaler$prec), met_HF_gap$prec, met_HF_old$prec, met_HF_current$prec))
+  wind <<- tibble (TIMESTAMP = dates2, wind = c (met_HF_gap$wspd, met_HF_old$wspd, met_HF_current$wspd))
+  gust <<- tibble (TIMESTAMP = dates2, gust = c (met_HF_gap$gspd, met_HF_old$gspd, met_HF_current$gspd))
   
   # Add variable for different period to airt (i.e. day, week, month, year)
-  airt <<- add_column(airt, daily = format (airt [['TIMESTAMP']], '%Y-%m-%d'))
-  airt [['week']]  <<- floor ((airt [['TIMESTAMP']] - min (airt [['TIMESTAMP']], na.rm = T)) / dweeks (1))
-  airt [['month']] <<- floor_date (airt [['TIMESTAMP']], 'month')
-  airt [['year']]  <<- floor_date (airt [['TIMESTAMP']], 'year')
+  #--------------------------------------------------------------------------------------
+  airt <<- airt [-1, ]
+  airt <<- add_column (airt, daily = format (airt [['TIMESTAMP']], '%Y-%m-%d'))
+  airt <<- add_column (airt, week = floor ((airt [['TIMESTAMP']] - min (airt [['TIMESTAMP']], na.rm = T)) / dweeks (1)))
+  airt <<- add_column (airt, month = floor_date (airt [['TIMESTAMP']], 'month'))
+  airt <<- add_column (airt, year = floor_date (airt [['TIMESTAMP']], 'year'))
   
   # Create mean airt over varying periods (i.e. day, week, month, year)
+  #--------------------------------------------------------------------------------------
   dailyAirt    <<- airt %>% group_by (daily) %>% summarise (airt = mean (airt, na.rm = T))
   dailyMaxAirt <<- airt %>% group_by (daily) %>% summarise (airt = max  (airt, na.rm = T))
   dailyAirt    <<- dailyAirt [!is.na (dailyAirt [['daily']]),]
@@ -55,12 +63,18 @@ readClimate <- function (TEST = F) {
   yearlyAirt   <<- airt %>% group_by (year) %>% summarise (airt = mean (airt, na.rm = T))
   yearlyAirt   <<- yearlyAirt [!is.na (yearlyAirt [['year']]), ]
   
-  
+  # Rank intervals from highest to lowest
+  #--------------------------------------------------------------------------------------
+  airt         <<- add_column (airt,         rank = rank (-airt         [['airt']]))
+  dailyAirt    <<- add_column (dailyAirt,    rank = rank (-dailyAirt    [['airt']]))
+  dailyMaxAirt <<- add_column (dailyMaxAirt, rank = rank (-dailyMaxAirt [['airt']]))
+    
   # Add variable for different period to prec (i.e. day, week, month, year)
+  #--------------------------------------------------------------------------------------
   prec <<- add_column (prec, daily = format (prec [['TIMESTAMP']], '%Y-%m-%d'))
-  prec [['week']]  <<- floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1))
-  prec [['month']] <<- floor_date (prec [['TIMESTAMP']], 'month')
-  prec [['year']]  <<- floor_date (prec [['TIMESTAMP']], 'year')
+  prec <<- add_column (prec, week = floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1)))
+  prec <<- add_column (prec, month = floor_date (prec [['TIMESTAMP']], 'month'))
+  prec <<- add_column (prec, year = floor_date (prec [['TIMESTAMP']], 'year'))
   
   # Create mean prec over varying periods (i.e. day, week, month, year)
   dailyPrec   <<- prec %>% group_by (daily) %>% summarise (prec = sum (prec, na.rm = T))
@@ -77,7 +91,7 @@ readClimate <- function (TEST = F) {
   gust <<- add_column (gust, daily = format (gust [['TIMESTAMP']], '%Y-%m-%d'))
 
   # Create daily max wind speed over
-  dailyWind   <<- gust %>% group_by (daily) %>% summarise (gust = max (gust, na.rm = T))
-  dailyWind   <<- dailyWind [!is.na (dailyWind [['daily']]),]
+  dailyWind <<- gust %>% group_by (daily) %>% summarise (gust = max (gust, na.rm = T))
+  dailyWind <<- dailyWind [!is.na (dailyWind [['daily']]),]
 } 
 #=======================================================================================#

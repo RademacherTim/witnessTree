@@ -27,6 +27,7 @@ access_token        = sys.argv [3] # twitter account access token
 access_token_secret = sys.argv [4] # twitter account access token secret
 page_access_token   = sys.argv [5] # facebook page access token
 facebook_page_id    = sys.argv [6] # facebook page ID
+path                = sys.argv [7] # path to the current working directory
 #print (consumer_key)
 #print (consumer_secret)
 #print (access_token)
@@ -34,19 +35,18 @@ facebook_page_id    = sys.argv [6] # facebook page ID
 #print (page_access_token)
 #print (facebook_page_id)
 
+# Get working directory
+#------------------------------------------------------------------------------
+os.chdir (path)
+
 # Authenticate the twitter account
 #------------------------------------------------------------------------------
-#api = twitter.Api(consumer_key=consumer_key,
-#                  consumer_secret=consumer_secret,
-#                  access_token_key=access_token,
-#                  access_token_secret=access_token_secret)
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Check points to make sure tweepy is linked to the appropriate twitter page
 #------------------------------------------------------------------------------
-#print(api.VerifyCredentials())
 user = api.me()
 #print (user.name)
 
@@ -54,6 +54,7 @@ user = api.me()
 #------------------------------------------------------------------------------
 now = datetime.now ()
 fileName = "./posts/%s.csv" % now.strftime ("%Y-%m-%d_%H")
+print (fileName)
 
 # Read message, if it exists
 #------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ if os.path.exists(fileName):
 	    line_count = 0
 	    for row in csv_reader:
 		if line_count == 0:
-		    #print(row))
+		    #print(row)
 		    line_count += 1
 		else:
 		    #print(row)
@@ -78,7 +79,7 @@ if os.path.exists(fileName):
 	message    = row [3]
 	hashtags   = row [4]
 	expires    = row [5]
-	print message + hashtags + fFigure + figureName
+	print (message + hashtags + fFigure + figureName)
 
         # Get graph for facebook
         #----------------------------------------------------------------------
@@ -86,16 +87,12 @@ if os.path.exists(fileName):
 
         # The post is not accompanied by an image
         #----------------------------------------------------------------------
-        if fFigure == False:
+        if fFigure == "FALSE":
              api.update_status (message + hashtags)
-             #status = api.PostUpdate(message + hashtags)
-             #graph.put_object(facebook_page_id, "feed", message='test message')
 
         # The post is accompanied by an image
 	#----------------------------------------------------------------------
-        else:
-             #status = api.PostUpdate (message + hashtags,
-             #                         media = figureName)
+        elif fFigure == "TRUE":
              api.update_with_media (filename = figureName, 
                                     status = message + hashtags)
 
