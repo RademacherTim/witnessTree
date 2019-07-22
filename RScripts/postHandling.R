@@ -47,15 +47,24 @@ deletePost <- function (mtable,   # tibble of posts
                         message)  # tibble of the selected post
 {
   # Get line on which the message is 
+  #-------------------------------------------------------------------------------------
   nRow <- which (mtable [['message']] == message [['message']])
   
+  # Get lines which are duplicates
+  #-------------------------------------------------------------------------------------
+  temp <- mtable [, -1]  # Have to delete priority as that can vary over time.
+  mtable <- mtable [!duplicated (temp), ]
+  
   # Delete row with same message in messages tibble
+  #-------------------------------------------------------------------------------------
   mtable <- mtable [-nRow, ]
   
   # Delete temporary variables
+  #-------------------------------------------------------------------------------------
   rm (nRow)
   
   # Return the selected message
+  #-------------------------------------------------------------------------------------
   return (mtable)
 }
 #=======================================================================================
@@ -67,10 +76,12 @@ checkExpirationDatesOf <- function (mtable)
 {
  
   # Loop over messages to check expiration date
+  #---------------------------------------------------------------------------------------
   i = 1
   while (i <= dim (mtable) [1]) {
     
     # If message is expired, delete it.
+    #------------------------------------------------------------------------------------
     if (mtable [['expires']] [i] <  Sys.time ()) {
       mtable <- mtable [-i, ]
     } else {
@@ -79,6 +90,7 @@ checkExpirationDatesOf <- function (mtable)
   }
   
   # Return the remaining messages
+  #---------------------------------------------------------------------------------------
   return (mtable)
 } 
 #=======================================================================================
