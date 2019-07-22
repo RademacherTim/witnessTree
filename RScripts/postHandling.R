@@ -43,25 +43,25 @@ selectPost <- function (mtable) # tibble of posts with, inter alia, priorities
 #=======================================================================================
 # Function to delete message from messages tibble to avoid it being used again.
 #---------------------------------------------------------------------------------------
-deletePost <- function (mtable,   # tibble of posts
-                        message)  # tibble of the selected post
+deletePost <- function (mtable, # tibble of posts
+                        post)   # tibble of the selected post
 {
   # Get line on which the message is 
   #-------------------------------------------------------------------------------------
-  nRow <- which (mtable [['message']] == message [['message']])
+  nRow <- which (mtable [['message']] == post [['message']])
+  
+  # Delete row with same message in messages tibble
+  #-------------------------------------------------------------------------------------
+  mtable <- mtable [-nRow, ]
   
   # Get lines which are duplicates
   #-------------------------------------------------------------------------------------
   temp <- mtable [, -1]  # Have to delete priority as that can vary over time.
   mtable <- mtable [!duplicated (temp), ]
   
-  # Delete row with same message in messages tibble
-  #-------------------------------------------------------------------------------------
-  mtable <- mtable [-nRow, ]
-  
   # Delete temporary variables
   #-------------------------------------------------------------------------------------
-  rm (nRow)
+  rm (nRow, temp)
   
   # Return the selected message
   #-------------------------------------------------------------------------------------

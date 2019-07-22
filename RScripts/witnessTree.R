@@ -123,7 +123,7 @@ posts <- monthlyClimateSummary (posts) # If it is the beginning of the month sum
                                        #term average.
 posts <- checkFrost    (posts) # Check for first frost of the autumn 
                                # and late frost in early growing season.
-posts <- checkHeatWave (posts) # Check for a heat wave.
+#posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 print ('Climatic conditions have been checked.')
 
@@ -159,10 +159,11 @@ pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path)),
 numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
                                                 !is.na  (pastPostDates)                 &
                                                 !is.nan (pastPostDates)])
-if (numberOfPostsLastWeek >= 4) { # If the bot has already posted four messages
+if (numberOfPostsLastWeek >= 6) { # If the bot has already posted four messages
   # Add post back to posts tibble, as it will not be posted right now
   #--------------------------------------------------------------------------------------
   posts <- rbind (posts, post)
+  print ('We already had four posts this week!')
 } else {
   # Write post to messages/ folder named after date and time when it should be scheduled 
   #--------------------------------------------------------------------------------------
