@@ -123,7 +123,7 @@ posts <- monthlyClimateSummary (posts) # If it is the beginning of the month sum
                                        #term average.
 posts <- checkFrost    (posts) # Check for first frost of the autumn 
                                # and late frost in early growing season.
-#posts <- checkHeatWave (posts) # Check for a heat wave.
+posts <- checkHeatWave (posts) # Check for a heat wave.
 posts <- checkStorm    (posts) # Check for storm or rather a windy day.
 print ('Climatic conditions have been checked.')
 
@@ -142,6 +142,10 @@ print ('Community related messages have been checked.')
 posts <- monthlyRadGrowthSummary (posts)
 posts <- checkWoodGrowthUpdate (posts)
 print ('Physiological conditions have been checked.')
+
+# delete posts that have already been posted within the last two weeks
+#----------------------------------------------------------------------------------------
+posts <- deletePostedPosts (posts) 
 
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------

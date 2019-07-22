@@ -115,25 +115,25 @@ reEvaluatePriorityOf <- function (mtable)
 #---------------------------------------------------------------------------------------
 # TR - maybe wee need to come up with a different way of increasing the priority of 
 #      various messages instead on just increasing them by 1. 
-#=======================================================================================
+#========================================================================================
 
-#=======================================================================================
+#========================================================================================
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
-#---------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 getPostDetails <- function (fName, gs_posts_key) 
 {
   
   # load dependencies
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   if (!existsFunction ('gs_title')) library ('googlesheets')
   
   # get posts spreadsheet
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   input <- gs_read (gs_key (gs_posts_key) , ws = "posts", col_types = cols ())
   
   # Find appropriate lines using the function name
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   temp <- input [input [['FunctionID']] == fName &
                  !is.na (input [['FunctionID']]), ]
   
@@ -141,30 +141,30 @@ getPostDetails <- function (fName, gs_posts_key)
   # N.B.: To make sure that both treatments get choosen with the same probability, we 
   # need to have the same number of messages for both treatments (sober scientific data 
   # versus narrative environmental facts).
-  #-------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------
   if (dim (temp) [1] > 1) {
     temp <- sample_n (temp, 1)
   }
   
   # Extract post details # TR - May not need all of them, i.e. logic
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   postDetails <- temp %>% select (-c (Status, Event))
   
   # Check whether there is a figure accompanying the post
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   postDetails <- add_column (postDetails,
                              fFigure = ifelse (length (postDetails [["FigureName"]]) == 0 |
                                                is.na (postDetails [['FigureName']]), F, T))
   
   # Randomly decide whether we use the accompanying figure or not
   # N.B. Audience building posts are marked as such and are always posted with pictures
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   if (postDetails [['Treatment']] != 'Audience' & !is.na (postDetails [['FigureName']])) {
     postDetails [['fFigure']] <- sample (c (T, F), size = 1)
   }
   
   # Add the image path to the figureName, so that the bot can actually find them
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   if (!is.na (postDetails [['FigureName']]) & fName != 'monthlyRadGrowthSummary') {
     postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
                                              postDetails [['FigureName']])
@@ -173,7 +173,49 @@ getPostDetails <- function (fName, gs_posts_key)
   }
   
   # Return the post'd details
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   return (postDetails)
+}
+#========================================================================================
+
+#=======================================================================================
+# This function reads in the message text, hastags and expiration date from a central 
+# spreadsheet and hands them to a specific function.
+#---------------------------------------------------------------------------------------
+deletePostedPosts <- function (ptable) 
+{
+  
+  # make list of posts during the last two weeks
+  #----------------------------------------------------------------------------------------
+  fileNames <- list.files (sprintf ('%s/posts/', path), pattern = '.csv')
+  fileNames <- fileNames [fileNames != 'logfile.csv' & fileNames != 'posts.csv']
+  fileNames <- fileNames [as.POSIXct (substring (fileNames, 1, 10), format = "%Y-%m-%d") >= 
+                          Sys.Date () - 14]
+    
+  # replace all numbers with 'x' in the post table to avoid posting messages that only 
+  # differ, for example, by a single digit  
+  #----------------------------------------------------------------------------------------
+  ptemp <- gsub ("([0-9]+)", x = ptable [['message']], replacement  = 'x') 
+  
+  # loop over posted messages and read messages
+  #----------------------------------------------------------------------------------------
+  for (p in 1:length (fileNames)) {
+    temp <- read_csv (sprintf ('%s/posts/%s',path, fileNames [p]),
+                      col_types = cols ())
+    temp <- gsub ("([0-9]+)", x = temp [['message']], replacement = 'x')
+    if (p == 1) {
+      nRow <- which (ptemp == temp)  
+    } else {
+      nRow <- c (nRow, which (ptemp == temp))
+    }
+  }
+  
+  # delete similar messages from the table of posts
+  #----------------------------------------------------------------------------------------
+  ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
+  
+  # return updated table with posts
+  #-------------------------------------------------------------------------------------
+  return (ptable)
 }
 #=======================================================================================
