@@ -158,16 +158,22 @@ posts <- deletePost (posts, post)
 
 # Check whether the bot has already posted four messages last week
 #----------------------------------------------------------------------------------------
-pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path)),
+pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path), pattern = '.csv'),
                              format = "%Y-%m-%d_%H")
 numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
                                                 !is.na  (pastPostDates)                 &
                                                 !is.nan (pastPostDates)])
-if (numberOfPostsLastWeek >= 6) { # If the bot has already posted four messages
+lastPostDateTime <- head (tail (pastPostDates, n = 2), n = 1)
+if (numberOfPostsLastWeek >= 7) { # If the bot has already posted four messages
   # Add post back to posts tibble, as it will not be posted right now
   #--------------------------------------------------------------------------------------
   posts <- rbind (posts, post)
-  print ('We already had four posts this week!')
+  print ('We already had more than 7 posts in the last 7 days!')
+} else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0) {
+  # Add post back to posts tibble, as it will not be posted right now
+  #--------------------------------------------------------------------------------------
+  posts <- rbind (posts, post)
+  print ('The last post was less than four hours ago!')
 } else {
   # Write post to messages/ folder named after date and time when it should be scheduled 
   #--------------------------------------------------------------------------------------
