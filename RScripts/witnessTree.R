@@ -169,7 +169,8 @@ if (numberOfPostsLastWeek >= 7) { # If the bot has already posted four messages
   #--------------------------------------------------------------------------------------
   posts <- rbind (posts, post)
   print ('We already had more than 7 posts in the last 7 days!')
-} else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0) {
+} else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 |
+           post [['priority']] == 10) {
   # Add post back to posts tibble, as it will not be posted right now
   #--------------------------------------------------------------------------------------
   posts <- rbind (posts, post)
