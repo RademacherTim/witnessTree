@@ -106,8 +106,8 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the yesterday was the coldest day on record
   #--------------------------------------------------------------------------------------
-  if (min (dailyAirt$airt, na.rm = T) >= 
-      head (tail (dailyAirt$airt, n = 2), n = 1) | TEST == 9) {
+  if (min (dailyAirt [['airt']], na.rm = T) >= 
+      head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 9) {
     COLDESTDAY <- T
   } else {
     COLDESTDAY <- F
@@ -406,8 +406,8 @@ checkFrost <- function (mtable, TEST = 0) {
   if ((substring (Sys.Date (), 6, 10) >= '05-01' &         # after April
        substring (Sys.Date (), 6, 10) <= '08-01' &         # before August
        tail (airt [['airt']], n = 1) < 0.0 &               # frost, aka air temperature below freezing
-       sum (airt [['airt']] [airt [['daily']] >= format (Sys.Date () - 3, '%Y-%m-%d') & 
-                             airt [['daily']] <  format (Sys.Date (),     '%Y-%m-%d') & 
+       sum (airt [['airt']] [airt [['day']] >= format (Sys.Date () - 3, '%Y-%m-%d') & 
+                             airt [['day']] <  format (Sys.Date (),     '%Y-%m-%d') & 
                              !is.na  (airt [['airt']])                                &
                              !is.nan (airt [['airt']])] <= 0.0, na.rm = T) < 1 )| # no frost in preceeding three days
       TEST == 2) {                                        # or we are testing
@@ -418,7 +418,7 @@ checkFrost <- function (mtable, TEST = 0) {
     NOFROST <- T
     while (NOFROST) { # go back in time
       # Select only temperatures during the day prior to the last checked day
-      temps <- airt [['airt']] [airt [['daily']] >= format (Sys.Date () - (frostFreeDays), '%Y-%m-%d')]
+      temps <- airt [['airt']] [airt [['day']] >= format (Sys.Date () - (frostFreeDays), '%Y-%m-%d')]
       if (sum (temps < 0.0, na.rm = T) > 0.0) {
         NOFROST = F
       } else {
@@ -454,8 +454,8 @@ checkHeatWave <- function (mtable, TEST = 0) {
   # exceeding the 90th percentile of the Fisher Meterological Station record (Shaler only 
   # had daily temperatures, thus the mean and max would be identical) for the current month.
   #-------------------------------------------------------------------------------------#
-  percentile90th <- quantile (dailyMaxAirt [['airt']] [as.numeric (substring (dailyMaxAirt [['daily']], 1, 4)) > 2002 &
-                                                       month (dailyMaxAirt [['daily']]) == month (Sys.Date ())],
+  percentile90th <- quantile (dailyMaxAirt [['airt']] [as.numeric (substring (dailyMaxAirt [['day']], 1, 4)) > 2002 &
+                                                       month (dailyMaxAirt [['day']]) == month (Sys.Date ())],
                               probs = 0.9, na.rm = T)
 
   # Check for a heatwave 
