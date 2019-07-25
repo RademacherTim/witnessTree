@@ -87,7 +87,8 @@ print ('Priorities have been re-evaluated.')
 
 # Read climate data
 #----------------------------------------------------------------------------------------
-readClimate ()
+IOStatus <- readClimate ()
+if (IOStatus != 0) stop ('Error: Climate files were not read properly!') 
 print ('Climate files have been read.')
 
 # Generate new posts concerning regularly recurrent events
