@@ -13,8 +13,10 @@ import twitter    # python-twitter library
 import Tkinter    # graphical user interface library
 import facebook   # library for facebook API 
 import csv        # for csv handling
-import os         # 
+import pandas     # for csv file handling
+import os         # library to interact with operating system
 import random     # library to use random number generator
+import array      # library for array handling
 from datetime import date
 from datetime import time
 from datetime import datetime
@@ -56,7 +58,7 @@ now = datetime.now ()
 fileName = "./posts/%s.csv" % now.strftime ("%Y-%m-%d_%H")
 print (fileName)
 
-# Read message, if it exists
+# Read post, if it exists
 #------------------------------------------------------------------------------
 if os.path.exists(fileName):
 	with open(fileName) as csv_file:
@@ -99,27 +101,38 @@ if os.path.exists(fileName):
 else:
 	print ("Error: No file with a message!")
 
+# Read in interactive responses to respond to questions
+#------------------------------------------------------------------------------
+if os.path.exists('./tmp/interactiveResponses.csv'):
+	responses = pandas.read_csv ('./tmp/interactiveResponses.csv')
+        response = random.sample (responses ['reply'], 1)
+else:
+	print ("Error: No responses for interactive messages available!")
 
 # Look for tweets containing the words "How are you"
 #------------------------------------------------------------------------------
-twts = api.search(q="@%s How are you" % (user.screen_name), show_user = True)
+twts = api.search(q="@%s How " % (user.screen_name), show_user = True)
 #print (user.screen_name)
 #print (twts)
 
 # Create list of tweets that we respond to
 #------------------------------------------------------------------------------
-t = ['How are you?',
-     'how are you?',
-     'How are you doing?',
-     'how are you doing?',
-     'How are you feeling?',
-     'how are you feeling?',
-     'How r u?',
-     'how r u?',
-     'How r u doing?',
-     'how r u doing?',
-     'How do you do?',
-     'how do you do?']
+t = ['How are you',
+     'how are you',
+     'How are you doing',
+     'how are you doing',
+     'How are you feeling',
+     'how are you feeling',
+     'How r u',
+     'how r u',
+     'How r u doing',
+     'how r u doing',
+     'How do you do',
+     'how do you do',
+     'How\'s it going?',
+     'how\'s it going',
+     'How are you doing',
+     'how are you doing']
 #print (t)
 
 for s in twts:
@@ -128,11 +141,8 @@ for s in twts:
         #print (i)
         if i == s.text:
             sn = s.user.screen_name
-            m = "@%s I am feeling..." % (sn)
-            s = api.update_status (m, s.id) # This does fail, if it has already replied.
-            #print (s.user.screen_name)
-            #print (m)
-            #print (s)
+            s = api.update_status (sn + response, s.id) # This does fail, if it has already replied.
+            print (sn + response)
 
 # To delete a status use:'''
 #------------------------------------------------------------------------------#
@@ -144,6 +154,7 @@ for s in twts:
 #for tweet in public_tweets:
 #                      print(tweet.text)
 
+# Should the witness tree follow its followers?
 # To follow-back or unfollow all of the followers of the specific twitter page'''
 #------------------------------------------------------------------------------#
 #for follower in tweepy.Cursor(api.followers).items():
