@@ -157,33 +157,38 @@ print ('A post has been selected.')
 #----------------------------------------------------------------------------------------
 posts <- deletePost (posts, post)
 
-# Check whether the bot has already posted four messages last week
+# Check whether there is a post
 #----------------------------------------------------------------------------------------
-pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path), pattern = '.csv'),
-                             format = "%Y-%m-%d_%H")
-numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
-                                                !is.na  (pastPostDates)                 &
-                                                !is.nan (pastPostDates)])
-lastPostDateTime <- head (tail (pastPostDates, n = 2), n = 1)
-if (numberOfPostsLastWeek >= 7) { # If the bot has already posted four messages
-  # Add post back to posts tibble, as it will not be posted right now
+if (dim (post) [1]) {
+  
+  # Check whether the bot has already posted four messages last week
   #--------------------------------------------------------------------------------------
-  posts <- rbind (posts, post)
-  print ('We already had more than 7 posts in the last 7 days!')
-} else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 |
-           post [['priority']] == 10) {
-  # Add post back to posts tibble, as it will not be posted right now
-  #--------------------------------------------------------------------------------------
-  posts <- rbind (posts, post)
-  print ('The last post was less than four hours ago!')
-} else {
-  # Write post to messages/ folder named after date and time when it should be scheduled 
-  #--------------------------------------------------------------------------------------
-  if (dim (post) [1] > 0) {
-    write_csv (x    = post,
-               path = sprintf ('%sposts/%s.csv', path,
-                               format (Sys.time (), "%Y-%m-%d_%H")),
-               na   = "")
+  pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path), pattern = '.csv'),
+                               format = "%Y-%m-%d_%H")
+  numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
+                                                  !is.na  (pastPostDates)                 &
+                                                  !is.nan (pastPostDates)])
+  lastPostDateTime <- head (tail (pastPostDates, n = 2), n = 1)
+  if (numberOfPostsLastWeek >= 7) { # If the bot has already posted four messages
+    # Add post back to posts tibble, as it will not be posted right now
+    #------------------------------------------------------------------------------------
+    posts <- rbind (posts, post)
+    print ('We already had more than 7 posts in the last 7 days!')
+  } else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 |
+             post [['priority']] == 10) {
+    # Add post back to posts tibble, as it will not be posted right now
+    #------------------------------------------------------------------------------------
+    posts <- rbind (posts, post)
+    print ('The last post was less than four hours ago!')
+  } else {
+    # Write post to messages/ folder named after date and time when it should be scheduled 
+    #------------------------------------------------------------------------------------
+    if (dim (post) [1] > 0) {
+      write_csv (x    = post,
+                 path = sprintf ('%sposts/%s.csv', path,
+                                 format (Sys.time (), "%Y-%m-%d_%H")),
+                 na   = "")
+    }
   }
 }
  
@@ -194,7 +199,7 @@ if (dim (posts) [1] > 0) {
              path = sprintf ('%sposts/posts.csv', path))
 }
 
-# Create log files
+# Write to log files
 #----------------------------------------------------------------------------------------
 write_csv (x         = as.data.frame (sprintf ('%s', format (Sys.time (), "%Y-%m-%d %H:%M"))),
            path      = sprintf ('%sposts/logfile.csv', path),
