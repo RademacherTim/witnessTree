@@ -1,8 +1,8 @@
-#=======================================================================================#
+#========================================================================================
 # Functions to generate messages depending on the climate around the tree.
 #
 #       Event                                   Date                 
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 #   1)  Hottest temperature experienced         variable
 #   2)  Coldest temperature experienced         variable
 #   3)  Wettest day experienced                 variable Shawna will program this!

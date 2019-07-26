@@ -48,7 +48,9 @@ readClimate <- function (TEST = F) {
   #--------------------------------------------------------------------------------------
   airt <<- airt [-1, ]
   airt <<- add_column (airt, day   = format (airt [['TIMESTAMP']], '%Y-%m-%d'))
-  airt <<- add_column (airt, week  = floor ((airt [['TIMESTAMP']] - min (airt [['TIMESTAMP']], na.rm = T)) / dweeks (1)))
+  airt <<- add_column (airt, week  = floor ((airt [['TIMESTAMP']] - 
+                                             (min (airt [['TIMESTAMP']], na.rm = T) - 3 * 60.0 * 60.0 * 24.0)) / 
+                                               dweeks (1)))
   airt <<- add_column (airt, month = floor_date (airt [['TIMESTAMP']], 'month'))
   airt <<- add_column (airt, year  = floor_date (airt [['TIMESTAMP']], 'year'))
   
@@ -74,7 +76,9 @@ readClimate <- function (TEST = F) {
   # Add variable for different period to prec (i.e. day, week, month, year)
   #--------------------------------------------------------------------------------------
   prec <<- add_column (prec, day   = format (prec [['TIMESTAMP']], '%Y-%m-%d'))
-  prec <<- add_column (prec, week  = floor ((prec [['TIMESTAMP']] - min (prec [['TIMESTAMP']], na.rm = T)) / dweeks (1)))
+  prec <<- add_column (prec, week  = floor ((prec [['TIMESTAMP']] - 
+                                             (min (prec [['TIMESTAMP']], na.rm = T) - 3 * 60.0 * 60.0 * 24.0)) / 
+                                              dweeks (1)))
   prec <<- add_column (prec, month = floor_date (prec [['TIMESTAMP']], 'month'))
   prec <<- add_column (prec, year  = floor_date (prec [['TIMESTAMP']], 'year'))
   

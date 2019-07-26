@@ -84,10 +84,10 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
            width = 955,
            height = 500)
       par (mar = c (5, 5, 1, 5))
-      condition <- dailyPrec [['daily']] >= from & 
-                   dailyPrec [['daily']] <= tail (data2 [['datetime']], n = 1)
-      barplot (dailyPrec$prec [condition], col = '#91bfdb66', yaxt = 'n',
-               ylim = c (0, 1.1*max (dailyPrec$prec [condition])), border = F)
+      condition <- dailyPrec [['day']] >= from & 
+                   dailyPrec [['day']] <= tail (data2 [['datetime']], n = 1)
+      barplot (dailyPrec [['prec']] [condition], col = '#91bfdb66', yaxt = 'n',
+               ylim = c (0, 1.1*max (dailyPrec [['prec']] [condition])), border = F)
       axis (4, las = 1)
       mtext (4, line = 2.5, text = 'daily total precipitation (mm)')
       par (new = T)

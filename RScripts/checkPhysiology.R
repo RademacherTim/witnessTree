@@ -18,7 +18,7 @@
 
 # Monthly sap flow summary
 #----------------------------------------------------------------------------------------
-monthlySapFlowSummary <- function (mtable, TEST = 0) {
+monthlySapFlowSummary <- function (ptable, TEST = 0) {
   
   # Check whether it is the second week of the month
   if (ceiling (day (Sys.Date ()) / 7) == 2 | TEST == 1) {
@@ -27,12 +27,12 @@ monthlySapFlowSummary <- function (mtable, TEST = 0) {
   # Compare the sap flow to the previous month
   #
   } 
-  return (mtable)
+  return (ptable)
 } 
 
 # Monthly radial growth (i.e. stem and branch diameter) summary
 #----------------------------------------------------------------------------------------
-monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
+monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
   
   # Check whether it is the second week of the month
   if (ceiling (day (Sys.Date ()) / 7) == 4 | TEST == 1) {
@@ -51,7 +51,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
                               round (radGrowth [['monthlyGrowth']] [2], 3))
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
-      mtable    <- add_row (mtable, 
+      ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/monthlyGrowth_%s.png',path,Sys.Date ()), 
@@ -65,7 +65,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
                               round (radGrowth [['monthlyGrowth']] [2], 3))
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
-      mtable    <- add_row (mtable, 
+      ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/monthlyGrowth_%s.png',path,Sys.Date ()), 
@@ -76,7 +76,7 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
       postDetails <- getPostDetails ("monthlyRadGrowthSummary - dormant", gs_posts_key = gsPostsKey)
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
-      mtable    <- add_row (mtable, 
+      ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/monthlyGrowth_%s.png',path,Sys.Date ()), 
@@ -88,12 +88,12 @@ monthlyRadGrowthSummary <- function (mtable, TEST = 0) {
   
   # Return the updated message table
   #--------------------------------------------------------------------------------------
-  return (mtable)
+  return (ptable)
 } 
 
 # wood growth update on the 24th of July
 #----------------------------------------------------------------------------------------
-checkWoodGrowthUpdate <- function (mtable, TEST = 0) {
+checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
   
   # Check whether the function to calculate wood growth exists
   #--------------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ checkWoodGrowthUpdate <- function (mtable, TEST = 0) {
     delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate   <- sprintf ("%s 23:59:59 %s", 
                             format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
@@ -123,17 +123,17 @@ checkWoodGrowthUpdate <- function (mtable, TEST = 0) {
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
-  return (mtable)
+  return (ptable)
 }
 
 # Start of sap flow
 #----------------------------------------------------------------------------------------
-startSapFlow <- function (mtable, TEST = 0) {
+startSapFlow <- function (ptable, TEST = 0) {
   # Read in sap flow data
   # Check whether the sap flow has increased substantially ove rthe past week
   # If so, send beginning of sap flow message
   #if ( | TEST == 1) {
   #} 
-  return (mtable)
+  return (ptable)
 } 
 #========================================================================================
