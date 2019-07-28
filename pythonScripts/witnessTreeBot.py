@@ -17,6 +17,7 @@ import pandas     # for csv file handling
 import os         # library to interact with operating system
 import random     # library to use random number generator
 import array      # library for array handling
+import pytz       # for timezone handling
 from datetime import date
 from datetime import time
 from datetime import datetime
@@ -105,44 +106,59 @@ else:
 #------------------------------------------------------------------------------
 if os.path.exists('./tmp/interactiveResponses.csv'):
 	responses = pandas.read_csv ('./tmp/interactiveResponses.csv')
-        response = random.sample (responses ['reply'], 1)
+        print ('Responses for interactive tweets created.')
 else:
 	print ("Error: No responses for interactive messages available!")
 
-# Look for tweets containing the words "How are you"
-#------------------------------------------------------------------------------
-twts = api.search(q="@%s How " % (user.screen_name), show_user = True)
-#print (user.screen_name)
-#print (twts)
-
 # Create list of tweets that we respond to
 #------------------------------------------------------------------------------
-t = ['How are you',
-     'how are you',
-     'How are you doing',
-     'how are you doing',
-     'How are you feeling',
-     'how are you feeling',
-     'How r u',
-     'how r u',
-     'How r u doing',
-     'how r u doing',
-     'How do you do',
-     'how do you do',
-     'How\'s it going?',
-     'how\'s it going',
-     'How are you doing',
-     'how are you doing']
+questions = ['how are you',
+             'how are you doing',
+             'how are you feeling',
+	     'how r u',
+     	     'how r u doing',
+             'how do you do',
+             'how\'s it going',
+             'how are you doing']
 #print (t)
 
-for s in twts:
-    for i in t:
-        #print (s.text)
-        #print (i)
-        if i == s.text:
-            sn = s.user.screen_name
-            s = api.update_status (sn + response, s.id) # This does fail, if it has already replied.
-            print (sn + response)
+# Read in timestamp, when we last replied to tweets.
+#------------------------------------------------------------------------------
+if os.path.exists('./memory.csv'):
+	tmp = pandas.read_csv ('./memory.csv')
+	tmpTime = tmp ['lastResponse']
+	tmpTime = tmpTime [0]
+	tmpTime = datetime.strptime (tmpTime, '%Y-%m-%d %H:%M')
+	local = pytz.timezone ("US/Eastern")
+	local_dt = local.localize (tmpTime, is_dst = None)
+        lastResponseTime = local_dt.astimezone (pytz.utc)
+else:
+	print ("Error: Could not find a last response time.")
+
+# Look for tweets containing the questions the bot responds to (as in t)
+#------------------------------------------------------------------------------
+localTwitter = pytz.timezone ("UTC")
+for i in questions:
+	tmpTweets = api.search (q = "@%s " % (user.screen_name) + i, show_user = True)
+	tweets = []
+	for tweet in tmpTweets:
+		local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
+                questionTime = local_dt.astimezone (pytz.utc)
+    		if questionTime > lastResponseTime:
+        		tweets.append (tweet)
+			
+	for s in tweets:
+	        sn = s.user.screen_name
+		response = random.sample (responses ['reply'], 1) [0]
+	        s = api.update_status ("@%s "% sn + response.decode ("utf-8"), s.id) # This does fail, if it has already replied.
+#print ('Responded to x questions.')
+
+# Update the memory.csv file to contain the timestamp, when we last replied to a question to avoid trying to re-post
+#------------------------------------------------------------------------------
+local_dt = local.localize (datetime.now (), is_dst = None)
+tmp ['lastResponse'] = datetime.strftime (local_dt.astimezone (pytz.utc), '%Y-%m-%d %H:%M')
+tmp ['lastResponse'] = '\"' + tmp ['lastResponse'] + '\"'
+export_csv = tmp.to_csv (r'./memory.csv', index = None, header = True, quoting = csv.QUOTE_NONE)
 
 # To delete a status use:'''
 #------------------------------------------------------------------------------#
