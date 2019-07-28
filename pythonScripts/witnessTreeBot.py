@@ -48,10 +48,9 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-# Check points to make sure tweepy is linked to the appropriate twitter page
+# Check points to create user object used later
 #------------------------------------------------------------------------------
 user = api.me()
-#print (user.name)
 
 # Check whether there is a file for this hour
 #------------------------------------------------------------------------------
@@ -116,6 +115,7 @@ questions = ['how are you',
              'how are you doing',
              'how are you feeling',
 	     'how r u',
+             'how are u',
      	     'how r u doing',
              'how do you do',
              'how\'s it going',
@@ -137,6 +137,7 @@ else:
 
 # Look for tweets containing the questions the bot responds to (as in t)
 #------------------------------------------------------------------------------
+tweetIDs = []
 localTwitter = pytz.timezone ("UTC")
 for i in questions:
 	tmpTweets = api.search (q = "@%s " % (user.screen_name) + i, show_user = True)
@@ -145,20 +146,25 @@ for i in questions:
 		local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
                 questionTime = local_dt.astimezone (pytz.utc)
     		if questionTime > lastResponseTime:
-        		tweets.append (tweet)
-			
-	for s in tweets:
-	        sn = s.user.screen_name
-		response = random.sample (responses ['reply'], 1) [0]
-	        s = api.update_status ("@%s "% sn + response.decode ("utf-8"), s.id) # This does fail, if it has already replied.
-#print ('Responded to x questions.')
+        		tweets.append   (tweet)	
+
+	for tweet in tweets:
+		if tweet.id in tweetIDs:
+			print ('Question was already replied to.')
+		else:
+		        handle = tweet.user.screen_name
+			response = random.sample (responses ['reply'], 1) [0]
+		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id) # This does fail, if it has already replied.
+			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+print ('Responded to '+str (len (tweetIDs))+' questions.')
 
 # Update the memory.csv file to contain the timestamp, when we last replied to a question to avoid trying to re-post
 #------------------------------------------------------------------------------
 local_dt = local.localize (datetime.now (), is_dst = None)
-tmp ['lastResponse'] = datetime.strftime (local_dt.astimezone (pytz.utc), '%Y-%m-%d %H:%M')
+tmp ['lastResponse'] = datetime.strftime (local_dt, '%Y-%m-%d %H:%M')
 tmp ['lastResponse'] = '\"' + tmp ['lastResponse'] + '\"'
 export_csv = tmp.to_csv (r'./memory.csv', index = None, header = True, quoting = csv.QUOTE_NONE)
+print ('Updated lastResponse timestamp.')
 
 # To delete a status use:'''
 #------------------------------------------------------------------------------#

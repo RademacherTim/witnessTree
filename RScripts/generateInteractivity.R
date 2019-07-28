@@ -1,7 +1,7 @@
 #========================================================================================
 # Generate responses for interactive functions              
 #----------------------------------------------------------------------------------------
-generateInteractive <- function (TEST = 0) {
+generateInteractiveResponses <- function (TEST = 0) {
   
   # create responses tibble
   #--------------------------------------------------------------------------------------

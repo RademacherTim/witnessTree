@@ -46,16 +46,17 @@ options (warn = -1) # To turn warnings back on use options (warn = 0)
 #----------------------------------------------------------------------------------------
 suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
-source  (sprintf ('%sRScripts/postHandling.R',     path))
-source  (sprintf ('%sRScripts/checkEvents.R',      path))
-source  (sprintf ('%sRScripts/readClimate.R',      path))
-source  (sprintf ('%sRScripts/checkClimate.R',     path))
-source  (sprintf ('%sRScripts/calcSapFlow.R',      path))
-source  (sprintf ('%sRScripts/calcRadialGrowth.R', path))
-source  (sprintf ('%sRScripts/checkPhysiology.R',  path))
-source  (sprintf ('%sRScripts/checkMorphology.R',  path))
-source  (sprintf ('%sRScripts/checkCommunity.R',   path))
-source  (sprintf ('%sRScripts/treeStats.R',        path))
+source  (sprintf ('%sRScripts/postHandling.R',          path))
+source  (sprintf ('%sRScripts/checkEvents.R',           path))
+source  (sprintf ('%sRScripts/readClimate.R',           path))
+source  (sprintf ('%sRScripts/checkClimate.R',          path))
+source  (sprintf ('%sRScripts/calcSapFlow.R',           path))
+source  (sprintf ('%sRScripts/calcRadialGrowth.R',      path))
+source  (sprintf ('%sRScripts/checkPhysiology.R',       path))
+source  (sprintf ('%sRScripts/checkMorphology.R',       path))
+source  (sprintf ('%sRScripts/checkCommunity.R',        path))
+source  (sprintf ('%sRScripts/treeStats.R',             path))
+source  (sprintf ('%sRScripts/generateInteractivity.R', path))
 print ('Dependencies loaded.')
 
 # Read in previously generated posts, if not first iteration
@@ -143,6 +144,12 @@ print ('Community related messages have been checked.')
 posts <- monthlyRadGrowthSummary (posts)
 posts <- checkWoodGrowthUpdate (posts)
 print ('Physiological conditions have been checked.')
+
+# Generate interactive responses
+#----------------------------------------------------------------------------------------
+IOStatus <- generateInteractiveResponses ()
+if (IOStatus != 0) stop ('Error: Interactive responses were not generated properly!') 
+print ('Interactive responses were generated.')
 
 # delete posts that have already been posted within the last two weeks
 #----------------------------------------------------------------------------------------
