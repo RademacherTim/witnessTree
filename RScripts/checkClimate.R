@@ -28,21 +28,39 @@
 #  xx)  Heavy rain                              variable TR - Not made yet
 #  xx)  Still standing after heavy wind/storm   variable TR - Not made yet "I am still standing"
 #  XX)  Maple sirup season                      variable TR - Not made yet "My bro's juices are flowing"
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 # All functions require weather station records to be read in and converted to a 
 # structure such as in readClimate.R
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 
 # To-Do list:
 # TR - I might also want to delay messages for December and last year, so that they do not come out straight after new year's resolutions.
 # TR - I need to introduce a memory or something to make sure that I am not repeating the same messages for hottest/coldest temperature overa nd over again.
 
+# Convert degrees Celsius to Fahrenheit
+#----------------------------------------------------------------------------------------
+CtoF <- function (degC, difference = F) {
+  if (!difference) {
+    degF <- (degC * 9.0 / 5.0) + 32.0
+  } else {
+    degF <- degC * 9.0 / 5.0
+  }
+  return (degF)
+}
+
+# Convert millimeters to inches
+#----------------------------------------------------------------------------------------
+mmtoInches <- function (mm) {
+  inches <- mm / 25.4
+  return (inches)
+}
+
 # Hottest or coldest temperature on record (in memory)
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the current temperature is the hottest temperature on record 
-  #-------------------------------------------------------------------------------------#
+  #--------------------------------------------------------------------------------------
   if (max (airt [['airt']], na.rm = T) <= tail (airt [['airt']], n = 1) | TEST == 1) {
     HOTTEST <- T
   } else if (tail (airt [['rank']], n = 1) <=  30 | TEST == 2) {
@@ -269,47 +287,87 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
 #} 
 
 # Summarise and compare last month's climate at the beginning of the month
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 monthlyClimateSummary <- function (mtable, TEST = 0) {
   
   # Check whether it is the first day of the month
-  #---------------------------------------------------------------------------------------#
-  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 15) == '12:0'| TEST >= 1) {
+  #--------------------------------------------------------------------------------------
+  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 15) == '09:0'| TEST >= 1) {
     
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
+    #--------------------------------------------------------------------------------------
     acMonthlyAirt <- head (tail (monthlyAirt [['airt']], n = 2), n = 1) 
     meMonthlyAirt <- mean (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1])
     sdMonthlyAirt <- sd   (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1])
     diMonthlyAirt <- acMonthlyAirt - meMonthlyAirt
     
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
+    #--------------------------------------------------------------------------------------
     acMonthlyPrec <- head (tail (monthlyPrec [['prec']], n = 2), n = 1) 
     meMonthlyPrec <- mean (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1])
     sdMonthlyPrec <- sd   (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1])
     diMonthlyPrec <- acMonthlyPrec - meMonthlyPrec
     
+    # determine rainy days in previous month
+    #--------------------------------------------------------------------------------------
+    rainyDays <- sum (dailyPrec [['prec']] [month (dailyPrec [['day']]) == month (Sys.Date ()) - 1 &
+                                            year (dailyPrec [['day']]) == year (Sys.Date ())] != 0, 
+                      na.rm = T)
+    
+    # get the monthly max temperature
+    #--------------------------------------------------------------------------------------
+    maxAirT <-max (dailyMaxAirt [['airt']] [month (dailyMaxAirt [['day']]) == month (Sys.Date ()) - 1 &
+                                            year (dailyMaxAirt [['day']]) == year (Sys.Date ())], 
+                    na.rm = T)
+    
     # Get previous month
-    prMonth <- month (month (Sys.Date ()) - 1, label = T)
+    #--------------------------------------------------------------------------------------
+    prMonth <- month (month (Sys.Date ()) - 1, label = T, abbr = F)
     
     # Choose what to talk about
+    #--------------------------------------------------------------------------------------
     if (diMonthlyAirt < sdMonthlyAirt & diMonthlyPrec < sdMonthlyPrec | TEST == 1) { # Just an close-to-average month 
-      postDetails <- getPostDetails ('monthlyClimateSummary - normal', gs_posts_key = gsPostsKey)
-      message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), round (acMonthlyPrec, 1), prMonth)
+      postDetails <- getPostDetails ('monthlyClimateSummary - normal', 
+                                     gs_posts_key = gsPostsKey)
+      message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), 
+                                 round (CtoF (acMonthlyAirt), 1), round (acMonthlyPrec, 1), 
+                                 treeLocationName, prMonth)
     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
-        postDetails <- getPostDetails ('monthlyClimateSummary - cold', gs_posts_key = gsPostsKey)
-        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - cold', 
+                                       gs_posts_key = gsPostsKey)
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), 
+                                   round (CtoF (meMonthlyAirt), 1), round (-diMonthlyAirt, 1), 
+                                   treeLocationName, prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
-        postDetails <- getPostDetails ('monthlyClimateSummary - warm', gs_posts_key = gsPostsKey)
-        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), round (-diMonthlyAirt, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - warm', 
+                                       gs_posts_key = gsPostsKey)
+        message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1),
+                                   round (CtoF (meMonthlyAirt), 1), prMonth, 
+                                   round (diMonthlyAirt, 1), 
+                                   round (CtoF (diMonthlyAirt, difference  = T), 1), 
+                                   treeLocationName)
       }
     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
-        postDetails <- getPostDetails ('monthlyClimateSummary - dry', gs_posts_key = gsPostsKey)
-        message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - dry', 
+                                       gs_posts_key = gsPostsKey)
+        message        <- sprintf (postDetails [['Message']], 
+                                   round (maxAirT, 1),
+                                   round (CtoF (maxAirT), 1), 
+                                   round (meMonthlyPrec, 1), 
+                                   treeLocationName)
       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
-        postDetails <- getPostDetails ('monthlyClimateSummary - wet', gs_posts_key = gsPostsKey)
-        message        <- sprintf (postDetails [['Message']], round (meMonthlyPrec, 1), round (-diMonthlyPrec, 1), prMonth)
+        postDetails <- getPostDetails ('monthlyClimateSummary - wet', 
+                                       gs_posts_key = gsPostsKey)
+        message        <- sprintf (postDetails [['Message']], 
+                                   format (Sys.Date () - 1, '%d %B'), 
+                                   '23:59h',
+                                   round (acMonthlyPrec, 1), 
+                                   round (mmtoInches (acMonthlyPrec)), 
+                                   rainyDays,
+                                   days_in_month (month (Sys.Date () - 1)),
+                                   prMonth)
       }
     }
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
