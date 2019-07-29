@@ -92,7 +92,7 @@ checkPiDay <- function (mtable, TEST = 0) {
     postDetails <- getPostDetails ("checkPiDay", gs_posts_key = gsPostsKey)
     message <- ifelse (substring (postDetails [["Message"]],16,16) == "P", 
                        postDetails [["Message"]],
-                       sprintf (postDetails [["Message"]], round (dbh, 2), round (sapFlowArea,1)))
+                       sprintf (postDetails [["Message"]], round (dbh, 2), round (sapWoodArea,1)))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     mtable    <- add_row (mtable, 
                           priority    = postDetails [["Priority"]], 
@@ -154,7 +154,7 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
       subst <- 'st'
     } else if (substring (as.character (age), len, len) == '2') {
       subst <- 'nd'
-    } else if (substring (as.character (rank), len, len) == '3') {
+    } else if (substring (as.character (age), len, len) == '3') {
       subst <- 'rd'
     }  else {
       subst <- 'th'
@@ -175,8 +175,8 @@ checkBirthday <- function (mtable, TEST = 0) { ## calculate stats for how much w
 # TTR To do: Set birthday (ask John O'Keefe, maybe?)
 
 # 7- Arbor Day Script (annual post falls on the last Friday in April)
-#---------------------------------------------------------------------------------------#
-checkArborDay <- function (mtable, TEST = 0) {
+#----------------------------------------------------------------------------------------
+checkArborDay <- function (ptable, TEST = 0) {
   if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define the 30th of April in a leap year
     doy <- 120 
   } else { # not a leap year
@@ -187,19 +187,19 @@ checkArborDay <- function (mtable, TEST = 0) {
       (as.numeric (strftime (Sys.Date (), format = '%j')) > (doy - 6)) | TEST == 1) {
     postDetails <- getPostDetails ('checkArborDay', gs_posts_key = gsPostsKey)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = message, 
+                          message     = postDetails [['Message']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
-  return (mtable)
+  return (ptable)
 }
 
 # 8 - Mother's Day Script (annual post falls on the second Sunday in May)
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 checkMothersDay <- function (mtable, TEST = 0) {
   if (as.numeric (substring (Sys.Date (), 1, 4))%%4 == 0) { # Define 1st of may in a leap year
     doy <- 127 
@@ -244,7 +244,7 @@ checkEarthDay <- function (mtable, TEST = 0) {
 # dates calculated by NASA (https://data.giss.nasa.gov/ar5/srvernal.html) from 2018 to
 # 2068. The original file is not comma-separated.
 #---------------------------------------------------------------------------------------#
-checkSpringEquinox <- function (mtable, TEST = 0) {
+checkSpringEquinox <- function (ptable, TEST = 0) {
   solarDates <- suppressWarnings (read_csv (file = sprintf ('%ssolarDates.csv', dataPath), 
                                             skip = 3,
                                             col_types = cols ()))
@@ -262,23 +262,24 @@ checkSpringEquinox <- function (mtable, TEST = 0) {
       month (Sys.Date ()) == month (vernalDate) & 
       day   (Sys.Date ()) == day   (vernalDate) | TEST == 1) { 
     postDetails <- getPostDetails ('checkSpringEquinox', gs_posts_key = gsPostsKey)
-    if (substring (postDetails [['Message']],2,2) == 'D') {
+    if (substring (postDetails [['Message']], 1, 1) == 'D') {
       message <- postDetails [['Message']]
-    } else if (substring (postDetails [['Message']],2,2) == 'F') {
+    } else if (substring (postDetails [['Message']], 1, 1) == 'F') {
       temperatureC <- tail (airt [['airt']], n = 1)
-      message <- sprintf (postDetails [['Message']], temperatureC, treeLocationName)
-    } else if (substring (postDetails [['Message']],2,2) == 'T') {
+      message <- sprintf (postDetails [['Message']], round (temperatureC, 1), 
+                          round (CtoF (temperatureC), 1), treeLocationName)
+    } else if (substring (postDetails [['Message']], 1, 1) == 'S') {
       message <- sprintf (postDetails [['Message']],  hour (vernalDate), minute (vernalDate))
     }
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate) 
   } 
-  return (mtable)
+  return (ptable)
 } 
 
 # 11 - Autumn Equinox (annual post)

@@ -111,9 +111,10 @@ readClimate <- function (TEST = F) {
   
   # calcualte daily vapour pressure deficit
   #--------------------------------------------------------------------------------------
-  dailyVPD <<- RHtoVPD (RH = dailyReHu [['relativeHumidity']], 
-                        TdegC = dailyAirt [['airt']] [dailyAirt [['day']] >= dailyReHu [['day']] [1]], 
-                        Pa = 101) # Should make pressure a variable as well.
+  dailyVPD <<- tibble (day = dailyReHu [['day']],
+                       VPS = RHtoVPD (RH = dailyReHu [['relativeHumidity']], 
+                                      TdegC = dailyAirt [['airt']] [dailyAirt [['day']] >= dailyReHu [['day']] [1]], 
+                                      Pa = 101)) # Should make pressure a variable as well.
   
   # delete temporary variables
   #--------------------------------------------------------------------------------------

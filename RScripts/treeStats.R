@@ -31,6 +31,7 @@ bark                <- 2.5      # bark thickness (cm)
 rHeartWood          <- 0.5      # heartwood radius (m)
 k                   <- 0.5      # thermal conductivity of sapwood (W mK-1)
 percentWaterContent <- 80       # TTR Made up, but that is what the literature reports for similar species.
+sapWoodArea         <- NA       # I need to add this
 
 # Values from literature
 #----------------------------------------------------------------------------------------
