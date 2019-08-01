@@ -92,15 +92,18 @@ generateInteractiveResponses <- function (TEST = 0) {
                                           round (9.0 / 5.0 * (airTemp) + 32, 1))
     responses <- add_row (responses, season = season, topic = 'temperature', 
                           reply = postDetails [['Message']])
-    
-    # check precipitation
-    #------------------------------------------------------------------------------------
   }
-  
   
   # delete first row in responses tibble
   #--------------------------------------------------------------------------------------
-  responses <-  responses [-1, ]
+  responses <- responses [-1, ]
+  
+  # add response to hear a tree fall in the forest 
+  #------------------------------------------------------------------------------------
+  postDetails <- getPostDetails ('generateInteractivity - all-year - treeFall',
+                                 gs_posts_key = gsPostsKey)
+  responses <-  add_row (responses, season = 'all-year', topic = 'can you hear a tree fall?',
+                         reply = postDetails [['Message']], .before = 1)
   
   # write messages to csv file
   #--------------------------------------------------------------------------------------
@@ -111,5 +114,5 @@ generateInteractiveResponses <- function (TEST = 0) {
   return (0)
 }
 #----------------------------------------------------------------------------------------
-# - Should create better definition of the growing season
+# - Should create better definition of the growing season than 15 March to 15 October
 #========================================================================================

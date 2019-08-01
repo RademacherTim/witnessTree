@@ -135,7 +135,7 @@ if os.path.exists('./memory.csv'):
 else:
 	print ("Error: Could not find a last response time.")
 
-# Look for tweets containing the questions the bot responds to (as in t)
+# Look for tweets containing the questions the bot responds to
 #------------------------------------------------------------------------------
 tweetIDs = []
 localTwitter = pytz.timezone ("UTC")
@@ -153,10 +153,26 @@ for i in questions:
 			print ('Question was already replied to.')
 		else:
 		        handle = tweet.user.screen_name
-			response = random.sample (responses ['reply'], 1) [0]
+			response = random.sample (responses ['reply'] [1:len(responses)], 1) [0]
 		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id) # This does fail, if it has already replied.
 			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
 print ('Responded to '+str (len (tweetIDs))+' questions.')
+
+
+# Look for tweets containing "if a tree falls in the woods"
+#------------------------------------------------------------------------------
+question = 'if a tree falls a forest, does it make a sound'
+tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
+tweets = []
+for tweet in tmpTweets:
+	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
+        questionTime = local_dt.astimezone (pytz.utc)
+    	if questionTime > lastResponseTime:
+        	tweets.append   (tweet)	
+for tweet in tweets:
+	handle = tweet.user.screen_name
+	response = responses ['reply'] [0]
+	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
 # Update the memory.csv file to contain the timestamp, when we last replied to a question to avoid trying to re-post
 #------------------------------------------------------------------------------
