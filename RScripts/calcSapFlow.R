@@ -67,6 +67,7 @@ calcSapflow <- function (treeName, dataPath, PLOT = F) {
   Cw <- 4.18 # volumetric heat capacity of water (MJ m-3 K-1)
   xd <- 0.6  # distance between the heated needle and downstream needle (cm)
   xu <- 0.6  # distance between the heated needle and upstream needle (cm)
+  k  <- 0.5  # thermal conductivity of sapwood (W mK-1)
 
   # Get and collate data
   #--------------------------------------------------------------------------------------
