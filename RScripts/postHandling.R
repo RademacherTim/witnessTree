@@ -43,21 +43,21 @@ selectPost <- function (mtable) # tibble of posts with, inter alia, priorities
 #=======================================================================================
 # Function to delete message from messages tibble to avoid it being used again.
 #---------------------------------------------------------------------------------------
-deletePost <- function (mtable, # tibble of posts
+deletePost <- function (ptable, # tibble of posts
                         post)   # tibble of the selected post
 {
   # Get line on which the message is 
   #-------------------------------------------------------------------------------------
-  nRow <- which (mtable [['message']] == post [['message']])
+  nRow <- which (ptable [['message']] == post [['message']])
   
   # Delete row with same message in messages tibble
   #-------------------------------------------------------------------------------------
-  mtable <- mtable [-nRow, ]
+  ptable <- ptable [-nRow, ]
   
   # Get lines which are duplicates
   #-------------------------------------------------------------------------------------
-  temp <- mtable [, -1]  # Have to delete priority as that can vary over time.
-  mtable <- mtable [!duplicated (temp), ]
+  temp <- ptable [, -1]  # Have to delete priority as that can vary over time.
+  ptable <- ptable [!duplicated (temp), ]
   
   # Delete temporary variables
   #-------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ deletePost <- function (mtable, # tibble of posts
   
   # Return the selected message
   #-------------------------------------------------------------------------------------
-  return (mtable)
+  return (ptable)
 }
 #=======================================================================================
 
@@ -212,7 +212,11 @@ deletePostedPosts <- function (ptable)
   
   # delete similar messages from the table of posts
   #----------------------------------------------------------------------------------------
-  ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
+  if (length (nRow) != 0) {
+    ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
+  } else {
+    ptable <- ptable
+  }
   
   # return updated table with posts
   #-------------------------------------------------------------------------------------

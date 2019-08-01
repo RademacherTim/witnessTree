@@ -292,7 +292,7 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
   
   # Check whether it is the first day of the month
   #--------------------------------------------------------------------------------------
-  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 15) == '09:0'| TEST >= 1) {
+  if (substring (Sys.Date (), 9, 10) == '01' & substring (Sys.time (), 12, 13) == '13'| TEST >= 1) {
     
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
     #--------------------------------------------------------------------------------------
