@@ -72,6 +72,7 @@ readClimate <- function (TEST = F) {
   airt         <<- add_column (airt,         rank = rank (-airt         [['airt']]))
   dailyAirt    <<- add_column (dailyAirt,    rank = rank (-dailyAirt    [['airt']]))
   dailyMaxAirt <<- add_column (dailyMaxAirt, rank = rank (-dailyMaxAirt [['airt']]))
+  weeklyAirt   <<- add_column (weeklyAirt,   rank = rank (-weeklyAirt   [['airt']]))
     
   # Add variable for different period to prec (i.e. day, week, month, year)
   #--------------------------------------------------------------------------------------
