@@ -447,7 +447,7 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
 } # TR: Add a message about a comparison to the earliest 30 year period only.
 
 # Summarise and compare last year's climate at the beginning of the year
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 annualClimateSummary <- function (mtable, TEST = 0) {
   
   # Check whether it is the first day of the year
@@ -503,26 +503,18 @@ annualClimateSummary <- function (mtable, TEST = 0) {
 }
 
 # Check for first frost event of the year and late frosts during the growing season
-#---------------------------------------------------------------------------------------#
-checkFrost <- function (mtable, TEST = 0) {
+#----------------------------------------------------------------------------------------
+checkFrost <- function (mtable, FROST  = FALSE, TEST = 0) {
   
   # Check for first frost (after July)
-  #-------------------------------------------------------------------------------------#
+  #--------------------------------------------------------------------------------------
   if ((substring (Sys.Date (), 6, 10) >= '07-31' & tail (airt [['airt']], n = 1) < 0.0) | TEST == 1) {
     postDetails <- getPostDetails ('checkFrost - first', gs_posts_key = gsPostsKey)
-    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
-                          priority    = postDetails [["Priority"]], 
-                          fFigure     = postDetails [['fFigure']],
-                          figureName  = postDetails [["FigureName"]], 
-                          message     = message, 
-                          hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
+    FROST <- TRUE
   }
   
   # Check for late frosts (after April and with at least three preceeding frost-free days)
-  #-------------------------------------------------------------------------------------#
+  #--------------------------------------------------------------------------------------
   if ((substring (Sys.Date (), 6, 10) >= '05-01' &         # after April
        substring (Sys.Date (), 6, 10) <= '08-01' &         # before August
        tail (airt [['airt']], n = 1) < 0.0 &               # frost, aka air temperature below freezing
@@ -531,35 +523,38 @@ checkFrost <- function (mtable, TEST = 0) {
                              !is.na  (airt [['airt']])                                &
                              !is.nan (airt [['airt']])] <= 0.0, na.rm = T) < 1 )| # no frost in preceeding three days
       TEST == 2) {                                        # or we are testing
-    
-    # Determine number of preceeding frost free days
-    #-------------------------------------------------------------------------------------#
+    postDetails <- getPostDetails ('checkFrost - late', gs_posts_key = gsPostsKey)
+    FROST <- TRUE
+  }
+
+  # Determine number of preceeding frost free days
+  #--------------------------------------------------------------------------------------
+  if (FROST) {
     frostFreeDays <- 0 
-    NOFROST <- T
+    NOFROST <- TRUE
     while (NOFROST) { # go back in time
       # Select only temperatures during the day prior to the last checked day
       temps <- airt [['airt']] [airt [['day']] >= format (Sys.Date () - (frostFreeDays), '%Y-%m-%d')]
       if (sum (temps < 0.0, na.rm = T) > 0.0) {
-        NOFROST = F
+        NOFROST = FALSE
       } else {
         frostFreeDays <- frostFreeDays + 1
       }
     } 
-    
-    # Parse message and expiration date
-    #-------------------------------------------------------------------------------------#
-    postDetails <- getPostDetails ('checkFrost - late', gs_posts_key = gsPostsKey)
-    message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
-    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
-                          priority    = postDetails [["Priority"]], 
-                          fFigure     = postDetails [['fFigure']],
-                          figureName  = postDetails [["FigureName"]], 
-                          message     = message, 
-                          hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
   }
+  
+  # Compose post details
+  #--------------------------------------------------------------------------------------
+  message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
+  delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+  expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+  mtable    <- add_row (mtable, 
+                        priority    = postDetails [["Priority"]], 
+                        fFigure     = postDetails [['fFigure']],
+                        figureName  = postDetails [["FigureName"]], 
+                        message     = message, 
+                        hashtags    = postDetails [["Hashtags"]], 
+                        expires     = expirDate)
   
   return (mtable)
 }
