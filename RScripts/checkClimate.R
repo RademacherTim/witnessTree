@@ -617,6 +617,9 @@ checkHeatWave <- function (mtable, TEST = 0) {
 #----------------------------------------------------------------------------------------
 checkStorm <- function (ptable, TEST = 0){
   
+  # Set Storm boolean to FALSE by default
+  #--------------------------------------------------------------------------------------
+  STORM <- FALSE
   
   # Check whether the max wind speed for the day was above 15 m/s 
   #--------------------------------------------------------------------------------------

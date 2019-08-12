@@ -26,7 +26,6 @@
 
 # Load dependencies
 #----------------------------------------------------------------------------------------
-suppressMessages (library ('RcppBDT'))
 if (!existsFunction ('day')) library ('lubridate')
 
 # 0 - Hello world! message (post once on 15th of July)
