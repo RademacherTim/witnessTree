@@ -504,7 +504,11 @@ annualClimateSummary <- function (mtable, TEST = 0) {
 
 # Check for first frost event of the year and late frosts during the growing season
 #----------------------------------------------------------------------------------------
-checkFrost <- function (mtable, FROST  = FALSE, TEST = 0) {
+checkFrost <- function (ptable, TEST = 0) {
+  
+  # Assume there has been no frost
+  #--------------------------------------------------------------------------------------
+  FROST <- FALSE
   
   # Check for first frost (after July)
   #--------------------------------------------------------------------------------------
@@ -541,26 +545,26 @@ checkFrost <- function (mtable, FROST  = FALSE, TEST = 0) {
         frostFreeDays <- frostFreeDays + 1
       }
     } 
+  
+    # Compose post details
+    #------------------------------------------------------------------------------------
+    message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [["Priority"]], 
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = postDetails [["Hashtags"]], 
+                          expires     = expirDate)
   }
   
-  # Compose post details
-  #--------------------------------------------------------------------------------------
-  message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
-  delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-  expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-  mtable    <- add_row (mtable, 
-                        priority    = postDetails [["Priority"]], 
-                        fFigure     = postDetails [['fFigure']],
-                        figureName  = postDetails [["FigureName"]], 
-                        message     = message, 
-                        hashtags    = postDetails [["Hashtags"]], 
-                        expires     = expirDate)
-  
-  return (mtable)
+  return (ptable)
 }
 
 # Check for a heatwave
-#---------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------
 checkHeatWave <- function (mtable, TEST = 0) {
 
   # Define heatwave threshold
@@ -609,23 +613,41 @@ checkHeatWave <- function (mtable, TEST = 0) {
   return (mtable)
 }
 
-# Check for a windy day/storm (i.e. day with max windspeed above 4 m/s???)
-#---------------------------------------------------------------------------------------#
-checkStorm <- function (mtable, TEST = 0){
+# Check for a windy day/storm (i.e. day with max windspeed above 15 m/s)
+#----------------------------------------------------------------------------------------
+checkStorm <- function (ptable, TEST = 0){
   
   
-  # Check whether the max wind speed for the day was above 5 m/s 
-  #-------------------------------------------------------------------------------------#
+  # Check whether the max wind speed for the day was above 15 m/s 
+  #--------------------------------------------------------------------------------------
   if (tail (gust [['gust']], n = 1) > 15.0 | TEST == 1) {
     
     # Parse message and expiration date
-    #-------------------------------------------------------------------------------------#
-    postDetails <- getPostDetails ('checkStorm', gs_posts_key = gsPostsKey)
+    #------------------------------------------------------------------------------------
+    postDetails <- getPostDetails ('checkStorm - windy', gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [['Message']],  round (tail (wind [['wind']], n = 1), 1), 
                           round (tail (gust [['gust']], n = 1)*2.23694, 1), treeLocationName) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+    STORM <-TRUE
+  }
+  
+  # Check whether rainfall during the storm was above 50 mm
+  #--------------------------------------------------------------------------------------
+  precIn24Hours <- sum (tail (prec [['prec']], n = 24 * 4), na.rm = T) 
+  if (precIn24Hours > 50.0 | TEST == 2) {
+    
+    # Parse message and expiration date
+    #------------------------------------------------------------------------------------
+    postDetails <- getPostDetails ('checkStorm - wet', gs_posts_key = gsPostsKey)
+    message   <- sprintf (postDetails [['Message']],  round (precIn24Hours / 10.0, 1), 
+                          round (mmtoInches (precIn24Hours), 1)) 
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+    STORM <- TRUE
+  }
+  
+  if (STORM) {
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [["fFigure"]],
                           figureName  = postDetails [["FigureName"]], 
@@ -634,7 +656,9 @@ checkStorm <- function (mtable, TEST = 0){
                           expires     = expirDate)
   }
   
-  return (mtable)
+  # Return post details to main script
+  #--------------------------------------------------------------------------------------
+  return (ptable)
 }
 
 #=======================================================================================#
