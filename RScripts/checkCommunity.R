@@ -10,13 +10,13 @@
 
 # Explain seed dispersal
 #---------------------------------------------------------------------------------------#
-explainSeedDispersal <- function (mtable, TEST = 0) {
+explainSeedDispersal <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainSeedDispersal", gs_posts_key = gsPostsKey)
     message   <- sprintf (postDetails [["Message"]])
     expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
@@ -25,19 +25,21 @@ explainSeedDispersal <- function (mtable, TEST = 0) {
                           expires     = expirDate)
   } 
   
-  return (mtable)
+  return (ptable)
 } 
 
 # Check for wildlife images (visitors) at the tree
 #----------------------------------------------------------------------------------------
-checkCommunityWildlife <- function (mtable, TEST = 0) {
+checkCommunityWildlife <- function (ptable, TEST = 0) {
   
   # Check whether there is a new wildlife photo
   #--------------------------------------------------------------------------------------
-  memory <- read_csv ('memory.csv', col_types = cols ())
+  if (file.exists ('memory.csv')) {
+    memory <- read_csv ('memory.csv', col_types = cols ())
+  } 
   listOfVisitors <- list.files (path = sprintf ('%s/wildlifeCam/',imagesPath), 
-                                pattern = '.jpg')
-  
+                                pattern = '.jpg')  
+
   # Check that there is a picture in the directory
   #--------------------------------------------------------------------------------------
   if (length (listOfVisitors) > 0) {
@@ -69,7 +71,7 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
       delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
       expirDate <- sprintf ("%s 23:59:59 %s", 
                             format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
-      mtable    <- add_row (mtable, 
+      ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/wildlifeCam/%s',imagesPath, tail (listOfVisitors, n = 1)),
@@ -84,6 +86,6 @@ checkCommunityWildlife <- function (mtable, TEST = 0) {
     }
   }
   
-  return (mtable)
+  return (ptable)
 } 
 #=======================================================================================#
