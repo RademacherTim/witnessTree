@@ -23,9 +23,9 @@ explainDimensions <- function (ptable, TEST = 0) {
     memory [['dimensionsPosted']] <- FALSE
   }
   
-  # check whether it is the 22nd 
-  #--------------------------------------------------------------------------------------  
-  if (substring (Sys.time (), 9, 13) == "26 12" & memory [['dimensionsPosted']] == FALSE | 
+  # check whether it is the 20th
+  #-------------------------------------------------------------------------------------- 
+  if (substring (Sys.time (), 9, 13) == "20 12" & memory [['dimensionsPosted']] == FALSE | 
       TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions', gs_posts_key = gsPostsKey)
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
@@ -53,10 +53,19 @@ explainDimensions <- function (ptable, TEST = 0) {
     #------------------------------------------------------------------------------------
     memory [['dimensionsPosted']] <- TRUE
     write_csv (memory, 'memory.csv')
+    
+  # Reset dimensionsPosted boolean on the 21st of the month
+  #--------------------------------------------------------------------------------------
+  } else if (substring (Sys.time (), 9, 13) == "21 12" & 
+             memory [['dimensionsPosted']] == TRUE) {
+    memory [['dimensionsPosted']] <- FALSE
+    write_csv (memory, 'memory.csv')
   } 
+  
   
   # return updated post table
   #--------------------------------------------------------------------------------------
   return (ptable)
-} # I need to include resetting the memory on the 23rd of each month.
+
+}
 #========================================================================================
