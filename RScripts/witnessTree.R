@@ -176,19 +176,29 @@ if (dim (post) [1]) {
                                                   !is.na  (pastPostDates)                 &
                                                   !is.nan (pastPostDates)])
   lastPostDateTime <- head (tail (pastPostDates, n = 2), n = 1)
-  if (numberOfPostsLastWeek >= 7) { # If the bot has already posted four messages
+  
+  # Check whether the bot has already posted seven messages in the last week
+  #--------------------------------------------------------------------------------------
+  if (numberOfPostsLastWeek >= 7) { 
     # Add post back to posts tibble, as it will not be posted right now
     #------------------------------------------------------------------------------------
     posts <- rbind (posts, post)
     print ('We already had more than 7 posts in the last 7 days!')
+    
+  # Check whether the bot has posted in the last four hours
+  #--------------------------------------------------------------------------------------
   } else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 |
              post [['priority']] == 10) {
     # Add post back to posts tibble, as it will not be posted right now
     #------------------------------------------------------------------------------------
     posts <- rbind (posts, post)
     print ('The last post was less than four hours ago!')
+  
+  # Write post to posts/ folder named after date and time when it should be scheduled 
+  #--------------------------------------------------------------------------------------
   } else {
-    # Write post to messages/ folder named after date and time when it should be scheduled 
+    
+    # Double check that there is a post
     #------------------------------------------------------------------------------------
     if (dim (post) [1] > 0) {
       write_csv (x    = post,

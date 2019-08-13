@@ -1,12 +1,12 @@
-#==============================================================================
+#========================================================================================
 # This script is the twitterbot. It reads messages for a particular hour and 
 # associated information to transfer it to a linked twitter account with access 
 # details for the account in the config file.
 # Each message can only be posted once, so accidental repetition is impossible.
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 
 # Import dependencies
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 import sys        # library to use command line arguments
 import tweepy     # twitter library
 import twitter    # python-twitter library
@@ -20,10 +20,10 @@ import array      # library for array handling
 import pytz       # for timezone handling
 from datetime import date
 from datetime import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Linking the Twitter accound with Tweepy through adding credentials. 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 consumer_key        = sys.argv [1] # twitter accountconsumer key
 consumer_secret     = sys.argv [2] # twitter accountconsumer secrets
 access_token        = sys.argv [3] # twitter account access token
@@ -39,27 +39,46 @@ path                = sys.argv [7] # path to the current working directory
 #print (facebook_page_id)
 
 # Get working directory
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 os.chdir (path)
 
 # Authenticate the twitter account
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Check points to create user object used later
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 user = api.me()
 
+# Set time zones for local and twitter
+#----------------------------------------------------------------------------------------
+local = pytz.timezone ("US/Eastern")
+localTwitter = pytz.timezone ("UTC")
+
 # Check whether there is a file for this hour
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
 now = datetime.now ()
+local_now = local.localize (now, is_dst = None)
 fileName = "./posts/%s.csv" % now.strftime ("%Y-%m-%d_%H")
 print (fileName)
 
-# Read post, if it exists
-#------------------------------------------------------------------------------
+# Read in timestamp, when we last replied to interactive tweets.
+#----------------------------------------------------------------------------------------
+if os.path.exists('./memory.csv'):
+	tmp = pandas.read_csv ('./memory.csv')
+	tmpTime = tmp ['lastResponse']
+	tmpTime = tmpTime [0]
+	tmpTime = datetime.strptime (tmpTime, '%Y-%m-%d %H:%M')
+	local_dt = local.localize (tmpTime, is_dst = None)
+        lastResponseTime = local_dt.astimezone (pytz.utc)
+else:
+	print ("Error: Could not find a last response time.")
+
+
+# Read post, if it exists 
+#----------------------------------------------------------------------------------------
 if os.path.exists(fileName):
 	with open(fileName) as csv_file:
 	    csv_reader = csv.reader(csv_file, delimiter=',')
@@ -74,7 +93,7 @@ if os.path.exists(fileName):
 	    #print(line_count)
 
         # Extract post information from the file
-        #----------------------------------------------------------------------
+        #--------------------------------------------------------------------------------
 	priority   = row [0]
 	fFigure    = row [1]
         figureName = row [2]
@@ -83,20 +102,30 @@ if os.path.exists(fileName):
 	expires    = row [5]
 	print (message + hashtags + fFigure + figureName)
 
-        # Get graph for facebook
-        #----------------------------------------------------------------------
-        #graph = facebook.GraphAPI(page_access_token)        
+	# Search for when this post was last posted
+        #--------------------------------------------------------------------------------
+	lastMessage = api.search (q = message, show_user = True)
+	lastMessage = lastMessage [len (lastMessage) - 1]
+	lastPostTime = localTwitter.localize (lastMessage.created_at, is_dst = None)
+        oneHourFromLastPost = lastPostTime + timedelta (hours = 1)
+	if local_now.astimezone (pytz.utc) > oneHourFromLastPost.astimezone (pytz.utc):
 
-        # The post is not accompanied by an image
-        #----------------------------------------------------------------------
-        if fFigure == "FALSE":
-             api.update_status (message + hashtags)
+        	# Get graph for facebook
+        	#------------------------------------------------------------------------
+        	#graph = facebook.GraphAPI(page_access_token)        
 
-        # The post is accompanied by an image
-	#----------------------------------------------------------------------
-        elif fFigure == "TRUE":
-             api.update_with_media (filename = figureName, 
-                                    status = message + hashtags)
+ 		# The post is not accompanied by an image
+        	#------------------------------------------------------------------------
+        	if fFigure == "FALSE":
+             		api.update_status (message + hashtags)
+
+        	# The post is accompanied by an image
+		#------------------------------------------------------------------------
+        	elif fFigure == "TRUE":
+             		api.update_with_media (filename = figureName, 
+                            	               status = message + hashtags)
+	else:
+		print ("Error: Last post was less than 1 hours ago!")
 
 else:
 	print ("Error: No file with a message!")
@@ -122,23 +151,9 @@ questions = ['how are you',
              'how are you doing']
 #print (t)
 
-# Read in timestamp, when we last replied to tweets.
-#------------------------------------------------------------------------------
-if os.path.exists('./memory.csv'):
-	tmp = pandas.read_csv ('./memory.csv')
-	tmpTime = tmp ['lastResponse']
-	tmpTime = tmpTime [0]
-	tmpTime = datetime.strptime (tmpTime, '%Y-%m-%d %H:%M')
-	local = pytz.timezone ("US/Eastern")
-	local_dt = local.localize (tmpTime, is_dst = None)
-        lastResponseTime = local_dt.astimezone (pytz.utc)
-else:
-	print ("Error: Could not find a last response time.")
-
 # Look for tweets containing the questions the bot responds to
 #------------------------------------------------------------------------------
 tweetIDs = []
-localTwitter = pytz.timezone ("UTC")
 for i in questions:
 	tmpTweets = api.search (q = "@%s " % (user.screen_name) + i, show_user = True)
 	tweets = []
@@ -161,7 +176,7 @@ print ('Responded to '+str (len (tweetIDs))+' questions.')
 
 # Look for tweets containing "if a tree falls in the woods"
 #------------------------------------------------------------------------------
-question = 'if a tree falls a forest, does it make a sound'
+question = 'if a tree falls in a forest, does it make a sound'
 tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
 tweets = []
 for tweet in tmpTweets:
@@ -174,7 +189,8 @@ for tweet in tweets:
 	response = responses ['reply'] [0]
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
-# Update the memory.csv file to contain the timestamp, when we last replied to a question to avoid trying to re-post
+# Update the memory.csv file to contain the timestamp, when we last replied to 
+# a question to avoid trying to re-post
 #------------------------------------------------------------------------------
 local_dt = local.localize (datetime.now (), is_dst = None)
 tmp ['lastResponse'] = datetime.strftime (local_dt, '%Y-%m-%d %H:%M')
