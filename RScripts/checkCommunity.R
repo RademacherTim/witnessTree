@@ -30,6 +30,15 @@ explainSeedDispersal <- function (ptable, TEST = 0) {
 
 # Check for wildlife images (visitors) at the tree
 #----------------------------------------------------------------------------------------
+# 
+# To post an image, it needs to be moved into the wildlifeCamera folder in the imagesPath
+# directory and named according to the following naming convention: 
+# 
+# wildlifeCameraImageXXXX.jpg
+# 
+# , where XXXX has to be replaced by an increasing number with preceeding zeros. The 
+#   first image would be named wildlifeCameraImage0001.jpg and so on. 
+#----------------------------------------------------------------------------------------
 checkCommunityWildlife <- function (ptable, TEST = 0) {
   
   # Check whether there is a new wildlife photo
@@ -40,9 +49,10 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
   listOfVisitors <- list.files (path = sprintf ('%s/wildlifeCam/',imagesPath), 
                                 pattern = '.jpg')  
 
-  # Check that there is a picture in the directory
+  # Check that there is at least one picture in the directory
   #--------------------------------------------------------------------------------------
-  if (length (listOfVisitors) > 0) {
+  if (length (listOfVisitors) > 0 | TEST >= 1) {
+    
     # Check whether there is a new picture in the directory
     #------------------------------------------------------------------------------------
     if (as.numeric (substring (tail (listOfVisitors, n = 1), 20, 23)) > 

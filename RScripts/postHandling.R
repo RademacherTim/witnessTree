@@ -148,7 +148,8 @@ getPostDetails <- function (fName, gs_posts_key)
   
   # Extract post details # TR - May not need all of them, i.e. logic
   #--------------------------------------------------------------------------------------
-  postDetails <- temp %>% select (-c (Status, Event))
+  postDetails <- temp %>% select (-c (Status, Event, Logic, Variables, VariablesExamples, 
+                                      Link, Numbers))
   
   # Check whether there is a figure accompanying the post
   #--------------------------------------------------------------------------------------
@@ -161,6 +162,13 @@ getPostDetails <- function (fName, gs_posts_key)
   #--------------------------------------------------------------------------------------
   if (postDetails [['Treatment']] != 'Audience' & !is.na (postDetails [['FigureName']])) {
     postDetails [['fFigure']] <- sample (c (T, F), size = 1)
+  } else if (postDetails [['Treatment']] == 'Audience') {
+    if (substring (postDetails [['FunctionID']], 1, 22) == 'checkCommunityWildlife' | 
+        !is.na (postDetails [['FigureName']])) {
+      postDetails [['fFigure']] <- TRUE
+    } else {
+      postDetails [['fFigure']] <- FALSE
+    }   
   }
   
   # Add the image path to the figureName, so that the bot can actually find them
