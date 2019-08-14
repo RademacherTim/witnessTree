@@ -124,22 +124,34 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   
   # Check whether the current temperature is the coldest temperature on record
   #--------------------------------------------------------------------------------------
+  tempRank <- rank (airt [['airt']])
   if (min (airt [['airt']], na.rm = T) >= 
       tail (airt [['airt']], n = 1) | TEST == 9) {
-    COLDEST <- T
+    COLDEST <- TRUE
+    COLD    <- FALSE
+  } else if (tail (tempRank, n = 1) <= 100 | TEST == 10) {
+    COLDEST <- FALSE
+    COLD    <- TRUE
   } else {
-    COLDEST <- F
+    COLDEST <- FALSE
+    COLD    <- FALSE
   }
   temperatureC <- tail (airt [['airt']], n = 1)
   temperatureF <- (temperatureC * 9.0 / 5.0) + 32
   
   # Check whether the yesterday was the coldest day on record
   #--------------------------------------------------------------------------------------
+  tempRank <- rank (dailyAirt [['airt']]) 
   if (min (dailyAirt [['airt']], na.rm = T) >= 
-      head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 10) {
-    COLDESTDAY <- T
+      head (tail (dailyAirt [['airt']], n = 2), n = 1) | TEST == 11) {
+    COLDESTDAY <- TRUE
+    COLDDAY    <- FALSE
+  } else if (head (tail (tempRank, n = 2), n = 1) <= 50 | TEST == 12) {
+    COLDESTDAY <- FALSE
+    COLDDAY    <- TRUE
   } else {
-    COLDESTDAY <- F
+    COLDESTDAY <- FALSE
+    COLDDAY    <- FALSE
   }
   dailyTemperatureC <- head (tail (dailyAirt [['airt']], n = 2), n = 1)
   dailyTemperatureF <- (dailyTemperatureC * 9.0 / 5.0) + 32
@@ -147,7 +159,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   # Check whether the last week was the coldest week on record
   #--------------------------------------------------------------------------------------
   if (min (weeklyAirt [['airt']], na.rm = T) >= 
-      head (tail (weeklyAirt [['airt']], n = 2), n = 1) | TEST == 11) { 
+      head (tail (weeklyAirt [['airt']], n = 2), n = 1) | TEST == 13) { 
     COLDESTWEEK <- T
   } else {
     COLDESTWEEK <- F
@@ -158,7 +170,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   # Check whether the last month was the coldest month on record
   #--------------------------------------------------------------------------------------
   if (min (monthlyAirt [['airt']], na.rm = T) >= 
-      head (tail (monthlyAirt [['airt']], n = 2), n = 1) | TEST == 12) { 
+      head (tail (monthlyAirt [['airt']], n = 2), n = 1) | TEST == 14) { 
     COLDESTMONTH <- T
   } else {
     COLDESTMONTH <- F
@@ -169,7 +181,7 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
   # Check whether the last year was the warmest year on record
   #--------------------------------------------------------------------------------------
   if (max (yearlyAirt [['airt']], na.rm = T) >= 
-      head (tail (yearlyAirt [['airt']], n = 2), n = 1) | TEST == 13) { 
+      head (tail (yearlyAirt [['airt']], n = 2), n = 1) | TEST == 15) { 
     COLDESTYEAR <- T
   } else {
     COLDESTYEAR <- F
@@ -204,8 +216,8 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
         subst <- 'th'
       }
       message    <- sprintf (postDetails [['Message']], 
-                             round (dailyTemperatureC, 1),
-                             round (dailyTemperatureF, 1), 
+                             round (temperatureC, 1),
+                             round (temperatureF, 1), 
                              rank, subst)
       # Expires four hours after occurance
       expireDate <- sprintf ("%s %s", format (Sys.time () + 4 * 60 * 60, 
@@ -279,6 +291,26 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
       # Expires four hours after occurance
       expireDate <- sprintf ("%s %s", format (Sys.time () + 4 * 60 * 60, 
                                               format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
+    } else if (COLD){
+      postDetails <- getPostDetails ('cold', gs_posts_key = gsPostsKey)
+      rank <- tail (rank (airt [['airt']]), n = 1)
+      len <- nchar (as.character (rank))
+      if (substring (as.character (rank), len, len) == '1') {
+        subst <- 'st'
+      } else if (substring (as.character (rank), len, len) == '2') {
+        subst <- 'nd'
+      } else if (substring (as.character (rank), len, len) == '3') {
+        subst <- 'rd'
+      }  else {
+        subst <- 'th'
+      }
+      message    <- sprintf (postDetails [['Message']], 
+                             round (temperatureC, 1),
+                             round (temperatureF, 1), 
+                             rank, subst)
+      # Expires four hours after occurance
+      expireDate <- sprintf ("%s %s", format (Sys.time () + 4 * 60 * 60, 
+                                              format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
     } else if (COLDESTDAY) {
       pastTemperatureC  <- tail (head (sort (airt [['airt']]), n = 2), n = 1)
       pastTemperatureF  <- CtoF (pastTemperatureC)
@@ -288,6 +320,25 @@ checkExtremeTemperatures <- function (mtable, TEST = 0) {
       message   <- sprintf (postDetails [['Message']], dateOfLastColdest, 
                             round (pastTemperatureC, 1), round (pastTemperatureF, 1), 
                             round (dailyTemperatureC, 1), round (dailyTemperatureF, 1)) # TR still nedds work
+      
+      # Expires at the end of the day
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
+                             treeTimeZone)
+    } else if (COLDDAY) {
+      postDetails <- getPostDetails ('coldDay', gs_posts_key = gsPostsKey)
+      rank <- head (tail (rank (dailyAirt [['airt']]), n = 2), n = 1)
+      len <- nchar (as.character (rank))
+      if (substring (as.character (rank), len, len) == '1') {
+        subst <- 'st'
+      } else if (substring (as.character (rank), len, len) == '2') {
+        subst <- 'nd'
+      } else if (substring (as.character (rank), len, len) == '3') {
+        subst <- 'rd'
+      } else {
+        subst <- 'th'
+      }
+      message <- sprintf (postDetails [['Message']], round (dailyTemperatureC, 1), 
+                          round (dailyTemperatureF, 1), rank, subst)
       
       # Expires at the end of the day
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
