@@ -733,4 +733,34 @@ checkStorm <- function (ptable, TEST = 0){
   return (ptable)
 }
 
+# Check for rainfall above 1.5mm per fifteen minutes
+#----------------------------------------------------------------------------------------
+checkRainfall <- function (ptable, TEST = 0) {
+
+  # Check for pretty heavy rain (more than 1.5mm per fifteen minutes)
+  #--------------------------------------------------------------------------------------
+  if (tail (prec [['prec']], n = 1) > 1.5 | TEST == 1) {
+
+    # Load dependencies if necessary
+    #------------------------------------------------------------------------------------
+    if (!existsFunction ('cols')) library ('tidyverse')
+
+    # Get post details    
+    #------------------------------------------------------------------------------------
+    postDetails <- getPostDetails (fName = 'checkRainfall', gs_posts_key = gsPostsKey)
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60.0 * 60.0
+    expirDate <- sprintf ("%s %s", format (Sys.time () + delay, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone) 
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [['Priority']], 
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [['FigureName']], 
+                          message     = postDetails [['Message']], 
+                          hashtags    = postDetails [['Hashtags']], 
+                          expires     = expirDate)
+  }
+  
+  # Return the post details
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+}
 #=======================================================================================#
