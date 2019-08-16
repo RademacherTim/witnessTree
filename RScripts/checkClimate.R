@@ -745,16 +745,28 @@ checkRainfall <- function (ptable, TEST = 0) {
     #------------------------------------------------------------------------------------
     if (!existsFunction ('cols')) library ('tidyverse')
 
+    # Plot figure of growth and rainfall over the last two weeks
+    #------------------------------------------------------------------------------------
+    radGrowth <- calcRadialGrowth (temporalRes = 'daily', 
+                                   pdm_calibration_path = dataPath, 
+                                   PLOT = TRUE)
+    
     # Get post details    
     #------------------------------------------------------------------------------------
     postDetails <- getPostDetails (fName = 'checkRainfall', gs_posts_key = gsPostsKey)
+    if (substring (postDetails [['Message']], 1, 1) == 'T') {
+      message <- sprintf (postDetails [['Message']], 
+                          round (max (radGrowth [['dailyGrowth']], na.rm = TRUE), 2))
+    } else {
+      message <- postDetails [['Message']]
+    }
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60.0 * 60.0
     expirDate <- sprintf ("%s %s", format (Sys.time () + delay, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone) 
     ptable    <- add_row (ptable, 
                           priority    = postDetails [['Priority']], 
                           fFigure     = postDetails [['fFigure']],
-                          figureName  = postDetails [['FigureName']], 
-                          message     = postDetails [['Message']], 
+                          figureName  = sprintf ('%s/tmp/dailyGrowth_%s.png',path,Sys.Date ()), 
+                          message     = message, 
                           hashtags    = postDetails [['Hashtags']], 
                           expires     = expirDate)
   }
