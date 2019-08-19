@@ -143,7 +143,8 @@ print ('Community related messages have been checked.')
 # Generate new posts concerning physiology
 #----------------------------------------------------------------------------------------
 posts <- monthlyRadGrowthSummary (posts)
-posts <- checkWoodGrowthUpdate (posts)
+posts <- checkWoodGrowthUpdate   (posts)
+posts <- checkWaxyCuticle        (posts)
 print ('Physiological conditions have been checked.')
 
 # Generate interactive responses

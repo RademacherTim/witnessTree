@@ -49,7 +49,7 @@ monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
       postDetails <- getPostDetails ("monthlyRadGrowthSummary - fast", gs_posts_key = gsPostsKey)
       message     <- sprintf (postDetails [["Message"]], round (radGrowth [['monthlyGrowth']] [1], 3),
                               round (radGrowth [['monthlyGrowth']] [2], 3))
-      delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
+      delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
       ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
@@ -136,4 +136,34 @@ startSapFlow <- function (ptable, TEST = 0) {
   #} 
   return (ptable)
 } 
+
+# Leaves completely elongated
+#----------------------------------------------------------------------------------------
+# checkLeafElongation <- function (ptable, TEST = 0) {
+#   
+# }
+
+# Leaves developed waxy cuticle
+#----------------------------------------------------------------------------------------
+checkWaxyCuticle <- function (ptable, TEST = 0) {
+  if (substring (Sys.time (), 1, 13) == '2019-08-16 12' | TEST == 1) {
+    postDetails <- getPostDetails ("checkWaxyCuticle", gs_posts_key = gsPostsKey)
+    delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+    expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                          treeTimeZone)
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = postDetails [['Message']], 
+                          hashtags    = postDetails [["Hashtags"]], 
+                          expires     = expirDate)
+  } 
+  
+  # Return post table
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+}
+
+
 #========================================================================================

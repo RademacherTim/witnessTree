@@ -105,9 +105,13 @@ if os.path.exists(fileName):
 	# Search for when this post was last posted
         #--------------------------------------------------------------------------------
 	lastMessage = api.search (q = message, show_user = True)
-	lastMessage = lastMessage [len (lastMessage) - 1]
-	lastPostTime = localTwitter.localize (lastMessage.created_at, is_dst = None)
-        oneHourFromLastPost = lastPostTime + timedelta (hours = 1)
+	if len (lastMessage)-1 >= 0:
+		lastMessage = lastMessage [len (lastMessage) - 1]
+		lastPostTime = localTwitter.localize (lastMessage.created_at, is_dst = None)
+        	oneHourFromLastPost = lastPostTime + timedelta (hours = 1)
+	else: 
+		oneHourFromLastPost = local_now - timedelta (hours = 1)
+
 	if local_now.astimezone (pytz.utc) > oneHourFromLastPost.astimezone (pytz.utc):
 
         	# Get graph for facebook
