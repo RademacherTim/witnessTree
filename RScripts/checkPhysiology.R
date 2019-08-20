@@ -123,6 +123,9 @@ checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
+  
+  # Return table with posts
+  #--------------------------------------------------------------------------------------
   return (ptable)
 }
 
