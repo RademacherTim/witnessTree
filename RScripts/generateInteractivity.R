@@ -105,6 +105,30 @@ generateInteractiveResponses <- function (TEST = 0) {
   responses <-  add_row (responses, season = 'all-year', topic = 'can you hear a tree fall?',
                          reply = postDetails [['Message']], .before = 1)
   
+  # add response to hottest and coldest day
+  #------------------------------------------------------------------------------------
+  postDetails <- getPostDetails ('generateInteractivity - hottestDay',
+                                 gs_posts_key = gsPostsKey)
+  date <- dailyAirt [['day']] [dailyAirt [['rank']] == 1]
+  temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
+  message <- sprintf (postDetails [['Message']], day (date), 'th', 
+                      month (date, label = TRUE, abbr = FALSE),
+                      year (date), round (temperatureC, 1), 
+                      round (CtoF (temperatureC), 1))
+  responses <-  add_row (responses, season = 'all-year', topic = 'hottest day',
+                         reply = message, .before = 1)
+  postDetails <- getPostDetails ('generateInteractivity - coldestDay',
+                                 gs_posts_key = gsPostsKey)
+  tempRank <- rank (dailyAirt [['airt']]) 
+  date <- dailyAirt [['day']] [tempRank == 1]
+  temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
+  message <- sprintf (postDetails [['Message']], day (date), 'th', 
+                      month (date, label = TRUE, abbr = FALSE),
+                      year (date), round (temperatureC, 1), 
+                      round (CtoF (temperatureC), 1))
+  responses <-  add_row (responses, season = 'all-year', topic = 'coldest day',
+                         reply = message, .before = 1)
+  
   # write messages to csv file
   #--------------------------------------------------------------------------------------
   write_csv (responses, path = './tmp/interactiveResponses.csv')
