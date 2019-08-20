@@ -94,10 +94,13 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
       # Increase the wildlife counter in the memory
       #----------------------------------------------------------------------------------
       memory [['numberOfPreviousVisitors']] <- memory [['numberOfPreviousVisitors']] + 1
+      memory [['lastResponse']] <- format (memory [['lastResponse']], '%Y-%m-%d %H:%M')
       write_csv (memory, 'memory.csv')
     }
   }
   
+  # Return table with posts
+  #--------------------------------------------------------------------------------------
   return (ptable)
 } 
 #========================================================================================

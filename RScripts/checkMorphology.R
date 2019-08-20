@@ -52,6 +52,7 @@ explainDimensions <- function (ptable, TEST = 0) {
     # update memory 
     #------------------------------------------------------------------------------------
     memory [['dimensionsPosted']] <- TRUE
+    memory [['lastResponse']] <- format (memory [['lastResponse']], '%Y-%m-%d %H:%M')
     write_csv (memory, 'memory.csv')
     
   # Reset dimensionsPosted boolean on the 21st of the month
@@ -59,6 +60,7 @@ explainDimensions <- function (ptable, TEST = 0) {
   } else if (substring (Sys.time (), 9, 13) == "21 12" & 
              memory [['dimensionsPosted']] == TRUE) {
     memory [['dimensionsPosted']] <- FALSE
+    memory [['lastResponse']] <- format (memory [['lastResponse']], '%Y-%m-%d %H:%M')
     write_csv (memory, 'memory.csv')
   } 
   
