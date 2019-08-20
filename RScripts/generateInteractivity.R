@@ -110,22 +110,48 @@ generateInteractiveResponses <- function (TEST = 0) {
   postDetails <- getPostDetails ('generateInteractivity - hottestDay',
                                  gs_posts_key = gsPostsKey)
   date <- dailyAirt [['day']] [dailyAirt [['rank']] == 1]
+  len <- nchar (as.character (day (date)))
+  if (substring (as.character (day (date)), len, len) == '1') {
+    subst <- 'st'
+  } else if (substring (as.character (day (date)), len, len) == '2') {
+    subst <- 'nd'
+  } else if (substring (as.character (day (date)), len, len) == '3') {
+    subst <- 'rd'
+  }  else {
+    subst <- 'th'
+  }
   temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
-  message <- sprintf (postDetails [['Message']], day (date), 'th', 
+  dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
+  message <- sprintf (postDetails [['Message']], day (date), subst, 
                       month (date, label = TRUE, abbr = FALSE),
                       year (date), round (temperatureC, 1), 
-                      round (CtoF (temperatureC), 1))
+                      round (CtoF (temperatureC), 1),
+                      round (dailyTemperatureC, 1),
+                      round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'hottest day',
                          reply = message, .before = 1)
   postDetails <- getPostDetails ('generateInteractivity - coldestDay',
                                  gs_posts_key = gsPostsKey)
   tempRank <- rank (dailyAirt [['airt']]) 
   date <- dailyAirt [['day']] [tempRank == 1]
+  len <- nchar (as.character (day (date)))
+  if (substring (as.character (day (date)), len, len) == '1') {
+    subst <- 'st'
+  } else if (substring (as.character (day (date)), len, len) == '2') {
+    subst <- 'nd'
+  } else if (substring (as.character (day (date)), len, len) == '3') {
+    subst <- 'rd'
+  }  else {
+    subst <- 'th'
+  }
   temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
-  message <- sprintf (postDetails [['Message']], day (date), 'th', 
+  dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
+  message <- sprintf (postDetails [['Message']], day (date), subst, 
                       month (date, label = TRUE, abbr = FALSE),
                       year (date), round (temperatureC, 1), 
-                      round (CtoF (temperatureC), 1))
+                      round (CtoF (temperatureC), 1),
+                      round (dailyTemperatureC, 1),
+                      round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'coldest day',
                          reply = message, .before = 1)
   
