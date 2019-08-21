@@ -4,7 +4,7 @@
 
 # Function to read in climate data
 #----------------------------------------------------------------------------------------
-readClimate <- function (TEST = F) {
+readClimate <- function () {
   
   # Load dependencies
   #--------------------------------------------------------------------------------------
@@ -73,6 +73,8 @@ readClimate <- function (TEST = F) {
   dailyAirt    <<- add_column (dailyAirt,    rank = rank (-dailyAirt    [['airt']]))
   dailyMaxAirt <<- add_column (dailyMaxAirt, rank = rank (-dailyMaxAirt [['airt']]))
   weeklyAirt   <<- add_column (weeklyAirt,   rank = rank (-weeklyAirt   [['airt']]))
+  monthlyAirt  <<- add_column (monthlyAirt,  rank = rank (-monthlyAirt  [['airt']]))
+  yearlyAirt   <<- add_column (yearlyAirt,   rank = rank (-yearlyAirt   [['airt']]))
     
   # Add variable for different period to prec (i.e. day, week, month, year)
   #--------------------------------------------------------------------------------------

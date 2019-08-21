@@ -148,18 +148,8 @@ checkWorldWaterDay <- function (ptable, TEST = 0) {
 #----------------------------------------------------------------------------------------
 checkBirthday <- function (ptable, TEST = 0) { ## calculate stats for how much witnesstree has grown in a year
   if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10) | TEST == 1) {
-    len <- nchar (as.character (age))
-    if (substring (as.character (age), len, len) == '1') {
-      subst <- 'st'
-    } else if (substring (as.character (age), len, len) == '2') {
-      subst <- 'nd'
-    } else if (substring (as.character (age), len, len) == '3') {
-      subst <- 'rd'
-    }  else {
-      subst <- 'th'
-    }
     postDetails <- getPostDetails ('checkBirthday', gs_posts_key = gsPostsKey)
-    message   <- sprintf (postDetails [["Message"]], age, subst)
+    message   <- sprintf (postDetails [["Message"]], age, findOrdinalSuffix (age))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],

@@ -219,7 +219,7 @@ deletePostedPosts <- function (ptable)
   }
   
   # delete similar messages from the table of posts
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   if (length (nRow) != 0) {
     ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
   } else {
@@ -227,7 +227,40 @@ deletePostedPosts <- function (ptable)
   }
   
   # return updated table with posts
-  #-------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   return (ptable)
+}
+
+
+# Function to find the ordinal suffix for a number
+#----------------------------------------------------------------------------------------
+findOrdinalSuffix <- function (string) {
+  
+  # Make sure the string is actually a character string
+  #--------------------------------------------------------------------------------------
+  string <- as.character (string)
+  
+  # Determine the number of digits of the number
+  #--------------------------------------------------------------------------------------
+  len <- nchar (string)
+  
+  # Find the ordinal suffix
+  #--------------------------------------------------------------------------------------
+  if (substring (string, len, len) == '1' &
+      substring (string, len-1, len) != '11') {
+    suffix <- 'st'
+  } else if (substring (string, len, len) == '2' &
+             substring (string, len-1, len) != '12') {
+    suffix <- 'nd'  
+  } else if (substring (string, len, len) == '3' &
+             substring (string, len-1, len) != '13') {
+    suffix <- 'rd'
+  } else {
+    suffix <- 'th'
+  }
+  
+  # Return appropriate suffix
+  #--------------------------------------------------------------------------------------
+  return (suffix)
 }
 #=======================================================================================
