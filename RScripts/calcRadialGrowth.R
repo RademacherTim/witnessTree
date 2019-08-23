@@ -146,7 +146,7 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
 
     # Read precipitation data, if it has not been read in yet
     #------------------------------------------------------------------------------------
-    if (!exists ('dailyPrec')) readClimate ()
+    if (!exists ('dailyPrec')) source (sprintf ('%sRScripts/readClimate.R', path))
     
     # Plot growth of the two previous months
     #------------------------------------------------------------------------------------
@@ -165,14 +165,20 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
       plot (x = data2 [['datetime']] [data2 [['datetime']] >= from & 
                                       data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)],
             y = data2$pos_lm [data2 [['datetime']] >= from & 
-                                data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
+                              data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
               data2$pos_lm [1],
             lwd = 4,
             col = '#ff9999aa',
             xlab = 'date',
             ylab = 'growth (mm)',
             las = 1,
-            typ = 'l')
+            typ = 'l',
+            ylim = c (0, 1.1 * max (c (data2$pos_lm [data2 [['datetime']] >= from & 
+                                                     data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] - 
+                                       data2$pos_lm [1],
+                                       data1$pos_lm [data1 [['datetime']] >= from & 
+                                                     data1 [['datetime']] <= tail (data1 [['datetime']], n = 1)] - 
+                                       data1$pos_lm [1]), na.rm = TRUE)))
       lines (x = data2 [['datetime']] [data2 [['datetime']] >= since & 
                                        data2 [['datetime']] <= tail (data2 [['datetime']], n = 1)] ,
              y = data2$pos_lm [data2 [['datetime']] >= since & 
