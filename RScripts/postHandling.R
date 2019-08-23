@@ -38,9 +38,7 @@ selectPost <- function (mtable) # tibble of posts with, inter alia, priorities
 #---------------------------------------------------------------------------------------
 # TR - Not sure selecting messages at random is the best method when there are several 
 #      messages of highest priority. TBD!
-#=======================================================================================
 
-#=======================================================================================
 # Function to delete message from messages tibble to avoid it being used again.
 #---------------------------------------------------------------------------------------
 deletePost <- function (ptable, # tibble of posts
@@ -67,9 +65,7 @@ deletePost <- function (ptable, # tibble of posts
   #-------------------------------------------------------------------------------------
   return (ptable)
 }
-#=======================================================================================
 
-#=======================================================================================
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
 checkExpirationDatesOf <- function (mtable) 
@@ -93,9 +89,7 @@ checkExpirationDatesOf <- function (mtable)
   #---------------------------------------------------------------------------------------
   return (mtable)
 } 
-#=======================================================================================
 
-#=======================================================================================
 # This function re-evaluates the priority of preserved messages
 #---------------------------------------------------------------------------------------
 reEvaluatePriorityOf <- function (mtable) 
@@ -115,22 +109,21 @@ reEvaluatePriorityOf <- function (mtable)
 #---------------------------------------------------------------------------------------
 # TR - maybe wee need to come up with a different way of increasing the priority of 
 #      various messages instead on just increasing them by 1. 
-#========================================================================================
 
-#========================================================================================
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #----------------------------------------------------------------------------------------
-getPostDetails <- function (fName, gs_posts_key) 
+getPostDetails <- function (fName) 
 {
   
   # load dependencies
   #--------------------------------------------------------------------------------------
-  if (!existsFunction ('gs_title')) library ('googlesheets')
+  if (!existsFunction ('read_csv')) library ('tidyverse')
   
   # get posts spreadsheet
   #--------------------------------------------------------------------------------------
-  input <- gs_read (gs_key (gs_posts_key) , ws = "posts", col_types = cols ())
+  input <- read_csv (file = sprintf ('%stmp/postsDetails.csv', path), 
+                     col_types = cols ())
   
   # Find appropriate lines using the function name
   #--------------------------------------------------------------------------------------
@@ -184,9 +177,28 @@ getPostDetails <- function (fName, gs_posts_key)
   #--------------------------------------------------------------------------------------
   return (postDetails)
 }
-#========================================================================================
+ 
+# This function downloads the posts spreadsheet and saves it as postDetails.csv in the 
+# tmp directory
+#----------------------------------------------------------------------------------------
+getPostsSpreadsheet <- function (gs_posts_key) 
+{
+  
+  # load dependencies
+  #--------------------------------------------------------------------------------------
+  if (!existsFunction ('gs_title')) library ('googlesheets')
+  
+  # get posts spreadsheet
+  #--------------------------------------------------------------------------------------
+  spreadsheet <- gs_download (gs_key (gs_posts_key) , ws = "posts", 
+                              to = sprintf ('%stmp/postsDetails.csv', path),
+                              overwrite = TRUE)
+  
+  # Return the zero to indicate smooth running
+  #--------------------------------------------------------------------------------------
+  return (0)
+}
 
-#=======================================================================================
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------

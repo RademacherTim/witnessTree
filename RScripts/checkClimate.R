@@ -62,7 +62,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
   # load depdendencies
   #--------------------------------------------------------------------------------------
   if (!existsFunction ('month')) library ('lubridate') 
-  if (!exists ('airt')) readClimate ()
+  if (!exists ('airt')) source (sprintf ('%sRScripts/readClimate.R', path))
   
   # Check whether the current temperature is the hottest temperature on record 
   #--------------------------------------------------------------------------------------

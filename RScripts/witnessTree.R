@@ -48,7 +48,6 @@ suppressPackageStartupMessages (library ('tidyverse'))
 suppressPackageStartupMessages (library ('lubridate'))
 source  (sprintf ('%sRScripts/postHandling.R',          path))
 source  (sprintf ('%sRScripts/checkEvents.R',           path))
-source  (sprintf ('%sRScripts/readClimate.R',           path))
 source  (sprintf ('%sRScripts/checkClimate.R',          path))
 source  (sprintf ('%sRScripts/calcSapFlow.R',           path))
 source  (sprintf ('%sRScripts/calcRadialGrowth.R',      path))
@@ -88,9 +87,17 @@ print ('Priorities have been re-evaluated.')
 
 # Read climate data
 #----------------------------------------------------------------------------------------
-IOStatus <- readClimate ()
-if (IOStatus != 0) stop ('Error: Climate files were not read properly!') 
+source (sprintf ('%sRScripts/readClimate.R', path))
 print ('Climate files have been read.')
+
+# Download spreadsheet with postDetails to tmp/postDetails.csv
+#----------------------------------------------------------------------------------------
+IOStatus <- getPostsSpreadsheet (gs_posts_key = gsPostsKey)
+if (IOStatus != 0) {
+  stop ('Error: Googlespreadsheet did not download!') 
+} else {
+  print ('postDetails spreadsheet was downloaded and saved as csv.')
+}
 
 # Generate new posts concerning regularly recurrent events
 #----------------------------------------------------------------------------------------
@@ -150,8 +157,11 @@ print ('Physiological conditions have been checked.')
 # Generate interactive responses
 #----------------------------------------------------------------------------------------
 IOStatus <- generateInteractiveResponses ()
-if (IOStatus != 0) stop ('Error: Interactive responses were not generated properly!') 
-print ('Interactive responses were generated.')
+if (IOStatus != 0) {
+  stop ('Error: Interactive responses were not generated properly!') 
+} else {
+  print ('Interactive responses were generated.')
+}
 
 # delete posts that have already been posted within the last two weeks
 #----------------------------------------------------------------------------------------
@@ -177,7 +187,7 @@ if (dim (post) [1]) {
   numberOfPostsLastWeek <- length (pastPostDates [pastPostDates > Sys.Date () - 7         & 
                                                   !is.na  (pastPostDates)                 &
                                                   !is.nan (pastPostDates)])
-  lastPostDateTime <- head (tail (pastPostDates, n = 2), n = 1)
+  lastPostDateTime <- tail (pastPostDates [!is.na (pastPostDates)], n = 1)
   
   # Check whether the bot has already posted seven messages in the last week
   #--------------------------------------------------------------------------------------

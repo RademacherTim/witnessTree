@@ -110,19 +110,10 @@ generateInteractiveResponses <- function (TEST = 0) {
   postDetails <- getPostDetails ('generateInteractivity - hottestDay',
                                  gs_posts_key = gsPostsKey)
   date <- dailyAirt [['day']] [dailyAirt [['rank']] == 1]
-  len <- nchar (as.character (day (date)))
-  if (substring (as.character (day (date)), len, len) == '1') {
-    subst <- 'st'
-  } else if (substring (as.character (day (date)), len, len) == '2') {
-    subst <- 'nd'
-  } else if (substring (as.character (day (date)), len, len) == '3') {
-    subst <- 'rd'
-  }  else {
-    subst <- 'th'
-  }
+  suffix <- findOrdinalSuffix (day (date))
   temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['Message']], day (date), subst, 
+  message <- sprintf (postDetails [['Message']], day (date), suffix, 
                       month (date, label = TRUE, abbr = FALSE),
                       year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),
@@ -134,19 +125,10 @@ generateInteractiveResponses <- function (TEST = 0) {
                                  gs_posts_key = gsPostsKey)
   tempRank <- rank (dailyAirt [['airt']]) 
   date <- dailyAirt [['day']] [tempRank == 1]
-  len <- nchar (as.character (day (date)))
-  if (substring (as.character (day (date)), len, len) == '1') {
-    subst <- 'st'
-  } else if (substring (as.character (day (date)), len, len) == '2') {
-    subst <- 'nd'
-  } else if (substring (as.character (day (date)), len, len) == '3') {
-    subst <- 'rd'
-  }  else {
-    subst <- 'th'
-  }
+  suffix <- findOrdinalSuffix (day (date))
   temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['Message']], day (date), subst, 
+  message <- sprintf (postDetails [['Message']], day (date), suffix, 
                       month (date, label = TRUE, abbr = FALSE),
                       year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),

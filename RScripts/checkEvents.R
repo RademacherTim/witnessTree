@@ -410,5 +410,8 @@ monthlyEngagementReminder <- function (ptable, TEST = 0) {
                             hashtags    = postDetails [["Hashtags"]], 
                             expires     = expirDate) 
   } 
+  
+  # return table with posts
+  #----------------------------------------------------------------------------------------
   return (ptable)
 }
