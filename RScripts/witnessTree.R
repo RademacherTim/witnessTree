@@ -169,6 +169,7 @@ posts <- deletePostedPostsAndRemoveDuplicates (posts)
 
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------
+post <- selectPost (posts)
 while (substring (post [['message']], 1, 22) == 'At Harvard Forest, the') { # Temporary hack to avoid reposting due to typo in original message.
   post <- selectPost (posts)
 }
