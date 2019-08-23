@@ -205,12 +205,12 @@ getPostsSpreadsheet <- function (gs_posts_key)
 deletePostedPostsAndRemoveDuplicates <- function (ptable) 
 {
   
-  # make list of posts during the last two weeks
+  # make list of posts during the last twenty days
   #----------------------------------------------------------------------------------------
   fileNames <- list.files (sprintf ('%s/posts/', path), pattern = '.csv')
   fileNames <- fileNames [fileNames != 'logfile.csv' & fileNames != 'posts.csv']
   fileNames <- fileNames [as.POSIXct (substring (fileNames, 1, 10), format = "%Y-%m-%d") >= 
-                          Sys.Date () - 14]
+                          Sys.Date () - 20]
     
   # replace all numbers with 'x' in the post table to avoid posting messages that only 
   # differ, for example, by a single digit  
