@@ -202,7 +202,7 @@ getPostsSpreadsheet <- function (gs_posts_key)
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-deletePostedPosts <- function (ptable) 
+deletePostedPostsAndRemoveDuplicates <- function (ptable) 
 {
   
   # make list of posts during the last two weeks
@@ -214,11 +214,11 @@ deletePostedPosts <- function (ptable)
     
   # replace all numbers with 'x' in the post table to avoid posting messages that only 
   # differ, for example, by a single digit  
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   ptemp <- gsub ("([0-9]+)", x = ptable [['message']], replacement  = 'x') 
   
   # loop over posted messages and read messages
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   for (p in 1:length (fileNames)) {
     temp <- read_csv (sprintf ('%s/posts/%s',path, fileNames [p]),
                       col_types = cols ())
@@ -237,6 +237,28 @@ deletePostedPosts <- function (ptable)
   } else {
     ptable <- ptable
   }
+  
+  # replace all numbers with 'x' in the post table to avoid posting messages that only 
+  # differ, for example, by a single digit  
+  #--------------------------------------------------------------------------------------
+  ptemp <- gsub ("([0-9]+)", x = ptable [['message']], replacement  = 'x') 
+  
+  # look for and delete duplicates by choosing unique messages
+  #------------------------------------------------------------------------------------
+  temp <- unique (ptemp)
+  for (i in 1:length (temp)) {
+    if (i == 1) {
+      indicesToKeep <- min (which (gsub ("([0-9]+)", 
+                                         x = ptable [['message']], 
+                                         replacement = 'x') == temp [i]), na.rm = TRUE)
+    } else {
+      indicesToKeep <- c (indicesToKeep, 
+                          min (which (gsub ("([0-9]+)", 
+                                            x = ptable [['message']], 
+                                            replacement = 'x') == temp [i]), na.rm = TRUE))
+    }
+  }
+  ptable <- ptable [indicesToKeep, ]
   
   # return updated table with posts
   #--------------------------------------------------------------------------------------

@@ -165,11 +165,11 @@ if (IOStatus != 0) {
 
 # delete posts that have already been posted within the last two weeks
 #----------------------------------------------------------------------------------------
-posts <- deletePostedPosts (posts) 
+posts <- deletePostedPostsAndRemoveDuplicates (posts) 
 
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------
-post <- selectPost (posts)
+posts <- selectPost (posts)
 print ('A post has been selected.')
 
 # Delete the selected post from the posts tibble 
