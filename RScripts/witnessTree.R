@@ -201,8 +201,8 @@ if (dim (post) [1]) {
     
   # Check whether the bot has posted in the last four hours
   #--------------------------------------------------------------------------------------
-  } else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 |
-             post [['priority']] == 10) {
+  } else if (as.duration (Sys.time () - lastPostDateTime) / dhours (1) < 4.0 &
+             post [['priority']] != 10) {
     # Add post back to posts tibble, as it will not be posted right now
     #------------------------------------------------------------------------------------
     posts <- rbind (posts, post)
