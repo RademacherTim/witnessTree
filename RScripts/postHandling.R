@@ -1,16 +1,16 @@
 #========================================================================================
 # Function to select message of highest priority
 #----------------------------------------------------------------------------------------
-selectPost <- function (mtable) # tibble of posts with, inter alia, priorities 
+selectPost <- function (ptable) # tibble of posts with, inter alia, priorities 
 {
   # Delete all messages that are empty or saying "NEEDS MESSAGE"
   #--------------------------------------------------------------------------------------
-  mtable <- mtable [mtable [['message']] != 'NEEDS MESSAGE', ]
-  mtable <- mtable [mtable [['message']] != '', ]
+  ptable <- ptable [ptable [['message']] != 'NEEDS MESSAGE', ]
+  ptable <- ptable [ptable [['message']] != '', ]
   
   # Arrange messages by descending priority
   #--------------------------------------------------------------------------------------
-  mByPriority <- arrange (.data = mtable, desc (priority))
+  mByPriority <- arrange (.data = ptable, desc (priority))
   
   # Subset only highest priority
   #--------------------------------------------------------------------------------------
@@ -68,18 +68,18 @@ deletePost <- function (ptable, # tibble of posts
 
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
-checkExpirationDatesOf <- function (mtable) 
+checkExpirationDatesOf <- function (ptable) 
 {
  
   # Loop over messages to check expiration date
   #---------------------------------------------------------------------------------------
   i = 1
-  while (i <= dim (mtable) [1]) {
+  while (i <= dim (ptable) [1]) {
     
     # If message is expired, delete it.
     #------------------------------------------------------------------------------------
-    if (mtable [['expires']] [i] <  Sys.time ()) {
-      mtable <- mtable [-i, ]
+    if (ptable [['expires']] [i] <  Sys.time ()) {
+      ptable <- ptable [-i, ]
     } else {
       i = i + 1
     }
@@ -87,22 +87,25 @@ checkExpirationDatesOf <- function (mtable)
   
   # Return the remaining messages
   #---------------------------------------------------------------------------------------
-  return (mtable)
+  return (ptable)
 } 
 
 # This function re-evaluates the priority of preserved messages
-#---------------------------------------------------------------------------------------
-reEvaluatePriorityOf <- function (mtable) 
+#----------------------------------------------------------------------------------------
+reEvaluatePriorityOf <- function (ptable) 
 {
   
-  # Increase priority of all messages by 1
-  mtable [['priority']] <- apply (X      = cbind (as.numeric (mtable [['priority']]) + 1, 
-                                                 rep (10, dim (mtable) [1])), 
+  # Increase priority of all messages by 0.01 (2.88 priority points per day), 
+  # but have them max out at 10
+  #--------------------------------------------------------------------------------------
+  ptable [['priority']] <- apply (X      = cbind (as.numeric (ptable [['priority']]) + 0.01, 
+                                                 rep (10, dim (ptable) [1])), 
                                  MARGIN = 1, 
                                  FUN    = min)
   
-  # Return messages with updated priority
-  return (mtable)
+  # Return table pf posts with updated priorities
+  #--------------------------------------------------------------------------------------
+  return (ptable)
 }
 
 # Comments:
