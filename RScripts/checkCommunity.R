@@ -13,7 +13,7 @@
 explainSeedDispersal <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
       TEST == 1) {
-    postDetails <- getPostDetails ("explainSeedDispersal", gs_posts_key = gsPostsKey)
+    postDetails <- getPostDetails ("explainSeedDispersal")
     message   <- sprintf (postDetails [["Message"]])
     expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
@@ -65,19 +65,19 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
       if (substring (Sys.Date (), 6, 10) >  '03-21' & 
           substring (Sys.Date (), 6, 10) <= '06-21' | 
           TEST == 1) { # it is spring
-        postDetails <- getPostDetails ("checkCommunityWildlife - spring", gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ("checkCommunityWildlife - spring")
       } else if (substring (Sys.Date (), 6, 10) >  '06-21' & 
                  substring (Sys.Date (), 6, 10) <= '09-21' | 
                  TEST == 2) { # it is summer
-        postDetails <- getPostDetails ("checkCommunityWildlife - summer", gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ("checkCommunityWildlife - summer")
       } else if (substring (Sys.Date (), 6, 10) >  '09-21' & 
                  substring (Sys.Date (), 6, 10) <= '11-21' | 
                  TEST == 3) { # it is fall
-        postDetails <- getPostDetails ("checkCommunityWildlife - fall", gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ("checkCommunityWildlife - fall")
       } else if (substring (Sys.Date (), 6, 10) >  '11-21' & 
                  substring (Sys.Date (), 6, 10) <= '03-21' | 
                  TEST == 4) { # it is winter
-        postDetails <- getPostDetails ("checkCommunityWildlife - winter", gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ("checkCommunityWildlife - winter")
       }
       message   <- sprintf (postDetails [["Message"]])
       delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))

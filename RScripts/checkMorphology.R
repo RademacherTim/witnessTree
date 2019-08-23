@@ -27,7 +27,7 @@ explainDimensions <- function (ptable, TEST = 0) {
   #-------------------------------------------------------------------------------------- 
   if (substring (Sys.time (), 9, 13) == "20 12" & memory [['dimensionsPosted']] == FALSE | 
       TEST == 1) {
-    postDetails <- getPostDetails ('explainDimensions', gs_posts_key = gsPostsKey)
+    postDetails <- getPostDetails ('explainDimensions')
     if (substring (postDetails [['Message']], 1, 3) == 'I a') {
       message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
     } else if (substring (postDetails [['Message']], 1, 3) == 'Wow') {

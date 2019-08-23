@@ -42,14 +42,11 @@ generateInteractiveResponses <- function (TEST = 0) {
     # get responses based on temperature
     #------------------------------------------------------------------------------------
     if (round (airTemp) > round (meanAirTemp)) { # hot
-      postDetails <- getPostDetails ('generateInteractivity - growing season - hot', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - hot')
     } else if (round (airTemp) == round (meanAirTemp)) { # average
-      postDetails <- getPostDetails ('generateInteractivity - growing season - average temperature', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - average temperature')
     } else if (airTemp < meanAirTemp) { # cold
-      postDetails <- getPostDetails ('generateInteractivity - growing season - cold', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - cold')
     }
     postDetails [['Message']] <- sprintf (postDetails [['Message']], round (airTemp, 1),
                                           round (9.0 / 5.0 * (airTemp) + 32, 1))
@@ -59,16 +56,13 @@ generateInteractiveResponses <- function (TEST = 0) {
     # get responses based on precip
     #------------------------------------------------------------------------------------
     if (round (precip) > round (meanPrecip)) { # wet
-      postDetails <- getPostDetails ('generateInteractivity - growing season - wet', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - wet')
       growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
       postDetails [['Message']] <- sprintf (postDetails [['Message']], round (dbh * 100.0 + bark + growth / 10, 2))
     } else if (round (precip) == round (meanPrecip)) { # average
-      postDetails <- getPostDetails ('generateInteractivity - growing season - average', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - average')
     } else if (round (precip) < round (meanPrecip)) { # dry
-      postDetails <- getPostDetails ('generateInteractivity - growing season - dry', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - growing season - dry')
     }
     responses <- add_row (responses, season = season, topic = 'rainfall', 
                           reply = postDetails [['Message']])
@@ -79,14 +73,11 @@ generateInteractiveResponses <- function (TEST = 0) {
     #------------------------------------------------------------------------------------
     seasons <- 'off-season'
     if (round (airTemp) > round (meanAirTemp)) { # hot
-      postDetails <- getPostDetails ('generateInteractivity - off season - hot', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - off season - hot')
     } else if (round (airTemp) == round (meanAirTemp)) { # average
-      postDetails <- getPostDetails ('generateInteractivity - off season - average', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - off season - average')
     } else if (round (airTemp) < round (meanAirTemp)) { # cold
-      postDetails <- getPostDetails ('generateInteractivity - off season - cold', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('generateInteractivity - off season - cold')
     }
     postDetails [['Message']] <- sprintf (postDetails [['Message']], round (airTemp, 1),
                                           round (9.0 / 5.0 * (airTemp) + 32, 1))
@@ -100,15 +91,13 @@ generateInteractiveResponses <- function (TEST = 0) {
   
   # add response to hear a tree fall in the forest 
   #------------------------------------------------------------------------------------
-  postDetails <- getPostDetails ('generateInteractivity - all-year - treeFall',
-                                 gs_posts_key = gsPostsKey)
+  postDetails <- getPostDetails ('generateInteractivity - all-year - treeFall')
   responses <-  add_row (responses, season = 'all-year', topic = 'can you hear a tree fall?',
                          reply = postDetails [['Message']], .before = 1)
   
   # add response to hottest and coldest day
   #------------------------------------------------------------------------------------
-  postDetails <- getPostDetails ('generateInteractivity - hottestDay',
-                                 gs_posts_key = gsPostsKey)
+  postDetails <- getPostDetails ('generateInteractivity - hottestDay')
   date <- dailyAirt [['day']] [dailyAirt [['rank']] == 1]
   suffix <- findOrdinalSuffix (day (date))
   temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
@@ -121,8 +110,7 @@ generateInteractiveResponses <- function (TEST = 0) {
                       round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'hottest day',
                          reply = message, .before = 1)
-  postDetails <- getPostDetails ('generateInteractivity - coldestDay',
-                                 gs_posts_key = gsPostsKey)
+  postDetails <- getPostDetails ('generateInteractivity - coldestDay')
   tempRank <- rank (dailyAirt [['airt']]) 
   date <- dailyAirt [['day']] [tempRank == 1]
   suffix <- findOrdinalSuffix (day (date))

@@ -96,7 +96,7 @@ IOStatus <- getPostsSpreadsheet (gs_posts_key = gsPostsKey)
 if (IOStatus != 0) {
   stop ('Error: Googlespreadsheet did not download!') 
 } else {
-  print ('postDetails spreadsheet was downloaded and saved as csv.')
+  print ('Spreadsheet with posts\' details was downloaded and saved as csv.')
 }
 
 # Generate new posts concerning regularly recurrent events
