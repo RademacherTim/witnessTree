@@ -35,7 +35,7 @@ monthlySapFlowSummary <- function (ptable, TEST = 0) {
 monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
   
   # Check whether it is the second week of the month
-  if (ceiling (day (Sys.Date ()) / 7) == 4 | TEST == 1) {
+  if (ceiling (lubridate::day (Sys.Date ()) / 7) == 4 | TEST == 1) {
 
     # Get radial growth for the last 30 days and the 30 days prior to that
     #------------------------------------------------------------------------------------

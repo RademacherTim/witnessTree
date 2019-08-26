@@ -442,7 +442,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
   return (ptable)
 } 
 
-#extremePrecipitation <- function (mtable, TEST = 0) {
+#extremePrecipitation <- function (ptable, TEST = 0) {
   
   # Check whether the yesterday was the wettest day on record
   
@@ -453,18 +453,18 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
   # Check whether the last year was the wettest year on record
   
   # Send message if it is the wettest
-#  mtable    <- add_row (mtable, 
+#  ptable    <- add_row (ptable, 
 #                        priority = postDetails [["Priority"]], 
 #                        fFigure  = postDetails [["fFigure"]], 
 #                        message  = message, 
 #                        hashtags = postDetails [["Hashtags"]], 
 #                        expires  = expirDate)
-#  return (mtable)
+#  return (ptable)
 #} 
 
 # Summarise and compare last month's climate at the beginning of the month
 #----------------------------------------------------------------------------------------
-monthlyClimateSummary <- function (mtable, TEST = 0) {
+monthlyClimateSummary <- function (ptable, TEST = 0) {
   
   # Check whether it is the first day of the month
   #--------------------------------------------------------------------------------------
@@ -548,7 +548,7 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
     }
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority   = postDetails [["Priority"]], 
                           fFigure    = postDetails [["fFigure"]],
                           figureName = postDetails [["FigureName"]], 
@@ -557,12 +557,110 @@ monthlyClimateSummary <- function (mtable, TEST = 0) {
                           expires    = expirDate)
   }
   
-  return (mtable)
-} # TR: Add a message about a comparison to the earliest 30 year period only.
+  # return the table with posts
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+} 
+
+# Summarise and compare last month's climate at the beginning of the month
+#----------------------------------------------------------------------------------------
+# monthlyClimateSummaryFollowUp <- function (ptable, TEST = 0) {
+#   
+#   # Check whether it is the seventh day of the month
+#   #--------------------------------------------------------------------------------------
+#   if (substring (Sys.Date (), 9, 10) == '07' & substring (Sys.time (), 12, 13) == '13'| TEST >= 1) {
+#     
+#     # Calculate mean and standard deviation for monthly temperature for all months such as 
+#     # the previous (i.e. May) 
+#     #--------------------------------------------------------------------------------------
+#     acMonthlyAirt <- head (tail (monthlyAirt [['airt']], n = 2), n = 1) 
+#     meMonthlyAirt <- mean (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1])
+#     diMonthlyAirt <- acMonthlyAirt - meMonthlyAirt
+#     
+#     # determine rainy days in previous month
+#     #--------------------------------------------------------------------------------------
+#     rainyDays <- sum (dailyPrec [['prec']] [month (dailyPrec [['day']]) == month (Sys.Date ()) - 1 &
+#                                               year (dailyPrec [['day']]) == year (Sys.Date ())] != 0, 
+#                       na.rm = T)
+# 
+#     # Calculate mean and standard deviation for monthly temperature for all months such as 
+#     # the previous (i.e. May) 
+#     #--------------------------------------------------------------------------------------
+#     baseline <- month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1 &
+#                 year  (monthlyAirt [['month']]) >= 1964                    &
+#                 year  (monthlyAirt [['month']]) <= 1993
+#     meMonthlyAirtBase <- mean (monthlyAirt [['airt']] [baseline])
+#     diMonthlyAirtBase <- acMonthlyAirt - meMonthlyAirtBase
+#     
+#     # Get previous month
+#     #--------------------------------------------------------------------------------------
+#     prMonth <- month (month (Sys.Date ()) - 1, label = T, abbr = F)
+#     
+#     # Choose what to talk about
+#     #--------------------------------------------------------------------------------------
+#     if (diMonthlyAirt < diMonthlyAirtBase | TEST == 1) { 
+#       postDetails <- getPostDetails ('monthlyClimateSummaryFollowUp - warmer', 
+#                                      gs_posts_key = gsPostsKey)
+#       message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), 
+#                                  round (CtoF (acMonthlyAirt), 1), round (acMonthlyPrec, 1), 
+#                                  treeLocationName, prMonth)
+#     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
+#       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
+#         postDetails <- getPostDetails ('monthlyClimateSummary - cold', 
+#                                        gs_posts_key = gsPostsKey)
+#         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), 
+#                                    round (CtoF (meMonthlyAirt), 1), round (-diMonthlyAirt, 1), 
+#                                    treeLocationName, prMonth)
+#       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
+#         postDetails <- getPostDetails ('monthlyClimateSummary - warm', 
+#                                        gs_posts_key = gsPostsKey)
+#         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1),
+#                                    round (CtoF (meMonthlyAirt), 1), prMonth, 
+#                                    round (diMonthlyAirt, 1), 
+#                                    round (CtoF (diMonthlyAirt, difference  = T), 1), 
+#                                    treeLocationName)
+#       }
+#     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
+#       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
+#         postDetails <- getPostDetails ('monthlyClimateSummary - dry', 
+#                                        gs_posts_key = gsPostsKey)
+#         message        <- sprintf (postDetails [['Message']], 
+#                                    round (maxAirT, 1),
+#                                    round (CtoF (maxAirT), 1), 
+#                                    round (meMonthlyPrec, 1), 
+#                                    treeLocationName)
+#       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
+#         postDetails <- getPostDetails ('monthlyClimateSummary - wet', 
+#                                        gs_posts_key = gsPostsKey)
+#         message        <- sprintf (postDetails [['Message']], 
+#                                    format (Sys.Date () - 1, '%d %B'), 
+#                                    '23:59h',
+#                                    round (acMonthlyPrec, 1), 
+#                                    round (mmtoInches (acMonthlyPrec)), 
+#                                    rainyDays,
+#                                    days_in_month (month (Sys.Date () - 1)),
+#                                    prMonth)
+#       }
+#     }
+#     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+#     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+#     ptable    <- add_row (ptable, 
+#                           priority   = postDetails [["Priority"]], 
+#                           fFigure    = postDetails [["fFigure"]],
+#                           figureName = postDetails [["FigureName"]], 
+#                           message    = message, 
+#                           hashtags   = postDetails [["Hashtags"]], 
+#                           expires    = expirDate)
+#   }
+#   # return the table with posts
+#   #--------------------------------------------------------------------------------------
+#   return (ptable)
+# } 
+
 
 # Summarise and compare last year's climate at the beginning of the year
 #----------------------------------------------------------------------------------------
-annualClimateSummary <- function (mtable, TEST = 0) {
+annualClimateSummary <- function (ptable, TEST = 0) {
   
   # Check whether it is the first day of the year
   #---------------------------------------------------------------------------------------#
@@ -604,7 +702,7 @@ annualClimateSummary <- function (mtable, TEST = 0) {
     }
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority   = postDetails [["Priority"]], 
                           fFigure    = postDetails [["fFigure"]],
                           figureName = postDetails [["FigureName"]], 
@@ -613,7 +711,7 @@ annualClimateSummary <- function (mtable, TEST = 0) {
                           expires    = expirDate)
   }
   
-  return (mtable)
+  return (ptable)
 }
 
 # Check for first frost event of the year and late frosts during the growing season
@@ -679,7 +777,7 @@ checkFrost <- function (ptable, TEST = 0) {
 
 # Check for a heatwave
 #----------------------------------------------------------------------------------------
-checkHeatWave <- function (mtable, TEST = 0) {
+checkHeatWave <- function (ptable, TEST = 0) {
 
   # Define heatwave threshold
   #-------------------------------------------------------------------------------------#
@@ -715,7 +813,7 @@ checkHeatWave <- function (mtable, TEST = 0) {
     message   <- sprintf (postDetails [['Message']],  heatWaveDays, month (Sys.Date (), label = T, abbr = F)) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    mtable    <- add_row (mtable, 
+    ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [["fFigure"]],
                           figureName  = postDetails [["FigureName"]], 
@@ -724,7 +822,7 @@ checkHeatWave <- function (mtable, TEST = 0) {
                           expires     = expirDate)
   }
   
-  return (mtable)
+  return (ptable)
 }
 
 # Check for a windy day/storm (i.e. day with max windspeed above 15 m/s)

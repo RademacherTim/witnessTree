@@ -116,6 +116,7 @@ posts <- checkAutumnEquinox             (posts) # ~22nd of September
 posts <- checkSummerSolstice            (posts) #  21st of June
 posts <- checkWinterSolstice            (posts) #  21st of December
 posts <- checkHalloween                 (posts) #  31st of October
+posts <- monthlyEngagementReminder      (posts) #  2nd week of each month
 print ('Events have been checked.')
 
 # Generate new posts concerning phenology
@@ -170,9 +171,6 @@ posts <- deletePostedPostsAndRemoveDuplicates (posts)
 # Selection of post, figure and images for the current iterations
 #----------------------------------------------------------------------------------------
 post <- selectPost (posts)
-while (substring (post [['message']], 1, 22) == 'At Harvard Forest, the') { # Temporary hack to avoid reposting due to typo in original message.
-  post <- selectPost (posts)
-}
 print ('A post has been selected.')
 
 # Delete the selected post from the posts tibble 

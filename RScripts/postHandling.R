@@ -226,7 +226,7 @@ deletePostedPostsAndRemoveDuplicates <- function (ptable)
     temp <- read_csv (sprintf ('%s/posts/%s',path, fileNames [p]),
                       col_types = cols ())
     temp <- gsub ("([0-9]+)", x = temp [['message']], replacement = 'x')
-    if (p == 1) {
+    if (p == 1 | !exists ('nRow')) {
       nRow <- which (ptemp == temp)  
     } else {
       nRow <- c (nRow, which (ptemp == temp))
@@ -241,28 +241,31 @@ deletePostedPostsAndRemoveDuplicates <- function (ptable)
     ptable <- ptable
   }
   
-  # replace all numbers with 'x' in the post table to avoid posting messages that only 
-  # differ, for example, by a single digit  
+  # Only continue further deleting duplicates, if there are any potential posts left
   #--------------------------------------------------------------------------------------
-  ptemp <- gsub ("([0-9]+)", x = ptable [['message']], replacement  = 'x') 
-  
-  # look for and delete duplicates by choosing unique messages
-  #------------------------------------------------------------------------------------
-  temp <- unique (ptemp)
-  for (i in 1:length (temp)) {
-    if (i == 1) {
-      indicesToKeep <- min (which (gsub ("([0-9]+)", 
-                                         x = ptable [['message']], 
-                                         replacement = 'x') == temp [i]), na.rm = TRUE)
-    } else {
-      indicesToKeep <- c (indicesToKeep, 
-                          min (which (gsub ("([0-9]+)", 
-                                            x = ptable [['message']], 
-                                            replacement = 'x') == temp [i]), na.rm = TRUE))
+  if (dim (ptable) [1] >= 1) {
+    # replace all numbers with 'x' in the post table to avoid posting messages that only 
+    # differ, for example, by a single digit  
+    #------------------------------------------------------------------------------------
+    ptemp <- gsub ("([0-9]+)", x = ptable [['message']], replacement  = 'x') 
+    
+    # look for and delete duplicates by choosing unique messages
+    #------------------------------------------------------------------------------------
+    temp <- unique (ptemp)
+    for (i in 1:length (temp)) {
+      if (i == 1) {
+        indicesToKeep <- min (which (gsub ("([0-9]+)", 
+                                           x = ptable [['message']], 
+                                           replacement = 'x') == temp [i]), na.rm = TRUE)
+      } else {
+        indicesToKeep <- c (indicesToKeep, 
+                            min (which (gsub ("([0-9]+)", 
+                                              x = ptable [['message']], 
+                                              replacement = 'x') == temp [i]), na.rm = TRUE))
+      }
     }
-  }
-  ptable <- ptable [indicesToKeep, ]
-  
+    ptable <- ptable [indicesToKeep, ]
+  }  
   # return updated table with posts
   #--------------------------------------------------------------------------------------
   return (ptable)
