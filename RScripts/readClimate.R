@@ -92,6 +92,14 @@ monthlyPrec <<- monthlyPrec [!is.na (monthlyPrec [['month']]), ]
 yearlyPrec  <<- prec %>% group_by (year) %>% summarise (prec = sum (prec, na.rm = T))
 yearlyPrec  <<- yearlyPrec [!is.na (yearlyPrec [['year']]), ]
 
+# Rank intervals from highest to lowest
+#----------------------------------------------------------------------------------------
+prec         <<- add_column (prec,         rank = rank (-prec         [['prec']]))
+dailyPrec    <<- add_column (dailyPrec,    rank = rank (-dailyPrec    [['prec']]))
+weeklyPrec   <<- add_column (weeklyPrec,   rank = rank (-weeklyPrec   [['prec']]))
+monthlyPrec  <<- add_column (monthlyPrec,  rank = rank (-monthlyPrec  [['prec']]))
+yearlyPrec   <<- add_column (yearlyPrec,   rank = rank (-yearlyPrec   [['prec']]))
+
 # Add variable for different period to wind (i.e. day, week, month, year)
 #----------------------------------------------------------------------------------------
 wind <<- add_column (wind, day = format (wind [['TIMESTAMP']], '%Y-%m-%d'))

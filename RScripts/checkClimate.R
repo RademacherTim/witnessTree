@@ -442,25 +442,81 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
   return (ptable)
 } 
 
-#extremePrecipitation <- function (ptable, TEST = 0) {
+# Check for extreme Precipitation events, so either a lot of rain or very little
+#--------------------------------------------------------------------------------------
+extremePrecipitation <- function (ptable, TEST = 0) {
   
-  # Check whether the yesterday was the wettest day on record
+  # check whether the yesterday was the wettest day or a top 50 wettest day on record
+  #--------------------------------------------------------------------------------------
+  if (max (dailyPrec [['prec']], na.rm = T) <= tail (dailyPrec [['prec']], n = 1) | 
+      TEST == 1) {
+    WETTESTDAY <- TRUE
+    WETDAY     <- FALSE
+  } else if (tail (dailyPrec [['rank']], n = 1) <= 50 | TEST == 2) {
+    WETTESTDAY <- FALSE
+    WETDAY     <- TRUE
+  } else {
+    WETTESTDAY <- FALSE
+    WETDAY     <- FALSE
+  }
   
-  # Check whether the last week was the wettest week on record
+  # check whether the last week was the wettest week or a top 30 wettest week on record
+  #----------------------------------------------------------------------------------------
+  if (max (weeklyPrec [['prec']], na.rm = T) <= tail (weeklyPrec [['prec']], n = 1) | 
+      TEST == 3) {
+    WETTESTWEEK <- TRUE
+    WETWEEK     <- FALSE
+  } else if (tail (weeklyPrec [['rank']], n = 1) <= 30 | TEST == 4) {
+    WETTESTWEEK <- FALSE
+    WETWEEK     <- TRUE
+  } else {
+    WETTESTWEEK <- FALSE
+    WETWEEK     <- FALSE
+  }
   
-  # Check whether the last month was the wettest month on record
+  # check whether the last month was the wettest month or a top 20 wettest month on record
+  #----------------------------------------------------------------------------------------
   
-  # Check whether the last year was the wettest year on record
+  # check whether the last year was the wettest year or a top 10 wettest year on record
+  #----------------------------------------------------------------------------------------
   
-  # Send message if it is the wettest
-#  ptable    <- add_row (ptable, 
-#                        priority = postDetails [["Priority"]], 
-#                        fFigure  = postDetails [["fFigure"]], 
-#                        message  = message, 
-#                        hashtags = postDetails [["Hashtags"]], 
-#                        expires  = expirDate)
-#  return (ptable)
-#} 
+  # check whether the last month was the driest month or a top 20 driest month on record
+  #----------------------------------------------------------------------------------------
+  
+  # check whether the last year was the driest year or a top 10 driest year on record
+  #----------------------------------------------------------------------------------------
+  
+  # get the appropriate message 
+  #----------------------------------------------------------------------------------------
+  if (WETDAY | WETTESTDAY | TEST >= 1) {
+    if (WETDAY | TEST == 1) {
+      postDetails <- getPostDetails ()
+      message   <- sprintf (postDetails [['Message']], year (Sys.Date ()) - 1,
+                            round (yearlyTemperatureC, 1), 
+                            round (yearlyTemperatureF, 1), treeLocationName,
+                            round (mean (yearlyAirt [['airt']], na.rm = T), 1),
+                            round (CtoF (mean (yearlyAirt [['airt']], na.rm = T)), 1))
+      
+      # Expires after delay
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
+    } else if () {}
+    
+    # compile post details
+    #------------------------------------------------------------------------------------
+    ptable    <- add_row (ptable,
+                          priority = postDetails [["Priority"]],
+                          fFigure  = postDetails [["fFigure"]],
+                          message  = message,
+                          hashtags = postDetails [["Hashtags"]],
+                          expires  = expirDate)
+  }
+  
+  # return the table with posts
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+}
 
 # Summarise and compare last month's climate at the beginning of the month
 #----------------------------------------------------------------------------------------
