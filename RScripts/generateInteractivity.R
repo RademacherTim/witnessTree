@@ -7,20 +7,23 @@ generateInteractiveResponses <- function (TEST = 0) {
   #--------------------------------------------------------------------------------------
   responses <- tibble (season = NA, topic = NA, reply = NA)
   
-  # check air temperature
-  #------------------------------------------------------------------------------------
+  # check air temperature and compare to the mean air temperature for a two hour window 
+  # on this day of the year.
+  #--------------------------------------------------------------------------------------
   airTemp <- tail (airt [['airt']], n = 1)
-  meanAirTemp <- mean (dailyAirt [['airt']] [yday (dailyAirt [['day']]) == yday (Sys.Date ())],
+  meanAirTemp <- mean (airt [['airt']] [yday (airt [['day']]) == yday (Sys.Date ()) & 
+                                        hour (airt [['TIMESTAMP']]) > hour (Sys.time ()) - 1 &
+                                        hour (airt [['TIMESTAMP']]) < hour (Sys.time ()) + 1],
                        na.rm = T)
   
   # check precipitation
-  #------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
   precip <- sum (tail (dailyPrec [['prec']], n = 14), na.rm = T) # biweekly sum
   from <- head (tail (dailyPrec [['day']], n = 14), n = 1)
   for (iYr in 1964:year (Sys.Date ())) {
     sum14 <- sum (dailyPrec [['prec']] [year (dailyPrec [['day']]) == iYr & 
-                                          yday (dailyPrec [['day']]) >= yday (from) & 
-                                          yday (dailyPrec [['day']]) <= yday (Sys.Date ())],
+                                        yday (dailyPrec [['day']]) >= yday (from) & 
+                                        yday (dailyPrec [['day']]) <= yday (Sys.Date ())],
                   na.rm = T)
     if (iYr == 1964) {
       meanPrecip <- tibble (year = iYr, mean = sum14)

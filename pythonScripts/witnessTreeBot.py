@@ -139,7 +139,7 @@ else:
 #------------------------------------------------------------------------------
 if os.path.exists('./tmp/interactiveResponses.csv'):
 	responses = pandas.read_csv ('./tmp/interactiveResponses.csv')
-        print ('Responses for interactive tweets created.')
+        print ('Responses for interactive tweets read in using pandas.')
 else:
 	print ("Error: No responses for interactive messages available!")
 
@@ -159,25 +159,31 @@ questions = ['how are you',
 # Look for tweets containing the questions the bot responds to
 #------------------------------------------------------------------------------
 tweetIDs = []
+responseCount = 0
 for i in questions:
 	tmpTweets = api.search (q = "@%s " % (user.screen_name) + i, show_user = True)
+	previousResponses = api.user_timeline (screen_name="awitnesstree", count=50)
 	tweets = []
 	for tweet in tmpTweets:
 		local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
-                questionTime = local_dt.astimezone (pytz.utc)
-    		if questionTime > lastResponseTime:
-        		tweets.append   (tweet)	
+		questionTime = local_dt.astimezone (pytz.utc)
+    		if questionTime > lastResponseTime: tweets.append (tweet)	
 
 	for tweet in tweets:
-		if tweet.id in tweetIDs:
-			print ('Question was already replied to.')
-		else:
-		        handle = tweet.user.screen_name
-			response = random.sample (responses ['reply'] [3:len(responses)], 1) [0]
-		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id) # This does fail, if it has already replied.
+		handle = tweet.user.screen_name	
+                if tweet.user.screen_name != 'awitnesstree':
+                	for previousResponse in previousResponses:
+				#print (previousResponse.text [0:len(handle)+1])
+ 				if "@%s" % handle == previousResponse.text [0:len(handle)+1]: 
+					tweetIDs.append (tweet.id)               	
+		if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+			print ('Questions was already answered.')
+		else: 
+			response = random.sample (responses ['reply'] [3:len(responses)], 1) [0]  
+		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
-print ('Responded to '+str (len (tweetIDs))+' questions.')
-
+			responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions.')
 
 # Look for tweets containing "if a tree falls in the woods"
 #------------------------------------------------------------------------------
@@ -188,7 +194,7 @@ for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
         questionTime = local_dt.astimezone (pytz.utc)
     	if questionTime > lastResponseTime:
-        	tweets.append   (tweet)	
+        	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
 	response = responses ['reply'] [2]
@@ -203,7 +209,7 @@ for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
         questionTime = local_dt.astimezone (pytz.utc)
     	if questionTime > lastResponseTime:
-        	tweets.append   (tweet)	
+        	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
 	response = responses ['reply'] [1]

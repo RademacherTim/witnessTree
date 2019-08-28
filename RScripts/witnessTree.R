@@ -173,14 +173,14 @@ posts <- deletePostedPostsAndRemoveDuplicates (posts)
 post <- selectPost (posts)
 print ('A post has been selected.')
 
-# Delete the selected post from the posts tibble 
-#----------------------------------------------------------------------------------------
-posts <- deletePost (posts, post)
-
 # Check whether there is a post
 #----------------------------------------------------------------------------------------
-if (dim (post) [1]) {
+if (dim (post) [1] == 1) {
   
+  # Delete the selected post from the posts tibble 
+  #--------------------------------------------------------------------------------------
+  posts <- deletePost (posts, post)
+
   # Check whether the bot has already posted four messages last week
   #--------------------------------------------------------------------------------------
   pastPostDates <- as.POSIXct (list.files (sprintf ('%s/posts/', path), pattern = '.csv'),
