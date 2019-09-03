@@ -204,7 +204,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
   # Check whether the last year was the warmest year on record
   #--------------------------------------------------------------------------------------
   tempRank <- rank (yearlyAirt [['airt']]) 
-  if (max (yearlyAirt [['airt']], na.rm = T) >= 
+  if (min (yearlyAirt [['airt']], na.rm = T) >= 
       head (tail (yearlyAirt [['airt']], n = 2), n = 1) | TEST == 19) { 
     COLDESTYEAR <- TRUE
     COLDYEAR    <- FALSE
@@ -448,11 +448,11 @@ extremePrecipitation <- function (ptable, TEST = 0) {
   
   # check whether the yesterday was the wettest day or a top 50 wettest day on record
   #--------------------------------------------------------------------------------------
-  if (max (dailyPrec [['prec']], na.rm = T) <= tail (dailyPrec [['prec']], n = 1) | 
+  if (max (dailyPrec [['prec']], na.rm = T) <= head (tail (dailyPrec [['prec']], n = 2), n = 1) | 
       TEST == 1) {
     WETTESTDAY <- TRUE
     WETDAY     <- FALSE
-  } else if (tail (dailyPrec [['rank']], n = 1) <= 50 | TEST == 2) {
+  } else if (head (tail (dailyPrec [['rank']], n = 2), n = 1) <= 50 | TEST == 2) {
     WETTESTDAY <- FALSE
     WETDAY     <- TRUE
   } else {
@@ -462,11 +462,11 @@ extremePrecipitation <- function (ptable, TEST = 0) {
   
   # check whether the last week was the wettest week or a top 30 wettest week on record
   #----------------------------------------------------------------------------------------
-  if (max (weeklyPrec [['prec']], na.rm = T) <= tail (weeklyPrec [['prec']], n = 1) | 
+  if (max (weeklyPrec [['prec']], na.rm = T) <= head (tail (weeklyPrec [['prec']], n = 2), n = 1) | 
       TEST == 3) {
     WETTESTWEEK <- TRUE
     WETWEEK     <- FALSE
-  } else if (tail (weeklyPrec [['rank']], n = 1) <= 30 | TEST == 4) {
+  } else if (head (tail (weeklyPrec [['rank']], n = 2),  n = 1) <= 30 | TEST == 4) {
     WETTESTWEEK <- FALSE
     WETWEEK     <- TRUE
   } else {
@@ -475,22 +475,68 @@ extremePrecipitation <- function (ptable, TEST = 0) {
   }
   
   # check whether the last month was the wettest month or a top 20 wettest month on record
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
+  if (max (monthlyPrec [['prec']], na.rm = T) <= head (tail (monthlyPrec [['prec']], n = 2), n = 1) | 
+      TEST == 5) {
+    WETTESTMONTH <- TRUE
+    WETMONTH     <- FALSE
+  } else if (head (tail (monthlyPrec [['rank']], n = 2), n = 1) <= 20 | TEST == 6) {
+    WETTESTMONTH <- FALSE
+    WETMONTH     <- TRUE
+  } else {
+    WETTESTMONTH <- FALSE
+    WETMONTH     <- FALSE
+  }
   
   # check whether the last year was the wettest year or a top 10 wettest year on record
-  #----------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------
+  if (max (yearlyPrec [['prec']], na.rm = T) <= head (tail (yearlyPrec [['prec']], n = 2), n = 1) | 
+      TEST == 7) {
+    WETTESTYEAR <- TRUE
+    WEYEAR     <- FALSE
+  } else if (head (tail (yearlyPrec [['rank']], n = 2), n = 1) <= 10 | TEST == 8) {
+    WETTESTYEAR <- FALSE
+    WETYEAR     <- TRUE
+  } else {
+    WETTESTYEAR <- FALSE
+    WETYEAR     <- FALSE
+  }
   
   # check whether the last month was the driest month or a top 20 driest month on record
   #----------------------------------------------------------------------------------------
+  tempRank <- rank (monthlyPrec [['prec']])
+  if (min (monthlyPrec [['prec']], na.rm = T) >= head (tail (monthlyPrec [['prec']], n = 2), n = 1) | 
+      TEST == 8) {
+    DRIESTMONTH <- TRUE
+    DRYMONTH    <- FALSE
+  } else if (head (tail (tempRank, n = 2), n = 1) <= 20 | TEST == 9) {
+    DRIESTMONTH <- FALSE
+    DRYMONTH    <- TRUE
+  } else {
+    DRIESTMONTH <- FALSE
+    DRYMONTH    <- FALSE
+  }
   
   # check whether the last year was the driest year or a top 10 driest year on record
   #----------------------------------------------------------------------------------------
+  if (min (yearlyPrec [['prec']], na.rm = T) >= head (tail (yearlyPrec [['prec']], n = 2), n = 1) | 
+      TEST == 10) {
+    WETTESTYEAR <- TRUE
+    WEYEAR     <- FALSE
+  } else if (head (tail (yearlyPrec [['rank']], n = 2), n = 1) <= 10 | TEST == 11) {
+    WETTESTYEAR <- FALSE
+    WETYEAR     <- TRUE
+  } else {
+    WETTESTYEAR <- FALSE
+    WETYEAR     <- FALSE
+  }
   
   # get the appropriate message 
   #----------------------------------------------------------------------------------------
-  if (WETDAY | WETTESTDAY | TEST >= 1) {
-    if (WETDAY | TEST == 1) {
-      postDetails <- getPostDetails ()
+  if (WETDAY | WETTESTDAY | WETWEEK | WETTESTWEEK | WETMONTH | WETTESTMONTH | WETYEAR | 
+      WETTESTYEAR | DRYMONTH | DRIESTMONTH | DRYYEAR | DRIESTYEAR) {
+    if (WETDAY) {
+      postDetails <- getPostDetails ('wetDay')
       message   <- sprintf (postDetails [['Message']], year (Sys.Date ()) - 1,
                             round (yearlyTemperatureC, 1), 
                             round (yearlyTemperatureF, 1), treeLocationName,
@@ -501,7 +547,29 @@ extremePrecipitation <- function (ptable, TEST = 0) {
       delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
       expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
                              treeTimeZone)
-    } else if () {}
+    } else if (WETTESTDAY) {
+      postDetails <- getPostDetails ('wettestDay')
+    }  else if (WETWEEK) {
+      postDetails <- getPostDetails ('wetWeek')
+    } else if (WETTESTWEEK) {
+      postDetails <- getPostDetails ('wettestWeek')
+    } else if (WETMONTH) {
+      postDetails <- getPostDetails ('wetMonth')
+    } else if (WETTESTMONTH) {
+      postDetails <- getPostDetails ('wettestMonth')
+    } else if (WETYEAR) {
+      postDetails <- getPostDetails ('wetYear')
+    } else if (WETTESTYEAR) {
+      postDetails <- getPostDetails ('wetYear')
+    } else if (DRYMONTH) {
+      postDetails <- getPostDetails ('dryMonth')
+    } else if (DRIESTMONTH) {
+      postDetails <- getPostDetails ('driestMonth')
+    } else if (DRYYEAR) {
+      postDetails <- getPostDetails ('dryYear')
+    } else if (DRIESTYEAR) {
+      postDetails <- getPostDetails ('driestYear')
+    }
     
     # compile post details
     #------------------------------------------------------------------------------------
@@ -510,7 +578,7 @@ extremePrecipitation <- function (ptable, TEST = 0) {
                           fFigure  = postDetails [["fFigure"]],
                           message  = message,
                           hashtags = postDetails [["Hashtags"]],
-                          expires  = expirDate)
+                          expires  = expireDate)
   }
   
   # return the table with posts
