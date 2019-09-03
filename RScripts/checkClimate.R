@@ -627,21 +627,18 @@ monthlyClimateSummary <- function (ptable, TEST = 0) {
     # Choose what to talk about
     #--------------------------------------------------------------------------------------
     if (diMonthlyAirt < sdMonthlyAirt & diMonthlyPrec < sdMonthlyPrec | TEST == 1) { # Just an close-to-average month 
-      postDetails <- getPostDetails ('monthlyClimateSummary - normal', 
-                                     gs_posts_key = gsPostsKey)
+      postDetails <- getPostDetails ('monthlyClimateSummary - normal')
       message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), 
                                  round (CtoF (acMonthlyAirt), 1), round (acMonthlyPrec, 1), 
                                  treeLocationName, prMonth)
     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
-        postDetails <- getPostDetails ('monthlyClimateSummary - cold', 
-                                       gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ('monthlyClimateSummary - cold')
         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), 
                                    round (CtoF (meMonthlyAirt), 1), round (-diMonthlyAirt, 1), 
                                    treeLocationName, prMonth)
       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
-        postDetails <- getPostDetails ('monthlyClimateSummary - warm', 
-                                       gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ('monthlyClimateSummary - warm')
         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1),
                                    round (CtoF (meMonthlyAirt), 1), prMonth, 
                                    round (diMonthlyAirt, 1), 
@@ -650,16 +647,14 @@ monthlyClimateSummary <- function (ptable, TEST = 0) {
       }
     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
-        postDetails <- getPostDetails ('monthlyClimateSummary - dry', 
-                                       gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ('monthlyClimateSummary - dry')
         message        <- sprintf (postDetails [['Message']], 
                                    round (maxAirT, 1),
                                    round (CtoF (maxAirT), 1), 
                                    round (meMonthlyPrec, 1), 
                                    treeLocationName)
       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
-        postDetails <- getPostDetails ('monthlyClimateSummary - wet', 
-                                       gs_posts_key = gsPostsKey)
+        postDetails <- getPostDetails ('monthlyClimateSummary - wet')
         message        <- sprintf (postDetails [['Message']], 
                                    format (Sys.Date () - 1, '%d %B'), 
                                    '23:59h',
@@ -723,21 +718,18 @@ monthlyClimateSummary <- function (ptable, TEST = 0) {
 #     # Choose what to talk about
 #     #--------------------------------------------------------------------------------------
 #     if (diMonthlyAirt < diMonthlyAirtBase | TEST == 1) { 
-#       postDetails <- getPostDetails ('monthlyClimateSummaryFollowUp - warmer', 
-#                                      gs_posts_key = gsPostsKey)
+#       postDetails <- getPostDetails ('monthlyClimateSummaryFollowUp - warmer')
 #       message        <- sprintf (postDetails [['Message']], round (acMonthlyAirt, 1), 
 #                                  round (CtoF (acMonthlyAirt), 1), round (acMonthlyPrec, 1), 
 #                                  treeLocationName, prMonth)
 #     } else if (abs (diMonthlyAirt) >= sdMonthlyAirt | TEST == 2 | TEST == 3) { # Temperature was anormal
 #       if (diMonthlyAirt < 0 | TEST == 2) { # Cold month
-#         postDetails <- getPostDetails ('monthlyClimateSummary - cold', 
-#                                        gs_posts_key = gsPostsKey)
+#         postDetails <- getPostDetails ('monthlyClimateSummary - cold')
 #         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1), 
 #                                    round (CtoF (meMonthlyAirt), 1), round (-diMonthlyAirt, 1), 
 #                                    treeLocationName, prMonth)
 #       } else if (diMonthlyAirt > 0 | TEST == 3) { # Warm month
-#         postDetails <- getPostDetails ('monthlyClimateSummary - warm', 
-#                                        gs_posts_key = gsPostsKey)
+#         postDetails <- getPostDetails ('monthlyClimateSummary - warm')
 #         message        <- sprintf (postDetails [['Message']], round (meMonthlyAirt, 1),
 #                                    round (CtoF (meMonthlyAirt), 1), prMonth, 
 #                                    round (diMonthlyAirt, 1), 
@@ -746,16 +738,14 @@ monthlyClimateSummary <- function (ptable, TEST = 0) {
 #       }
 #     } else if (abs (diMonthlyPrec) >= sdMonthlyPrec | TEST == 4  | TEST == 5) { # Precip was anormal
 #       if (diMonthlyPrec < 0  | TEST == 4) { # Dry month
-#         postDetails <- getPostDetails ('monthlyClimateSummary - dry', 
-#                                        gs_posts_key = gsPostsKey)
+#         postDetails <- getPostDetails ('monthlyClimateSummary - dry')
 #         message        <- sprintf (postDetails [['Message']], 
 #                                    round (maxAirT, 1),
 #                                    round (CtoF (maxAirT), 1), 
 #                                    round (meMonthlyPrec, 1), 
 #                                    treeLocationName)
 #       } else if (diMonthlyAirt > 0 | TEST == 5) { # Wet month
-#         postDetails <- getPostDetails ('monthlyClimateSummary - wet', 
-#                                        gs_posts_key = gsPostsKey)
+#         postDetails <- getPostDetails ('monthlyClimateSummary - wet')
 #         message        <- sprintf (postDetails [['Message']], 
 #                                    format (Sys.Date () - 1, '%d %B'), 
 #                                    '23:59h',
