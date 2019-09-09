@@ -133,9 +133,10 @@ posts <- monthlyClimateSummary (posts) # If it is the beginning of the month sum
                                        #term average.
 posts <- checkFrost    (posts) # Check for first frost of the autumn 
                                # and late frost in early growing season.
-posts <- checkHeatWave (posts) # Check for a heat wave.
-posts <- checkStorm    (posts) # Check for storm or rather a windy day.
-posts <- checkRainfall (posts) # Check for rainfall above 1.5mm in the last 15 minutes.
+posts <- checkHeatWave       (posts) # Check for a heat wave.
+posts <- checkStorm          (posts) # Check for storm or rather a windy day.
+posts <- checkHourlyRainfall (posts) # Check for hourly rainfall above 3.0mm.
+posts <- checkDailyRainfall  (posts) # Check for daily rainfall above 20.0mm.
 print ('Climatic conditions have been checked.')
 
 # Generate new posts concerning the morphology of the tree

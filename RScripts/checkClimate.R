@@ -990,18 +990,59 @@ checkStorm <- function (ptable, TEST = 0){
   return (ptable)
 }
 
-# Check for rainfall above 1.5mm per fifteen minutes
+# Check for rainfall in the last hour exceeding 3.0mm
 #----------------------------------------------------------------------------------------
-checkRainfall <- function (ptable, TEST = 0) {
+checkHourlyRainfall <- function (ptable, TEST = 0) {
 
+  # Calculate rainfall in last hour
+  #--------------------------------------------------------------------------------------
+  lastHourPrec <- sum (tail (prec [['prec']], n = 4), na.rm = TRUE)
+  
   # Check for pretty heavy rain (more than 1.5mm per fifteen minutes)
   #--------------------------------------------------------------------------------------
-  if (tail (prec [['prec']], n = 1) > 1.5 | TEST == 1) {
+  if (lastHourPrec > 3.0 | TEST == 1) {
 
+    # Get post details    
+    #------------------------------------------------------------------------------------
+    postDetails <- getPostDetails (fName = 'checkHourlyRainfall')
+    if (substring (postDetails [['Message']], 1, 1) == 'I') {
+      message <- sprintf (postDetails [['Message']], 
+                          round (lastHourPrec, 2))
+    } else {
+      message <- postDetails [['Message']]
+    }
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60.0 * 60.0
+    expirDate <- sprintf ("%s %s", format (Sys.time () + delay, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone) 
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [['Priority']], 
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = sprintf ('%s/tmp/dailyGrowth_%s.png',path,Sys.Date ()), 
+                          message     = message, 
+                          hashtags    = postDetails [['Hashtags']], 
+                          expires     = expirDate)
+  }
+  
+  # Return the post details
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+}
+
+# Check for rainfall in the last day exceeding 20.0 mm
+#----------------------------------------------------------------------------------------
+checkDailyRainfall <- function (ptable, TEST = 0) {
+  
+  # Calculate rainfall in last hour
+  #--------------------------------------------------------------------------------------
+  lastDayPrec <- sum (tail (prec [['prec']], n = 4*24), na.rm = TRUE)
+  
+  # Check for pretty heavy rain (more than 20mm per day)
+  #--------------------------------------------------------------------------------------
+  if (lastDayPrec > 20.0 | TEST == 1) {
+    
     # Load dependencies if necessary
     #------------------------------------------------------------------------------------
     if (!existsFunction ('cols')) library ('tidyverse')
-
+    
     # Plot figure of growth and rainfall over the last two weeks
     #------------------------------------------------------------------------------------
     radGrowth <- calcRadialGrowth (temporalRes = 'daily', 
@@ -1010,14 +1051,10 @@ checkRainfall <- function (ptable, TEST = 0) {
     
     # Get post details    
     #------------------------------------------------------------------------------------
-    postDetails <- getPostDetails (fName = 'checkRainfall')
-    if (substring (postDetails [['Message']], 1, 1) == 'T') {
-      message <- sprintf (postDetails [['Message']], 
-                          round (max (radGrowth [['dailyGrowth']], na.rm = TRUE), 2))
-    } else {
-      message <- postDetails [['Message']]
-    }
-    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60.0 * 60.0
+    postDetails <- getPostDetails (fName = 'checkDailyRainfall')
+    message <- sprintf (postDetails [['Message']], 
+                        round (max (radGrowth [['dailyGrowth']], na.rm = TRUE), 2))
+    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60.0 * 60.0 * 24.0
     expirDate <- sprintf ("%s %s", format (Sys.time () + delay, format = '%Y-%m-%d %H:%M:%S'), treeTimeZone) 
     ptable    <- add_row (ptable, 
                           priority    = postDetails [['Priority']], 
