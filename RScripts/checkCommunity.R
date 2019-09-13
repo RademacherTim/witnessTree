@@ -103,4 +103,25 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
   #--------------------------------------------------------------------------------------
   return (ptable)
 } 
+
+# Explain gypsy moth herbivory
+#----------------------------------------------------------------------------------------
+explainGypsyMothHerbivory <- function (ptable, TEST = 0) {
+  if (substring (Sys.Date (), 6, 10) > '05-15' & substring (Sys.Date (), 6, 10) < '08-31'| 
+      TEST == 1) {
+    postDetails <- getPostDetails ("explainGypsyMothHerbivory")
+    expirDate <- sprintf ("%s-08-31 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = postDetails [["Message"]], 
+                          hashtags    = postDetails [["Hashtags"]], 
+                          expires     = expirDate)
+  } 
+  
+  # Return table with posts
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+} 
 #========================================================================================

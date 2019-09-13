@@ -145,8 +145,11 @@ posts <- explainDimensions (posts)
 
 # Generate new posts concerning the community surrounding the tree
 #----------------------------------------------------------------------------------------
-posts <- explainSeedDispersal   (posts)
-posts <- checkCommunityWildlife (posts)
+posts <- explainSeedDispersal      (posts) # give background on seed dispersal between 
+                                           # 1st of September and end of November
+posts <- explainGypsyMothHerbivory (posts) # give background on gypsy moths between 15th 
+                                           # of May and end of August
+posts <- checkCommunityWildlife    (posts)
 print ('Community related messages have been checked.')
 
 # Generate new posts concerning physiology
