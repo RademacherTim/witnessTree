@@ -149,6 +149,7 @@ posts <- explainSeedDispersal      (posts) # give background on seed dispersal b
                                            # 1st of September and end of November
 posts <- explainGypsyMothHerbivory (posts) # give background on gypsy moths between 15th 
                                            # of May and end of August
+posts <- explainGallWasps         (posts) # give background about galls
 posts <- checkCommunityWildlife    (posts)
 print ('Community related messages have been checked.')
 

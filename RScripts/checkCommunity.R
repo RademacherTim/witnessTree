@@ -6,6 +6,8 @@
 #   1)  explainSeedDispersal                    Between 1st of Sep and 30th of Nov
 #   2)  checkCommunityWildlife                  All year, when image is added to the 
 #                                               directory
+#   3)  explainGypsyMothHerbivory               Between 1st of Sep and 30th of Nov
+#   4)  explainGallWasps                        Between 1st of Sep and 30th of Nov
 #----------------------------------------------------------------------------------------
 
 # Explain seed dispersal
@@ -116,6 +118,28 @@ explainGypsyMothHerbivory <- function (ptable, TEST = 0) {
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [["Message"]], 
+                          hashtags    = postDetails [["Hashtags"]], 
+                          expires     = expirDate)
+  } 
+  
+  # Return table with posts
+  #--------------------------------------------------------------------------------------
+  return (ptable)
+} 
+
+# Explain seed dispersal
+#----------------------------------------------------------------------------------------
+explainGallWasps <- function (ptable, TEST = 0) {
+  if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
+      TEST == 1) {
+    postDetails <- getPostDetails ("explainGallWasps")
+    message   <- sprintf (postDetails [["Message"]])
+    expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
