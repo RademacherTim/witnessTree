@@ -193,9 +193,11 @@ getPostsSpreadsheet <- function (gs_posts_key)
   
   # get posts spreadsheet
   #--------------------------------------------------------------------------------------
-  spreadsheet <- gs_download (gs_key (gs_posts_key) , ws = "posts", 
-                              to = sprintf ('%stmp/postsDetails.csv', path),
-                              overwrite = TRUE)
+  spreadsheet <- suppressMessages (
+    gs_download (gs_key (gs_posts_key) , ws = "posts", 
+                 to = sprintf ('%stmp/postsDetails.csv', path),
+                 overwrite = TRUE)
+  )
   
   # Return the zero to indicate smooth running
   #--------------------------------------------------------------------------------------

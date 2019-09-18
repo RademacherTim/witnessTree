@@ -7,7 +7,8 @@
 # Project lead: Tim Tito Rademacher (rademacher.tim@gmail.com)
 #
 # Acknowledgements: Thanks to David Basler, Clarisse Hart, Hannah Robbins, Kyle Wyche, 
-#                   Shawna Greyeyes for their invaluable contributions.
+#                   Shawna Greyeyes, Bijan Seyednasrollah for their invaluable 
+#                   contributions.
 #
 #----------------------------------------------------------------------------------------
  
