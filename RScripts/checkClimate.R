@@ -597,15 +597,15 @@ monthlyClimateSummary <- function (ptable, TEST = 0) {
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
     #--------------------------------------------------------------------------------------
     acMonthlyAirt <- head (tail (monthlyAirt [['airt']], n = 2), n = 1) 
-    meMonthlyAirt <- mean (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1])
-    sdMonthlyAirt <- sd   (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1])
+    meMonthlyAirt <- mean (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1], na.rm = T)
+    sdMonthlyAirt <- sd   (monthlyAirt [['airt']] [month (monthlyAirt [['month']]) == month (Sys.Date ()) - 1], na.rm = T)
     diMonthlyAirt <- acMonthlyAirt - meMonthlyAirt
     
     # Calculate mean and standard deviation for monthly temperature for all months such as the previous (i.e. May) 
     #--------------------------------------------------------------------------------------
     acMonthlyPrec <- head (tail (monthlyPrec [['prec']], n = 2), n = 1) 
-    meMonthlyPrec <- mean (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1])
-    sdMonthlyPrec <- sd   (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1])
+    meMonthlyPrec <- mean (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1], na.rm = T)
+    sdMonthlyPrec <- sd   (monthlyPrec [['prec']] [month (monthlyPrec [['month']]) == month (Sys.Date ()) - 1], na.rm = T)
     diMonthlyPrec <- acMonthlyPrec - meMonthlyPrec
     
     # determine rainy days in previous month
@@ -838,7 +838,8 @@ checkFrost <- function (ptable, TEST = 0) {
   
   # Check for first frost (after July)
   #--------------------------------------------------------------------------------------
-  if ((substring (Sys.Date (), 6, 10) >= '07-31' & tail (airt [['airt']], n = 1) < 0.0) | TEST == 1) {
+  if ((substring (Sys.Date (), 6, 10) >= '07-31' & min (tail (airt [['airt']], n = 4*5), na.rm = TRUE) < 0.0) | 
+      TEST == 1) {
     postDetails <- getPostDetails ('checkFrost - first')
     FROST <- TRUE
   }
@@ -875,7 +876,7 @@ checkFrost <- function (ptable, TEST = 0) {
     # Compose post details
     #------------------------------------------------------------------------------------
     message   <- sprintf (postDetails [['Message']],  frostFreeDays) 
-    delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+    delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 

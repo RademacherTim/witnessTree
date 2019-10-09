@@ -142,7 +142,7 @@ getPostDetails <- function (fName)
     temp <- sample_n (temp, 1)
   }
   
-  # Extract post details # TR - May not need all of them, i.e. logic
+  # Extract relevant post details
   #--------------------------------------------------------------------------------------
   postDetails <- temp %>% select (-c (Status, Event, Logic, Variables, VariablesExamples, 
                                       Link, Numbers))

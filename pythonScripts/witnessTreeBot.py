@@ -23,7 +23,7 @@ from datetime import date
 from datetime import time
 from datetime import datetime, timedelta
 
-# Linking the Twitter accound with Tweepy through adding credentials. 
+# Credentials for twitter and facebook
 #----------------------------------------------------------------------------------------
 consumer_key        = sys.argv [1] # twitter accountconsumer key
 consumer_secret     = sys.argv [2] # twitter accountconsumer secrets
@@ -58,7 +58,7 @@ user = api.me()
 local = pytz.timezone ("US/Eastern")
 localTwitter = pytz.timezone ("UTC")
 
-# Check whether there is a file for this hour
+# Check whether there is a post file for now
 #----------------------------------------------------------------------------------------
 now = datetime.now ()
 local_now = local.localize (now, is_dst = None)
@@ -117,18 +117,20 @@ if os.path.exists(fileName):
 
         	# Get graph for facebook
         	#------------------------------------------------------------------------
-        	#graph = facebook.GraphAPI(page_access_token)        
+        	graph = facebook.GraphAPI(page_access_token)        
 
  		# The post is not accompanied by an image
         	#------------------------------------------------------------------------
         	if fFigure == "FALSE":
              		api.update_status (message + hashtags)
+			graph.put_object (facebook_page_id, "feed", message = message + hashtags)
 
         	# The post is accompanied by an image
 		#------------------------------------------------------------------------
         	elif fFigure == "TRUE":
              		api.update_with_media (filename = figureName, 
                             	               status = message + hashtags)
+			graph.put_photo (image=open(figureName,'rb'), message = message + hashtags)
 	else:
 		print ("Error: Last post was less than 1 hours ago!")
 
@@ -179,7 +181,7 @@ for i in questions:
 		if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
 			print ('Questions was already answered.')
 		else: 
-			response = random.sample (responses ['reply'] [3:len(responses)], 1) [0]  
+			response = random.sample (responses ['reply'] [4:len(responses)], 1) [0]  
 		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
 			responseCount = responseCount + 1
@@ -197,7 +199,7 @@ for tweet in tmpTweets:
         	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [2]
+	response = responses ['reply'] [3]
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
 # Look for tweets containing "What was hottest day"
@@ -212,7 +214,7 @@ for tweet in tmpTweets:
         	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [1]
+	response = responses ['reply'] [2]
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
 # Look for tweets containing "What was coldest day"
@@ -225,6 +227,21 @@ for tweet in tmpTweets:
         questionTime = local_dt.astimezone (pytz.utc)
     	if questionTime > lastResponseTime:
         	tweets.append   (tweet)	
+for tweet in tweets:
+	handle = tweet.user.screen_name
+	response = responses ['reply'] [1]
+	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+
+# Look for tweets containing "What was coldest day"
+#------------------------------------------------------------------------------
+question = 'How old are you'
+tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
+tweets = []
+for tweet in tmpTweets:
+	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
+        questionTime = local_dt.astimezone (pytz.utc)
+   	if questionTime > lastResponseTime:
+       	tweets.append   (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
 	response = responses ['reply'] [0]

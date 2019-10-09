@@ -17,10 +17,14 @@ explainDimensions <- function (ptable, TEST = 0) {
   
   # make sure no explain dimension post has been posted yet this month
   #--------------------------------------------------------------------------------------
+  listOfVisitors <- list.files (path = sprintf ('%s/wildlifeCam/',imagesPath), 
+                                pattern = '.jpg')  
   if (file.exists ('memory.csv')) {
     memory <- read_csv ('memory.csv', col_types = cols ())
   } else {
-    memory [['dimensionsPosted']] <- FALSE
+    memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
+                      lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
+                      dimensionsPosted = FALSE)
   }
   
   # check whether it is the 20th

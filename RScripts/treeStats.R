@@ -5,7 +5,7 @@
 
 # Set birthday and calculate the age
 #----------------------------------------------------------------------------------------
-birthDay         <- as.POSIXct ("1919/04/12", format = "%Y/%m/%d") # in years C.E.    
+birthDay         <- as.POSIXct ("1909/04/12", format = "%Y/%m/%d") # in years C.E.    
 age              <- floor (lubridate::time_length (Sys.time () - birthDay, "years"))
 
 # LIDAR-derived quantities from scan by Peter Boucher (PhD Candidate, School of 

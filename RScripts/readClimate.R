@@ -54,7 +54,8 @@ airt <- add_column (airt, year  = floor_date (airt [['TIMESTAMP']], 'year'))
 # Create mean airt over varying periods (i.e. day, week, month, year)
 #----------------------------------------------------------------------------------------
 dailyAirt    <- airt %>% group_by (day) %>% summarise (airt = mean (airt, na.rm = T))
-dailyMaxAirt <- airt %>% group_by (day) %>% summarise (airt = max  (airt, na.rm = T))
+dailyMaxAirt <- suppressWarnings (airt %>% group_by (day) %>% 
+                                  summarise (airt = max  (airt, na.rm = T)))
 dailyAirt    <- dailyAirt [!is.na (dailyAirt [['day']]),]
 dailyMaxAirt <- dailyMaxAirt [!is.na (dailyMaxAirt [['day']]),]
 weeklyAirt   <- airt %>% group_by (week) %>% summarise (airt = mean (airt, na.rm = T))

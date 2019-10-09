@@ -234,6 +234,9 @@ checkEarthDay <- function (ptable, TEST = 0) {
 # 2068. The original file is not comma-separated.
 #----------------------------------------------------------------------------------------
 checkSpringEquinox <- function (ptable, TEST = 0) {
+  
+  if (!existsFunction ('year')) library ('lubridate')
+  
   solarDates <- suppressWarnings (read_csv (file = sprintf ('%ssolarDates.csv', dataPath), 
                                             skip = 3,
                                             col_types = cols ()))
@@ -278,6 +281,9 @@ checkSpringEquinox <- function (ptable, TEST = 0) {
 # 2068. The original file is not comma-separated.
 #----------------------------------------------------------------------------------------
 checkAutumnEquinox <- function (ptable, TEST = 0) {
+  
+  if (!existsFunction ('year')) library ('lubridate')
+  
   solarDates <- suppressWarnings (read_csv (file = sprintf ('%ssolarDates.csv', dataPath), 
                                             skip = 3,
                                             col_types = cols ()))
@@ -316,6 +322,9 @@ checkAutumnEquinox <- function (ptable, TEST = 0) {
 # 2068. The original file is not comma-separated.
 #----------------------------------------------------------------------------------------
 checkSummerSolstice <- function (ptable, TEST = 0) {
+  
+  if (!existsFunction ('year')) library ('lubridate')
+  
   solarDates <-  suppressWarnings (read_csv (file = sprintf ('%ssolarDates.csv', dataPath), 
                                              skip = 3,
                                              col_types = cols ()))
@@ -349,6 +358,9 @@ checkSummerSolstice <- function (ptable, TEST = 0) {
 # 2068. The original file is not comma-separated.
 #----------------------------------------------------------------------------------------
 checkWinterSolstice <- function (ptable, TEST = 0) {
+  
+  if (!existsFunction ('year')) library ('lubridate')
+  
   solarDates <-  suppressWarnings (read_csv (file = sprintf ('%ssolarDates.csv', dataPath), 
                                              skip = 3,
                                              col_types = cols ()))

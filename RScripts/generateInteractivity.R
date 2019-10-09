@@ -128,6 +128,13 @@ generateInteractiveResponses <- function (TEST = 0) {
   responses <-  add_row (responses, season = 'all-year', topic = 'coldest day',
                          reply = message, .before = 1)
   
+  # add response to "hottest and coldest day"How old are you"
+  #------------------------------------------------------------------------------------
+  postDetails <- getPostDetails ('generateInteractivity - age')
+  message <-  sprintf (postDetails [['Message']], age, age + 1)
+  responses <-  add_row (responses, season = 'all-year', topic = 'age',
+                         reply = message, .before = 1)
+  
   # write messages to csv file
   #--------------------------------------------------------------------------------------
   write_csv (responses, path = './tmp/interactiveResponses.csv')

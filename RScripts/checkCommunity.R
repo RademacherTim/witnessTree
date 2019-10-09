@@ -47,11 +47,16 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
   
   # Check whether there is a new wildlife photo
   #--------------------------------------------------------------------------------------
-  if (file.exists ('memory.csv')) {
-    memory <- read_csv ('memory.csv', col_types = cols ())
-  } 
   listOfVisitors <- list.files (path = sprintf ('%s/wildlifeCam/',imagesPath), 
                                 pattern = '.jpg')  
+  if (file.exists ('memory.csv')) {
+    memory <- read_csv ('memory.csv', col_types = cols ())
+  } else {
+    memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
+                      lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
+                      dimensionsPosted = FALSE)
+  }
+  
 
   # Check that there is at least one picture in the directory
   #--------------------------------------------------------------------------------------
