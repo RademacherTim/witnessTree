@@ -444,7 +444,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
 
 # Check for extreme Precipitation events, so either a lot of rain or very little
 #--------------------------------------------------------------------------------------
-extremePrecipitation <- function (ptable, TEST = 0) {
+checkExtremePrecipitation <- function (ptable, TEST = 0) {
   
   # check whether the yesterday was the wettest day or a top 50 wettest day on record
   #--------------------------------------------------------------------------------------
@@ -493,7 +493,7 @@ extremePrecipitation <- function (ptable, TEST = 0) {
   if (max (yearlyPrec [['prec']], na.rm = T) <= head (tail (yearlyPrec [['prec']], n = 2), n = 1) | 
       TEST == 7) {
     WETTESTYEAR <- TRUE
-    WEYEAR     <- FALSE
+    WETYEAR     <- FALSE
   } else if (head (tail (yearlyPrec [['rank']], n = 2), n = 1) <= 10 | TEST == 8) {
     WETTESTYEAR <- FALSE
     WETYEAR     <- TRUE
@@ -521,14 +521,14 @@ extremePrecipitation <- function (ptable, TEST = 0) {
   #----------------------------------------------------------------------------------------
   if (min (yearlyPrec [['prec']], na.rm = T) >= head (tail (yearlyPrec [['prec']], n = 2), n = 1) | 
       TEST == 10) {
-    WETTESTYEAR <- TRUE
-    WEYEAR     <- FALSE
+    DRiESTYEAR <- TRUE
+    DRYYEAR    <- FALSE
   } else if (head (tail (yearlyPrec [['rank']], n = 2), n = 1) <= 10 | TEST == 11) {
-    WETTESTYEAR <- FALSE
-    WETYEAR     <- TRUE
+    DRIESTYEAR <- FALSE
+    DRYYEAR    <- TRUE
   } else {
-    WETTESTYEAR <- FALSE
-    WETYEAR     <- FALSE
+    DRIESTYEAR <- FALSE
+    DRYYEAR    <- FALSE
   }
   
   # get the appropriate message 
@@ -537,38 +537,137 @@ extremePrecipitation <- function (ptable, TEST = 0) {
       WETTESTYEAR | DRYMONTH | DRIESTMONTH | DRYYEAR | DRIESTYEAR) {
     if (WETDAY) {
       postDetails <- getPostDetails ('wetDay')
-      message   <- sprintf (postDetails [['Message']], year (Sys.Date ()) - 1,
-                            round (yearlyTemperatureC, 1), 
-                            round (yearlyTemperatureF, 1), treeLocationName,
-                            round (mean (yearlyAirt [['airt']], na.rm = T), 1),
-                            round (CtoF (mean (yearlyAirt [['airt']], na.rm = T)), 1))
+      rank <- head (tail (dailyPrec [['rank']], n = 2), n = 1)
+      message   <- sprintf (postDetails [['Message']], 
+                            rank, findOrdinalSuffix (rank),
+                            round (mmtoInches (head (tail (dailyPrec [['prec']], n = 2), n = 1)), 3),
+                            round (head (tail (dailyPrec [['prec']], n = 2), n = 1), 2))
       
-      # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+      # Expires at the end of the day
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
                              treeTimeZone)
     } else if (WETTESTDAY) {
       postDetails <- getPostDetails ('wettestDay')
+      message   <- sprintf (postDetails [['Message']], 
+                            round (mmtoInches (head (tail (dailyPrec [['prec']], n = 2), n = 1)), 3),
+                            round (head (tail (dailyPrec [['prec']], n = 2), n = 1), 2))
+      
+      # Expires at the end of the day
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
+                             treeTimeZone)
     }  else if (WETWEEK) {
       postDetails <- getPostDetails ('wetWeek')
+      rank <- head (tail (weeklyPrec [['rank']], n = 2), n = 1)
+      message   <- sprintf (postDetails [['Message']], 
+                            round (mmtoInches (mean (weeklyPrec [['prec']], na.rm = TRUE)), 3),
+                            round (mean (weeklyPrec [['prec']], na.rm = TRUE), 2),
+                            treeLocationName,
+                            round (mmtoInches (head (tail (weeklyPrec [['prec']], n = 2), n = 1)), 3),
+                            round (head (tail (weeklyPrec [['prec']], n = 2), n = 1), 2),
+                            rank, findOrdinalSuffix (rank))
+      
+      # Expires after six days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (WETTESTWEEK) {
       postDetails <- getPostDetails ('wettestWeek')
+      message   <- sprintf (postDetails [['Message']], 
+                            round (mmtoInches (head (tail (weeklyPrec [['prec']], n = 2), n = 1)), 3),
+                            round (head (tail (weeklyPrec [['prec']], n = 2), n = 1), 2))
+      
+      # Expires after six days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (WETMONTH) {
       postDetails <- getPostDetails ('wetMonth')
+      rank <- head (tail (monthlyPrec [['rank']], n = 2), n = 1)
+      message   <- sprintf (postDetails [['Message']], treeLocationName,
+                            round (mmtoInches (head (tail (monthlyPrec [['prec']], n = 2), n = 1)), 1),
+                            round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 1),
+                            rank, findOrdinalSuffix (rank))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (WETTESTMONTH) {
       postDetails <- getPostDetails ('wettestMonth')
+      message   <- sprintf (postDetails [['Message']], 
+                            round (mmtoInches (head (tail (monthlyPrec [['prec']], n = 2), n = 1)), 1),
+                            round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 1))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (WETYEAR) {
       postDetails <- getPostDetails ('wetYear')
+      rank <- head (tail (yearlyPrec [['rank']], n = 2), n = 1)
+      message <- sprintf (postDetails [['Message']], year (Sys.Date())-1,
+                          rank, findOrdinalSuffix (rank), treeLocationName)
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (WETTESTYEAR) {
-      postDetails <- getPostDetails ('wetYear')
+      postDetails <- getPostDetails ('wettestYear')
+      message   <- sprintf (postDetails [['Message']], year (Sys.Date())-1,
+                            round (mmtoInches (head (tail (yearlyPrec [['prec']], n = 2), n = 1)), 1),
+                            round (head (tail (yearlyPrec [['prec']], n = 2), n = 1), 1))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (DRYMONTH) {
       postDetails <- getPostDetails ('dryMonth')
+      rank <- head (tail (monthlyPrec [['rank']], n = 2), n = 1)
+      message <- sprintf (postDetails [['Message']], treeLocationName, 
+                          rank, findOrdinalSuffix (rank), 
+                          round (mmtoInches (head (tail (monthlyPrec [['prec']], n = 2), n = 1)), 2),
+                          round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 2))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (DRIESTMONTH) {
       postDetails <- getPostDetails ('driestMonth')
+      message <- sprintf (postDetails [['Message']], 
+                          round (mmtoInches (head (tail (monthlyPrec [['prec']], n = 2), n = 1)), 2),
+                          round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 2))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (DRYYEAR) {
       postDetails <- getPostDetails ('dryYear')
+      rank <- head (tail (yearlyPrec [['rank']], n = 2), n = 1)
+      message <- sprintf (postDetails [['Message']], year (Sys.Date())-1, 
+                          rank, findOrdinalSuffix (rank), 
+                          round (mmtoInches (head (tail (yearlyPrec [['prec']], n = 2), n = 1)), 1),
+                          round (head (tail (yearlyPrec [['prec']], n = 2), n = 1), 1),
+                          year (Sys.Date ()))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     } else if (DRIESTYEAR) {
       postDetails <- getPostDetails ('driestYear')
+      message <- sprintf (postDetails [['Message']], year (Sys.Date())-1, 
+                          round (mmtoInches (head (tail (yearlyPrec [['prec']], n = 2), n = 1)), 1),
+                          round (head (tail (yearlyPrec [['prec']], n = 2), n = 1), 1),
+                          year (Sys.Date ()))
+      
+      # Expires after 19 days
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
+                             treeTimeZone)
     }
     
     # compile post details
@@ -1008,7 +1107,8 @@ checkHourlyRainfall <- function (ptable, TEST = 0) {
     postDetails <- getPostDetails (fName = 'checkHourlyRainfall')
     if (substring (postDetails [['Message']], 1, 1) == 'I') {
       message <- sprintf (postDetails [['Message']], 
-                          round (lastHourPrec, 2))
+                          round (lastHourPrec, 2),
+                          round (mmtoInches(lastHourPrec), 3))
     } else {
       message <- postDetails [['Message']]
     }
