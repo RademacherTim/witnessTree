@@ -506,10 +506,10 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
   #----------------------------------------------------------------------------------------
   tempRank <- rank (monthlyPrec [['prec']])
   if (min (monthlyPrec [['prec']], na.rm = T) >= head (tail (monthlyPrec [['prec']], n = 2), n = 1) | 
-      TEST == 8) {
+      TEST == 9) {
     DRIESTMONTH <- TRUE
     DRYMONTH    <- FALSE
-  } else if (head (tail (tempRank, n = 2), n = 1) <= 20 | TEST == 9) {
+  } else if (head (tail (tempRank, n = 2), n = 1) <= 20 | TEST == 10) {
     DRIESTMONTH <- FALSE
     DRYMONTH    <- TRUE
   } else {
@@ -519,11 +519,12 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
   
   # check whether the last year was the driest year or a top 10 driest year on record
   #----------------------------------------------------------------------------------------
+  tempRank <- rank (yearlyPrec [['prec']])
   if (min (yearlyPrec [['prec']], na.rm = T) >= head (tail (yearlyPrec [['prec']], n = 2), n = 1) | 
-      TEST == 10) {
-    DRiESTYEAR <- TRUE
+      TEST == 11) {
+    DRIESTYEAR <- TRUE
     DRYYEAR    <- FALSE
-  } else if (head (tail (yearlyPrec [['rank']], n = 2), n = 1) <= 10 | TEST == 11) {
+  } else if (head (tail (tempRank, n = 2), n = 1) <= 10 | TEST == 12) {
     DRIESTYEAR <- FALSE
     DRYYEAR    <- TRUE
   } else {
@@ -624,7 +625,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                              treeTimeZone)
     } else if (DRYMONTH) {
       postDetails <- getPostDetails ('dryMonth')
-      rank <- head (tail (monthlyPrec [['rank']], n = 2), n = 1)
+      rank <- head (tail (rank (monthlyPrec [['prec']]), n = 2), n = 1)
       message <- sprintf (postDetails [['Message']], treeLocationName, 
                           rank, findOrdinalSuffix (rank), 
                           round (mmtoInches (head (tail (monthlyPrec [['prec']], n = 2), n = 1)), 2),
@@ -646,7 +647,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                              treeTimeZone)
     } else if (DRYYEAR) {
       postDetails <- getPostDetails ('dryYear')
-      rank <- head (tail (yearlyPrec [['rank']], n = 2), n = 1)
+      rank <- head (tail (rank (yearlyPrec [['prec']]), n = 2), n = 1)
       message <- sprintf (postDetails [['Message']], year (Sys.Date())-1, 
                           rank, findOrdinalSuffix (rank), 
                           round (mmtoInches (head (tail (yearlyPrec [['prec']], n = 2), n = 1)), 1),
