@@ -128,11 +128,13 @@ print ('Events have been checked.')
 
 # Generate new posts concerning meteorological & climatic events
 #----------------------------------------------------------------------------------------
-posts <- checkExtremeTemperatures (posts) # Test whether it is the hottest or coldest 
-                                          # temperature on record (in memory).
-posts <- monthlyClimateSummary (posts) # If it is the beginning of the month summarise 
-                                       # and compare last months climate to the long 
-                                       #term average.
+posts <- checkExtremeTemperatures  (posts) # Test whether it is the hottest or coldest 
+                                           # temperature on record (in memory).
+posts <- checkExtremePrecipitation (posts) # Test whether it is the wettest or driest 
+                                           # temperature on record
+posts <- monthlyClimateSummary     (posts) # If it is the beginning of the month summarise 
+                                           # and compare last months climate to the long 
+                                           # term average.
 posts <- checkFrost    (posts) # Check for first frost of the autumn 
                                # and late frost in early growing season.
 posts <- checkHeatWave       (posts) # Check for a heat wave.
