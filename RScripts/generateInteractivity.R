@@ -74,7 +74,7 @@ generateInteractiveResponses <- function (TEST = 0) {
     
     # set season to growing season
     #------------------------------------------------------------------------------------
-    seasons <- 'off-season'
+    season <- 'off-season'
     if (round (airTemp) > round (meanAirTemp)) { # hot
       postDetails <- getPostDetails ('generateInteractivity - off season - hot')
     } else if (round (airTemp) == round (meanAirTemp)) { # average

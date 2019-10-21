@@ -1055,7 +1055,7 @@ checkStorm <- function (ptable, TEST = 0){
     # Parse message and expiration date
     #------------------------------------------------------------------------------------
     postDetails <- getPostDetails ('checkStorm - windy')
-    message   <- sprintf (postDetails [['Message']],  round (tail (wind [['wind']], n = 1), 1), 
+    message   <- sprintf (postDetails [['Message']],  round (tail (gust [['gust']], n = 1), 1), 
                           round (tail (gust [['gust']], n = 1)*2.23694, 1), treeLocationName) 
     delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     STORM <-TRUE

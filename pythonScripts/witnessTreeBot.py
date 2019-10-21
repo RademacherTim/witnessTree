@@ -241,7 +241,7 @@ for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
         questionTime = local_dt.astimezone (pytz.utc)
    	if questionTime > lastResponseTime:
-       	tweets.append   (tweet)	
+       		tweets.append   (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
 	response = responses ['reply'] [0]
