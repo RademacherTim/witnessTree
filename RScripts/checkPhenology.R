@@ -5,14 +5,15 @@
 #       Event                                   Date                 
 #----------------------------------------------------------------------------------------
 #   1)  getPhenoCamImagesAndData                variable
+#   2)  checkLeafColourChange                   variable
 #----------------------------------------------------------------------------------------
 
 # function to get a phenocam image
 #----------------------------------------------------------------------------------------
-getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name to phenocam sites
-                                      DOWNLOAD = TRUE,             # whether to download or not 
-                                      TEST     = 0) 
-{
+getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name of phenocam sites
+                                      DOWNLOAD = TRUE,             # whether to download images or not 
+                                      GCC      = TRUE,             # whether to download GCC
+                                      TEST     = 0) {
   # load dependencies
   #--------------------------------------------------------------------------------------
   if (!existsFunction ('get_midday_list')) library ('phenocamapi')
@@ -38,30 +39,74 @@ getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name to phe
       
       # download only the last available image for each camera
       #----------------------------------------------------------------------------------
-      sdownload.file (tail (get (paste0 ('site_midday_',s)), n = 1), 
-                      destfile = paste0 ('../tmp/',s,'_PhenoCamImage.jpg'), 
-                      mode = 'wb')
+      download.file (tail (get (paste0 ('site_midday_',s)), n = 1), 
+                     destfile = paste0 ('./tmp/',s,'_PhenoCamImage.jpg'), 
+                     mode = 'wb')
     }
   }
 
   # getting the timeseries from the phenocam server
   #----------------------------------------------------------------------------------------
-  for (s in siteNames) {
-    gcc_temp <- tail (get_pheno_ts (s, 
-                                    vegType = 'DB', 
-                                    roiID   = 1000, 
-                                    type    = '3day'), n = 1)
-    if (s == siteNames [1]) {
-      gcc <- gcc_temp 
-    } else {
-      gcc <- rbind (gcc, gcc_temp)
+  if (GCC){
+    for (s in siteNames) {
+      gcc_temp <- tail (get_pheno_ts (s, 
+                                      vegType = 'DB', 
+                                      roiID   = 1000, 
+                                      type    = '3day'), n = 1)
+      if (s == siteNames [1]) {
+        gcc <- gcc_temp 
+      } else {
+        gcc <- rbind (gcc, gcc_temp)
+      }
     }
+  } else {
+    gcc <- 0
   }
 
   # Return gcc values for the site's cameras
   #----------------------------------------------------------------------------------------
   return (gcc)
     
+}
+
+# function to post a phenocam image when colour change is ongoing
+#----------------------------------------------------------------------------------------
+checkLeafColourChange <- function (ptable, TEST = 0) {
+  
+  # check season in memory 
+  #--------------------------------------------------------------------------------------
+  if (file.exists ('memory.csv')) {
+    memory <- read_csv ('memory.csv', col_types = cols ())
+  } else {
+    memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
+                      lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
+                      dimensionsPosted = FALSE,
+                      growingSeason = TRUE)
+  }
+  
+  # get phenocam data
+  #--------------------------------------------------------------------------------------
+  gcc <- getPhenocamImagesAndData (siteName = 'Harvard Forest', DOWNLOAD = TRUE)
+  
+  if ((!growingSeason & gcc >= )| TEST == 1) {
+    postDetails <- getPostDetails ("checkLeafColourChange - startOfSeason")
+    message   <- sprintf (postDetails [["Message"]])
+    expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
+    ptable    <- add_row (ptable, 
+                          priority    = postDetails [["Priority"]],
+                          fFigure     = postDetails [['fFigure']],
+                          figureName  = postDetails [["FigureName"]], 
+                          message     = message, 
+                          hashtags    = postDetails [["Hashtags"]], 
+                          expires     = expirDate)
+  } else if () {
+    postDetails <- getPostDetails ("checkLeafColourChange - endOfSeason")
+    
+  }
+  
+  # return table with posts
+  #--------------------------------------------------------------------------------------
+  return (ptable)
 }
 
 # # load dependencies

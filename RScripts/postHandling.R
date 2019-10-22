@@ -156,24 +156,21 @@ getPostDetails <- function (fName)
   # Randomly decide whether we use the accompanying figure or not
   # N.B. Audience building posts are marked as such and are always posted with pictures
   #--------------------------------------------------------------------------------------
-  if (postDetails [['Treatment']] != 'Audience' & !is.na (postDetails [['FigureName']])) {
-    postDetails [['fFigure']] <- sample (c (T, F), size = 1)
-  } else if (postDetails [['Treatment']] == 'Audience') {
-    if (substring (postDetails [['FunctionID']], 1, 22) == 'checkCommunityWildlife' | 
-        !is.na (postDetails [['FigureName']])) {
+  if (!is.na (postDetails [['FigureName']])) {
+    if (substring (fName, 1, 22) == 'checkCommunityWildlife' | 
+        substring (fName, 1, 22) == 'monthlyEngagementRemin') {
       postDetails [['fFigure']] <- TRUE
     } else {
-      postDetails [['fFigure']] <- FALSE
-    }   
-  }
+      postDetails [['fFigure']] <- sample (c (T, F), size = 1)
+    } 
   
-  # Add the image path to the figureName, so that the bot can actually find them
-  #--------------------------------------------------------------------------------------
-  if (!is.na (postDetails [['FigureName']]) & fName != 'monthlyRadGrowthSummary') {
+    # Add the image path to the figureName, so that the bot can actually find them
+    # N.B. This has to be overwritten for monthlyEngagementReminders and monthlyRadGrowthSummary
+    #------------------------------------------------------------------------------------
     postDetails [['FigureName']] <- sprintf ('%s%s', imagesPath, 
                                              postDetails [['FigureName']])
-  } else if (!is.na (postDetails [['FigureName']]) & fName == 'monthlyRadGrowthSummary') {
-    postDetails [['FigureName']] <- "It is in tmp/!"
+  } else {
+    postDetails [['fFigure']] <- FALSE
   }
   
   # Return the post'd details

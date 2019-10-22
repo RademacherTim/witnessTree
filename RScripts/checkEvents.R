@@ -408,8 +408,31 @@ checkHalloween <- function (ptable, TEST = 0) {
 # 15 - Monthly engagement reminder (every third week of the month)
 #----------------------------------------------------------------------------------------
 monthlyEngagementReminder <- function (ptable, TEST = 0) {
-  if (ceiling (lubridate::day (Sys.Date ()) / 7) == 3 | TEST == 1) {
-    postDetails <- getPostDetails ('monthlyEngagementReminder')
+  
+  # check whether it is the third week of the month
+  #--------------------------------------------------------------------------------------
+  if (ceiling (lubridate::day (Sys.Date ()) / 7) == 3 | TEST >= 1) {
+    
+    # download phenocam images
+    #------------------------------------------------------------------------------------
+    IOStatus <- getPhenocamImagesAndData (siteName = 'Harvard Forest', # name of phenocam sites
+                                          DOWNLOAD = TRUE,
+                                          GCC = FALSE)
+    if (IOStatus != 0) {
+      stop ('Error: Phenocam images were not downloaded properly for monthly engagement reminder!') 
+    } else {
+      print ('Phenocam images were downloaded for monthly engagement reminder.')
+    }
+    
+    # check whether it is an odd month
+    #------------------------------------------------------------------------------------
+    if (lubridate::month (Sys.Date())%%2 == 1 | TEST == 1) {
+      postDetails <- getPostDetails ('monthlyEngagementReminder - How are you?') 
+      FigureName  <- 'harvardbarn_PhenoCamImage'
+    } else if (lubridate::month (Sys.Date())%%2 == 0 | TEST == 2) {
+      postDetails <- getPostDetails ('monthlyEngagementReminder - Selfie')
+      FigureName  <- 'witnesstree_PhenoCamImage'
+    }
     message     <- sprintf (postDetails [["Message"]], treeWebPage)
     delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate   <- sprintf ("%s 23:59:59 %s", 
@@ -417,7 +440,7 @@ monthlyEngagementReminder <- function (ptable, TEST = 0) {
     ptable      <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
-                            figureName  = postDetails [["FigureName"]], 
+                            figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName), 
                             message     = message, 
                             hashtags    = postDetails [["Hashtags"]], 
                             expires     = expirDate) 

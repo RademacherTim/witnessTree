@@ -54,7 +54,8 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
   } else {
     memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
                       lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
-                      dimensionsPosted = FALSE)
+                      dimensionsPosted = FALSE, 
+                      growingSeason = TRUE)
   }
   
 
