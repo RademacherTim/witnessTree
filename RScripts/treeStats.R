@@ -49,6 +49,7 @@ treeState         <- "MA"             # name of the state the tree is located in
 treeCountry       <- "USA"            # name of the country the tree is located in
 treeWebPage       <- "https://harvardforest.fas.harvard.edu/witness-tree-social-media-project" # link to the webpage of this witnessTree
 treePrivacyPolicy <- "https://harvardforest.fas.harvard.edu/witness-tree-privacy-policy" # link to the privacy policy
+coreImageLink     <- "https://harvardforest.fas.harvard.edu/sites/default/files/witnessTreeCoreZoomed_core by Dave Orwig_photo by Tim Rademacher.jpg"
 contactEmail      <- "HFoutreach@fas.harvard.edu" # email to contact the person in charge
 treeLon           <-  -72.189706396   # longitude of Koen's camera by the witnessTree measured on 2018/06/02
 treeLat           <-  42.535685326    # lattitude of Koen's camera by the witnessTree measured on 2018/06/02

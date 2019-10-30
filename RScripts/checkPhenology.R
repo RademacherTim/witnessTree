@@ -40,7 +40,7 @@ getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name of phe
       # download only the last available image for each camera
       #----------------------------------------------------------------------------------
       download.file (tail (get (paste0 ('site_midday_',s)), n = 1), 
-                     destfile = paste0 ('./tmp/',s,'_PhenoCamImage.jpg'), 
+                     destfile = paste0 (path,'tmp/',s,'_PhenoCamImage.jpg'), 
                      mode = 'wb')
     }
   }
@@ -72,40 +72,76 @@ getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name of phe
 # function to post a phenocam image when colour change is ongoing
 #----------------------------------------------------------------------------------------
 checkLeafColourChange <- function (ptable, TEST = 0) {
-  
-  # check season in memory 
+
+  # Don't bother checking this during summer and winter
   #--------------------------------------------------------------------------------------
-  if (file.exists ('memory.csv')) {
-    memory <- read_csv ('memory.csv', col_types = cols ())
-  } else {
-    memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
-                      lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
-                      dimensionsPosted = FALSE,
-                      growingSeason = TRUE)
-  }
-  
-  # get phenocam data
-  #--------------------------------------------------------------------------------------
-  gcc <- getPhenocamImagesAndData (siteName = 'Harvard Forest', DOWNLOAD = TRUE)
-  
-  if ((!growingSeason & gcc >= )| TEST == 1) {
-    postDetails <- getPostDetails ("checkLeafColourChange - startOfSeason")
-    message   <- sprintf (postDetails [["Message"]])
-    expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
-    ptable    <- add_row (ptable, 
-                          priority    = postDetails [["Priority"]],
-                          fFigure     = postDetails [['fFigure']],
-                          figureName  = postDetails [["FigureName"]], 
-                          message     = message, 
-                          hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
-  } else if () {
-    postDetails <- getPostDetails ("checkLeafColourChange - endOfSeason")
+  if ((substr (Sys.Date (), 6, 10) > "03-01" | substr (Sys.Date (), 6, 10) < "06-15") | 
+      (substr (Sys.Date (), 6, 10) > "09-01" | substr (Sys.Date (), 6, 10) < "11-15")) {
     
-  }
+    # check season in memory
+    #------------------------------------------------------------------------------------
+    if (file.exists ('memory.csv')) {
+      memory <- read_csv ('memory.csv', col_types = cols ())
+    } else {
+      memory <- tibble (numberOfPreviousVisitors = length (listOfVisitors),
+                        lastResponse = format (Sys.time (), '%Y-%m-%d %H:%M'),
+                        dimensionsPosted = FALSE,
+                        growingSeason = TRUE)
+    }
   
+    # set site threshold
+    #------------------------------------------------------------------------------------
+    siteGCCThreshold <- 0.35 
+     
+    # get phenocam data
+    #------------------------------------------------------------------------------------
+    gcc <- getPhenocamImagesAndData (siteName = 'Harvard Forest', DOWNLOAD = TRUE)
+  
+    if ((!memory [['growingSeason']] & gcc [['gcc_90']] [2] > siteGCCThreshold)| TEST == 1) {
+      postDetails <- getPostDetails ("checkLeafUnfolding")
+      FigureName  <- 'witnesstree_PhenoCamImage'
+      message   <- sprintf (postDetails [["Message"]])
+      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expirDate <- sprintf ("%s 23:59:59 %s", 
+                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      ptable    <- add_row (ptable,
+                            priority    = postDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
+                            message     = message,
+                            hashtags    = postDetails [["Hashtags"]],
+                            expires     = expirDate)
+      
+      # update growingSeason boolean to start the season
+      #----------------------------------------------------------------------------------
+      memory [['growingSeason']] <- TRUE
+      memory [['lastResponse']] <- format (memory [['lastResponse']], '%Y-%m-%d %H:%M')
+      write_csv (memory, 'memory.csv')
+      
+    } else if ((memory [['growingSeason']] & gcc [['gcc_90']] [2] < siteGCCThreshold) | TEST == 2) {
+      postDetails <- getPostDetails ("checkLeafColourChange - endOfSeason")
+      FigureName  <- 'witnesstree_PhenoCamImage'
+      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
+      expirDate <- sprintf ("%s 23:59:59 %s", 
+                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      ptable    <- add_row (ptable,
+                            priority    = postDetails [["Priority"]],
+                            fFigure     = postDetails [['fFigure']],
+                            figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
+                            message     = postDetails [['Message']],
+                            hashtags    = postDetails [["Hashtags"]],
+                            expires     = expirDate)
+      
+      # update growingSeason boolean to end the season
+      #-----------------------------------------------------------------------------------
+      memory [['growingSeason']] <- FALSE
+      memory [['lastResponse']] <- format (memory [['lastResponse']], '%Y-%m-%d %H:%M')
+      write_csv (memory, 'memory.csv')
+      
+    }
+  }
   # return table with posts
-  #--------------------------------------------------------------------------------------
+  #------------------------------------------------------------------------------------
   return (ptable)
 }
 

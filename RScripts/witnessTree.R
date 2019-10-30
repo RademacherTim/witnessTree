@@ -166,7 +166,7 @@ print ('Physiological conditions have been checked.')
 
 # Generate new posts concerning phenology
 #----------------------------------------------------------------------------------------
-posts <- checkLeafColourChange (posts)
+#posts <- checkLeafColourChange (posts)
 
 # Generate interactive responses
 #----------------------------------------------------------------------------------------

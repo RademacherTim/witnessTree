@@ -106,8 +106,8 @@ generateInteractiveResponses <- function (TEST = 0) {
   temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
   message <- sprintf (postDetails [['Message']], day (date), suffix, 
-                      month (date, label = TRUE, abbr = FALSE),
-                      year (date), round (temperatureC, 1), 
+                      lubridate::month (date, label = TRUE, abbr = FALSE),
+                      lubridate::year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),
                       round (dailyTemperatureC, 1),
                       round (CtoF (dailyTemperatureC), 1))
@@ -120,20 +120,26 @@ generateInteractiveResponses <- function (TEST = 0) {
   temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
   message <- sprintf (postDetails [['Message']], day (date), suffix, 
-                      month (date, label = TRUE, abbr = FALSE),
-                      year (date), round (temperatureC, 1), 
+                      lubridate::month (date, label = TRUE, abbr = FALSE),
+                      lubridate::year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),
                       round (dailyTemperatureC, 1),
                       round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'coldest day',
                          reply = message, .before = 1)
   
-  # add response to "hottest and coldest day"How old are you"
+  # add response to "How old are you"
   #------------------------------------------------------------------------------------
   postDetails <- getPostDetails ('generateInteractivity - age')
-  message <-  sprintf (postDetails [['Message']], age, age + 1)
+  message <-  sprintf (postDetails [['Message']], age, age + 1, coreImageLink)
   responses <-  add_row (responses, season = 'all-year', topic = 'age',
                          reply = message, .before = 1)
+  
+  # add selfie response
+  #------------------------------------------------------------------------------------
+  postDetails <- getPostDetails ('generateInteractivity - selfie')
+  responses <- add_row (responses, season = 'all-year', topic = 'selfie', 
+                        reply = postDetails [['Message']], .before = 1)
   
   # write messages to csv file
   #--------------------------------------------------------------------------------------

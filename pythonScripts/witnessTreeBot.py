@@ -137,6 +137,10 @@ if os.path.exists(fileName):
 else:
 	print ("Error: No file with a message!")
 
+# Respond to selfie requests
+#------------------------------------------------------------------------------
+
+
 # Read in interactive responses to respond to questions
 #------------------------------------------------------------------------------
 if os.path.exists('./tmp/interactiveResponses.csv'):
@@ -145,7 +149,7 @@ if os.path.exists('./tmp/interactiveResponses.csv'):
 else:
 	print ("Error: No responses for interactive messages available!")
 
-# Create list of tweets that we respond to
+# Create list of tweets along the lines of how are you
 #------------------------------------------------------------------------------
 questions = ['how are you',
              'how are you doing',
@@ -158,7 +162,7 @@ questions = ['how are you',
              'how are you doing']
 #print (t)
 
-# Look for tweets containing the questions the bot responds to
+# Respond to tweets containing the above questions
 #------------------------------------------------------------------------------
 tweetIDs = []
 responseCount = 0
@@ -181,40 +185,45 @@ for i in questions:
 		if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
 			print ('Questions was already answered.')
 		else: 
-			response = random.sample (responses ['reply'] [4:len(responses)], 1) [0]  
+			response = random.sample (responses ['reply'] [5:len(responses)], 1) [0]  
 		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
 			responseCount = responseCount + 1
 print ('Responded to '+str(responseCount)+' questions.')
 
-# Look for tweets containing "if a tree falls in the woods"
+# Look for selfie requests
 #------------------------------------------------------------------------------
-question = 'if a tree falls in a forest, does it make a sound'
+question = 'send me a selfie'
 tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
 tweets = []
 for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
-        questionTime = local_dt.astimezone (pytz.utc)
-    	if questionTime > lastResponseTime:
+	questionTime = local_dt.astimezone (pytz.utc)
+	if questionTime > lastResponseTime:
         	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [3]
-	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+	print ("@%s " %handle)
+	print (+ response ['reply'] [0])
+	response = responses ['reply'] [0]
+	figureName = './tmp/witnesstree_PhenoCamImage.jpg'
+	tweet = api.update_with_media (filename = figureName, 
+                            	       status = "@%s "% handle + response.decode ("utf-8"))
 
-# Look for tweets containing "What was hottest day"
+# Look for tweets containing "What was coldest day"
 #------------------------------------------------------------------------------
-question = 'What was hottest day'
+question = 'How old are you'
 tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
 tweets = []
 for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
         questionTime = local_dt.astimezone (pytz.utc)
-    	if questionTime > lastResponseTime:
-        	tweets.append (tweet)	
+   	if questionTime > lastResponseTime:
+       		tweets.append   (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [2]
+	response = responses ['reply'] [1]
+	print ("@%s " %handle + response ['reply'] [0])
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
 # Look for tweets containing "What was coldest day"
@@ -229,23 +238,39 @@ for tweet in tmpTweets:
         	tweets.append   (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [1]
+	response = responses ['reply'] [2]
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
 
-# Look for tweets containing "What was coldest day"
+# Look for tweets containing "What was hottest day"
 #------------------------------------------------------------------------------
-question = 'How old are you'
+question = 'What was hottest day'
 tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
 tweets = []
 for tweet in tmpTweets:
 	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
         questionTime = local_dt.astimezone (pytz.utc)
-   	if questionTime > lastResponseTime:
-       		tweets.append   (tweet)	
+    	if questionTime > lastResponseTime:
+        	tweets.append (tweet)	
 for tweet in tweets:
 	handle = tweet.user.screen_name
-	response = responses ['reply'] [0]
+	response = responses ['reply'] [3]
 	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+
+# Look for tweets containing "if a tree falls in the woods"
+#------------------------------------------------------------------------------
+question = 'if a tree falls in a forest, does it make a sound'
+tmpTweets = api.search (q = "@%s " % (user.screen_name) + question, show_user = True)
+tweets = []
+for tweet in tmpTweets:
+	local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
+        questionTime = local_dt.astimezone (pytz.utc)
+    	if questionTime > lastResponseTime:
+        	tweets.append (tweet)	
+for tweet in tweets:
+	handle = tweet.user.screen_name
+	response = responses ['reply'] [4]
+	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+
 
 # Update the memory.csv file to contain the timestamp, when we last replied to 
 # a question to avoid trying to re-post
