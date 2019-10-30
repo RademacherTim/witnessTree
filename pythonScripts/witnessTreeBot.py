@@ -174,10 +174,9 @@ for i in questions:
 		local_dt = localTwitter.localize (tweet.created_at, is_dst = None)
 		questionTime = local_dt.astimezone (pytz.utc)
     		if questionTime > lastResponseTime: tweets.append (tweet)	
-
 	for tweet in tweets:
 		handle = tweet.user.screen_name	
-                if tweet.user.screen_name != 'awitnesstree':
+		if tweet.user.screen_name != 'awitnesstree':
                 	for previousResponse in previousResponses:
 				#print (previousResponse.text [0:len(handle)+1])
  				if "@%s" % handle == previousResponse.text [0:len(handle)+1]: 
@@ -186,7 +185,8 @@ for i in questions:
 			print ('Questions was already answered.')
 		else: 
 			response = random.sample (responses ['reply'] [5:len(responses)], 1) [0]  
-		        tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+		        tweet = api.update_status (status = "@%s "% (handle) + response.decode ("utf-8"), 
+                                                   in_reply_to_status_id = tweet.id)
 			tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
 			responseCount = responseCount + 1
 print ('Responded to '+str(responseCount)+' questions.')
@@ -202,13 +202,18 @@ for tweet in tmpTweets:
 	if questionTime > lastResponseTime:
         	tweets.append (tweet)	
 for tweet in tweets:
-	handle = tweet.user.screen_name
-	print ("@%s " %handle)
-	print (+ response ['reply'] [0])
-	response = responses ['reply'] [0]
-	figureName = './tmp/witnesstree_PhenoCamImage.jpg'
-	tweet = api.update_with_media (filename = figureName, 
-                            	       status = "@%s "% handle + response.decode ("utf-8"))
+	if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+		print ('Questions was already answered.')
+	else: 
+		handle = tweet.user.screen_name
+		response = responses ['reply'] [0]
+		figureName = './tmp/witnesstree_PhenoCamImage.jpg'
+		tweet = api.update_with_media (filename = figureName, 
+        	                    	       status = "@%s "% handle + response.decode ("utf-8"), 
+                                               in_reply_to_status_id = tweet.id)
+		tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+		responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions including selfies.')
 
 # Look for tweets containing "What was coldest day"
 #------------------------------------------------------------------------------
@@ -221,10 +226,16 @@ for tweet in tmpTweets:
    	if questionTime > lastResponseTime:
        		tweets.append   (tweet)	
 for tweet in tweets:
-	handle = tweet.user.screen_name
-	response = responses ['reply'] [1]
-	print ("@%s " %handle + response ['reply'] [0])
-	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+	if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+		print ('Questions was already answered.')
+	else: 
+		handle = tweet.user.screen_name
+		response = responses ['reply'] [1]
+		tweet = api.update_status (status = "@%s "% handle + response.decode ("utf-8"), 
+                                           in_reply_to_status_id = tweet.id)
+		tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+		responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions including age.')
 
 # Look for tweets containing "What was coldest day"
 #------------------------------------------------------------------------------
@@ -237,9 +248,16 @@ for tweet in tmpTweets:
     	if questionTime > lastResponseTime:
         	tweets.append   (tweet)	
 for tweet in tweets:
-	handle = tweet.user.screen_name
-	response = responses ['reply'] [2]
-	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+	if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+		print ('Questions was already answered.')
+	else: 
+		handle = tweet.user.screen_name
+		response = responses ['reply'] [2]
+		tweet = api.update_status (status = "@%s "% handle + response.decode ("utf-8"), 
+                                           in_reply_to_status_id = tweet.id)
+		tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+		responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions including coldest day.')
 
 # Look for tweets containing "What was hottest day"
 #------------------------------------------------------------------------------
@@ -252,9 +270,16 @@ for tweet in tmpTweets:
     	if questionTime > lastResponseTime:
         	tweets.append (tweet)	
 for tweet in tweets:
-	handle = tweet.user.screen_name
-	response = responses ['reply'] [3]
-	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+	if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+		print ('Questions was already answered.')
+	else: 
+		handle = tweet.user.screen_name
+		response = responses ['reply'] [3]
+		tweet = api.update_status (status = "@%s "% handle + response.decode ("utf-8"), 
+                                           in_reply_to_status_id = tweet.id)
+		tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+		responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions including hottest day.')
 
 # Look for tweets containing "if a tree falls in the woods"
 #------------------------------------------------------------------------------
@@ -267,9 +292,16 @@ for tweet in tmpTweets:
     	if questionTime > lastResponseTime:
         	tweets.append (tweet)	
 for tweet in tweets:
-	handle = tweet.user.screen_name
-	response = responses ['reply'] [4]
-	tweet = api.update_status ("@%s "% handle + response.decode ("utf-8"), tweet.id)
+	if tweet.id in tweetIDs or tweet.user.screen_name == 'awitnesstree':
+		print ('Questions was already answered.')
+	else: 
+		handle = tweet.user.screen_name
+		response = responses ['reply'] [4]
+		tweet = api.update_status (status = "@%s "% handle + response.decode ("utf-8"), 
+                                           in_reply_to_status_id = tweet.id)
+		tweetIDs.append (tweet.id) # Add it to the replied to IDs after first reply.
+		responseCount = responseCount + 1
+print ('Responded to '+str(responseCount)+' questions including "if a tree falls...".')
 
 
 # Update the memory.csv file to contain the timestamp, when we last replied to 
