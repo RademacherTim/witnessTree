@@ -78,7 +78,7 @@ generateInteractiveResponses <- function (TEST = 0) {
     if (round (airTemp) > round (meanAirTemp)) { # hot
       postDetails <- getPostDetails ('generateInteractivity - off season - hot')
     } else if (round (airTemp) == round (meanAirTemp)) { # average
-      postDetails <- getPostDetails ('generateInteractivity - off season - average')
+      postDetails <- getPostDetails ('generateInteractivity - off season - average temperature')
     } else if (round (airTemp) < round (meanAirTemp)) { # cold
       postDetails <- getPostDetails ('generateInteractivity - off season - cold')
     }

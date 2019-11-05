@@ -13,7 +13,7 @@
 # Explain seed dispersal
 #----------------------------------------------------------------------------------------
 explainSeedDispersal <- function (ptable, TEST = 0) {
-  if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
+  if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-15'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainSeedDispersal")
     message   <- sprintf (postDetails [["Message"]])
@@ -136,7 +136,7 @@ explainGypsyMothHerbivory <- function (ptable, TEST = 0) {
 # Explain seed dispersal
 #----------------------------------------------------------------------------------------
 explainGallWasps <- function (ptable, TEST = 0) {
-  if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-30'| 
+  if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-15'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainGallWasps")
     message   <- sprintf (postDetails [["Message"]])
