@@ -221,23 +221,23 @@ deletePostedPostsAndRemoveDuplicates <- function (ptable)
   
   # loop over posted messages and read messages
   #--------------------------------------------------------------------------------------
-  for (p in 1:length (fileNames)) {
-    temp <- read_csv (sprintf ('%s/posts/%s',path, fileNames [p]),
-                      col_types = cols ())
-    temp <- gsub ("([0-9]+)", x = temp [['message']], replacement = 'x')
-    if (p == 1 | !exists ('nRow')) {
-      nRow <- which (ptemp == temp)  
-    } else {
-      nRow <- c (nRow, which (ptemp == temp))
+  if (length (fileNames) != 0) {
+    for (p in 1:length (fileNames)) {
+      temp <- read_csv (sprintf ('%s/posts/%s',path, fileNames [p]),
+                        col_types = cols ())
+      temp <- gsub ("([0-9]+)", x = temp [['message']], replacement = 'x')
+      if (p == 1 | !exists ('nRow')) {
+        nRow <- which (ptemp == temp)  
+      } else {
+        nRow <- c (nRow, which (ptemp == temp))
+      }
     }
-  }
-  
-  # delete similar messages from the table of posts
-  #--------------------------------------------------------------------------------------
-  if (length (nRow) != 0) {
-    ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
-  } else {
-    ptable <- ptable
+
+    # delete similar messages from the table of posts
+    #------------------------------------------------------------------------------------
+    if (length (nRow) != 0) {
+      ptable <- ptable [-nRow, ]; rm (nRow, temp, ptemp)
+    }
   }
   
   # Only continue further deleting duplicates, if there are any potential posts left
