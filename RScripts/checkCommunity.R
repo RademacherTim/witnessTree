@@ -16,7 +16,7 @@ explainSeedDispersal <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-15'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainSeedDispersal")
-    message   <- sprintf (postDetails [["Message"]])
+    message   <- sprintf (postDetails [["MessageText"]])
     expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
@@ -87,7 +87,7 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
                  TEST == 4) { # it is winter
         postDetails <- getPostDetails ("checkCommunityWildlife - winter")
       }
-      message   <- sprintf (postDetails [["Message"]])
+      message   <- sprintf (postDetails [["MessageText"]])
       delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
       expirDate <- sprintf ("%s 23:59:59 %s", 
                             format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -123,7 +123,7 @@ explainGypsyMothHerbivory <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [["Message"]], 
+                          message     = postDetails [["MessageText"]], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
@@ -139,7 +139,7 @@ explainGallWasps <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '09-01' & substring (Sys.Date (), 6, 10) < '11-15'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainGallWasps")
-    message   <- sprintf (postDetails [["Message"]])
+    message   <- sprintf (postDetails [["MessageText"]])
     expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],

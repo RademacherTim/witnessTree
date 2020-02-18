@@ -51,24 +51,24 @@ generateInteractiveResponses <- function (TEST = 0) {
     } else if (airTemp < meanAirTemp) { # cold
       postDetails <- getPostDetails ('generateInteractivity - growing season - cold')
     }
-    postDetails [['Message']] <- sprintf (postDetails [['Message']], round (airTemp, 1),
+    postDetails [['MessageText']] <- sprintf (postDetails [['MessageText']], round (airTemp, 1),
                                           round (9.0 / 5.0 * (airTemp) + 32, 1))
     responses <- add_row (responses, season = season, topic = 'temperature', 
-                          reply = postDetails [['Message']])
+                          reply = postDetails [['MessageText']])
     
     # get responses based on precip
     #------------------------------------------------------------------------------------
     if (round (precip) > round (meanPrecip)) { # wet
       postDetails <- getPostDetails ('generateInteractivity - growing season - wet')
       growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
-      postDetails [['Message']] <- sprintf (postDetails [['Message']], round (dbh * 100.0 + bark + growth / 10, 2))
+      postDetails [['MessageText']] <- sprintf (postDetails [['MessageText']], round (dbh * 100.0 + bark + growth / 10, 2))
     } else if (round (precip) == round (meanPrecip)) { # average
       postDetails <- getPostDetails ('generateInteractivity - growing season - average')
     } else if (round (precip) < round (meanPrecip)) { # dry
       postDetails <- getPostDetails ('generateInteractivity - growing season - dry')
     }
     responses <- add_row (responses, season = season, topic = 'rainfall', 
-                          reply = postDetails [['Message']])
+                          reply = postDetails [['MessageText']])
 
   } else { # off-season
     
@@ -82,10 +82,10 @@ generateInteractiveResponses <- function (TEST = 0) {
     } else if (round (airTemp) < round (meanAirTemp)) { # cold
       postDetails <- getPostDetails ('generateInteractivity - off season - cold')
     }
-    postDetails [['Message']] <- sprintf (postDetails [['Message']], round (airTemp, 1),
+    postDetails [['MessageText']] <- sprintf (postDetails [['MessageText']], round (airTemp, 1),
                                           round (9.0 / 5.0 * (airTemp) + 32, 1))
     responses <- add_row (responses, season = season, topic = 'temperature', 
-                          reply = postDetails [['Message']])
+                          reply = postDetails [['MessageText']])
   }
   
   # delete first row in responses tibble
@@ -96,7 +96,7 @@ generateInteractiveResponses <- function (TEST = 0) {
   #------------------------------------------------------------------------------------
   postDetails <- getPostDetails ('generateInteractivity - all-year - treeFall')
   responses <-  add_row (responses, season = 'all-year', topic = 'can you hear a tree fall?',
-                         reply = postDetails [['Message']], .before = 1)
+                         reply = postDetails [['MessageText']], .before = 1)
   
   # add response to hottest and coldest day
   #------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ generateInteractiveResponses <- function (TEST = 0) {
   suffix <- findOrdinalSuffix (day (date))
   temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['Message']], day (date), suffix, 
+  message <- sprintf (postDetails [['MessageText']], day (date), suffix, 
                       lubridate::month (date, label = TRUE, abbr = FALSE),
                       lubridate::year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),
@@ -119,7 +119,7 @@ generateInteractiveResponses <- function (TEST = 0) {
   suffix <- findOrdinalSuffix (day (date))
   temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['Message']], day (date), suffix, 
+  message <- sprintf (postDetails [['MessageText']], day (date), suffix, 
                       lubridate::month (date, label = TRUE, abbr = FALSE),
                       lubridate::year (date), round (temperatureC, 1), 
                       round (CtoF (temperatureC), 1),
@@ -131,7 +131,7 @@ generateInteractiveResponses <- function (TEST = 0) {
   # add response to "How old are you"
   #------------------------------------------------------------------------------------
   postDetails <- getPostDetails ('generateInteractivity - age')
-  message <-  sprintf (postDetails [['Message']], age, age + 1, coreImageLink)
+  message <-  sprintf (postDetails [['MessageText']], age, age + 1, coreImageLink)
   responses <-  add_row (responses, season = 'all-year', topic = 'age',
                          reply = message, .before = 1)
   
@@ -139,7 +139,7 @@ generateInteractiveResponses <- function (TEST = 0) {
   #------------------------------------------------------------------------------------
   postDetails <- getPostDetails ('generateInteractivity - selfie')
   responses <- add_row (responses, season = 'all-year', topic = 'selfie', 
-                        reply = postDetails [['Message']], .before = 1)
+                        reply = postDetails [['MessageText']], .before = 1)
   
   # write messages to csv file
   #--------------------------------------------------------------------------------------

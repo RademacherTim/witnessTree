@@ -47,7 +47,7 @@ monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
     #------------------------------------------------------------------------------------
     if (radGrowth [1, 1] > radGrowth [1, 2]) { # current month grew more
       postDetails <- getPostDetails ("monthlyRadGrowthSummary - fast")
-      message     <- sprintf (postDetails [["Message"]], round (radGrowth [['monthlyGrowth']] [1], 3),
+      message     <- sprintf (postDetails [["MessageText"]], round (radGrowth [['monthlyGrowth']] [1], 3),
                               round (radGrowth [['monthlyGrowth']] [2], 3))
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -61,7 +61,7 @@ monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
     } else if (radGrowth [1, 1] <= radGrowth [1, 2] & 
                radGrowth [1, 1] > 0.05) { # last month grew as much or less
       postDetails <- getPostDetails ("monthlyRadGrowthSummary - slow")
-      message     <- sprintf (postDetails [["Message"]], round (radGrowth [['monthlyGrowth']] [1], 3),
+      message     <- sprintf (postDetails [["MessageText"]], round (radGrowth [['monthlyGrowth']] [1], 3),
                               round (radGrowth [['monthlyGrowth']] [2], 3))
       delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,8))
       expirDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
@@ -80,7 +80,7 @@ monthlyRadGrowthSummary <- function (ptable, TEST = 0) {
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/monthlyGrowth_%s.png',path,Sys.Date ()), 
-                            message     = postDetails [["Message"]], 
+                            message     = postDetails [["MessageText"]], 
                             hashtags    = postDetails [["Hashtags"]], 
                             expires     = expirDate)
     }
@@ -105,12 +105,12 @@ checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
   #--------------------------------------------------------------------------------------
   if (substring (Sys.time (), 6, 10) == '07-24' | TEST == 1) {
     postDetails <- getPostDetails ("checkWoodGrowthUpdate")
-    if (substring (postDetails [['Message']], 1, 1) == 'T'){
+    if (substring (postDetails [['MessageText']], 1, 1) == 'T'){
       growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
-      message <- sprintf (postDetails [["Message"]], round (growth [['annualGrowth']], 1), 
+      message <- sprintf (postDetails [["MessageText"]], round (growth [['annualGrowth']], 1), 
                           round (growth  [['annualGrowth']] / 25.4, 2)) 
     } else {
-      message <- sprintf (postDetails [["Message"]]) 
+      message <- sprintf (postDetails [["MessageText"]]) 
     } 
     delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate   <- sprintf ("%s 23:59:59 %s", 
@@ -158,7 +158,7 @@ checkWaxyCuticle <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 

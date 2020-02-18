@@ -33,7 +33,7 @@ if (!existsFunction ('day')) library ('lubridate')
 helloWorld <- function (ptable, TEST = 0) {
   if (substring (Sys.time (), 1, 13) == '2019-07-17 12' | TEST == 1) {
     postDetails <- getPostDetails ("helloWorld")
-    message     <- sprintf (postDetails [["Message"]], treeLocationName, treeState, 
+    message     <- sprintf (postDetails [["MessageText"]], treeLocationName, treeState, 
                             treeWebPage)
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), 
                           treeTimeZone)
@@ -53,7 +53,7 @@ helloWorld <- function (ptable, TEST = 0) {
 checkNewYears <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '01-01' | TEST == 1) {
     postDetails <- getPostDetails ("checkNewYears")
-    message   <- sprintf (postDetails [["Message"]], round (meanAnnualCarbonSequestration, 0), 
+    message   <- sprintf (postDetails [["MessageText"]], round (meanAnnualCarbonSequestration, 0), 
                           round (2.20462 * meanAnnualCarbonSequestration, 0), year (Sys.time ()))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
@@ -77,7 +77,7 @@ checkNationalWildLifeDay <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
     } 
@@ -89,9 +89,9 @@ checkNationalWildLifeDay <- function (ptable, TEST = 0) {
 checkPiDay <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == '03-14' | TEST == 1) {
     postDetails <- getPostDetails ("checkPiDay")
-    message <- ifelse (substring (postDetails [["Message"]],16,16) == "P", 
-                       postDetails [["Message"]],
-                       sprintf (postDetails [["Message"]], round (dbh, 2), round (sapWoodArea,1)))
+    message <- ifelse (substring (postDetails [["MessageText"]],16,16) == "P", 
+                       postDetails [["MessageText"]],
+                       sprintf (postDetails [["MessageText"]], round (dbh, 2), round (sapWoodArea,1)))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
@@ -115,7 +115,7 @@ checkInternationalDayOfForests <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
@@ -127,10 +127,10 @@ checkInternationalDayOfForests <- function (ptable, TEST = 0) {
 checkWorldWaterDay <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) == "03-22" | TEST == 1) {
     postDetails <- getPostDetails ("checkWorldWaterDay")
-    if (substring (postDetails [["Message"]],2,2) == "i") {
-      message <- sprintf (postDetails [["Message"]], percentWaterContent) 
+    if (substring (postDetails [["MessageText"]],2,2) == "i") {
+      message <- sprintf (postDetails [["MessageText"]], percentWaterContent) 
     } else {
-      message <- postDetails [["Message"]]      
+      message <- postDetails [["MessageText"]]      
     }
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
@@ -149,7 +149,7 @@ checkWorldWaterDay <- function (ptable, TEST = 0) {
 checkBirthday <- function (ptable, TEST = 0) { ## calculate stats for how much witnesstree has grown in a year
   if (substring (Sys.Date (), 6, 10) == substring (birthDay, 6, 10) | TEST == 1) {
     postDetails <- getPostDetails ('checkBirthday')
-    message   <- sprintf (postDetails [["Message"]], age, findOrdinalSuffix (age))
+    message   <- sprintf (postDetails [["MessageText"]], age, findOrdinalSuffix (age))
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
@@ -180,7 +180,7 @@ checkArborDay <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
@@ -204,7 +204,7 @@ checkMothersDay <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]], 
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
@@ -220,7 +220,7 @@ checkEarthDay <- function (ptable, TEST = 0) {
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)
   } 
@@ -254,14 +254,14 @@ checkSpringEquinox <- function (ptable, TEST = 0) {
       month (Sys.Date ()) == month (vernalDate) & 
       day   (Sys.Date ()) == day   (vernalDate) | TEST == 1) { 
     postDetails <- getPostDetails ('checkSpringEquinox')
-    if (substring (postDetails [['Message']], 1, 1) == 'D') {
-      message <- postDetails [['Message']]
-    } else if (substring (postDetails [['Message']], 1, 1) == 'F') {
+    if (substring (postDetails [['MessageText']], 1, 1) == 'D') {
+      message <- postDetails [['MessageText']]
+    } else if (substring (postDetails [['MessageText']], 1, 1) == 'F') {
       temperatureC <- tail (airt [['airt']], n = 1)
-      message <- sprintf (postDetails [['Message']], round (temperatureC, 1), 
+      message <- sprintf (postDetails [['MessageText']], round (temperatureC, 1), 
                           round (CtoF (temperatureC), 1), treeLocationName)
-    } else if (substring (postDetails [['Message']], 1, 1) == 'S') {
-      message <- sprintf (postDetails [['Message']],  hour (vernalDate), minute (vernalDate))
+    } else if (substring (postDetails [['MessageText']], 1, 1) == 'S') {
+      message <- sprintf (postDetails [['MessageText']],  hour (vernalDate), minute (vernalDate))
     }
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
@@ -299,10 +299,10 @@ checkAutumnEquinox <- function (ptable, TEST = 0) {
       month (Sys.Date ()) == month (autumnalDate) & 
       day   (Sys.Date ()) == day   (autumnalDate) | TEST == 1) { 
     postDetails <- getPostDetails ('checkAutumnEquinox')
-    if (substring (postDetails [['Message']],2,2) == 'A') {
-      message <- sprintf (postDetails [['Message']],  hour (autumnalDate), minute (autumnalDate))
-    } else if (substring (postDetails [['Message']],2,2) == 'L') {
-      message <- postDetails [['Message']]
+    if (substring (postDetails [['MessageText']],2,2) == 'A') {
+      message <- sprintf (postDetails [['MessageText']],  hour (autumnalDate), minute (autumnalDate))
+    } else if (substring (postDetails [['MessageText']],2,2) == 'L') {
+      message <- postDetails [['MessageText']]
     }
     expirDate <- sprintf ("%s 23:59:59 %s", format (Sys.Date (), format = '%Y-%m-%d'), treeTimeZone)
     ptable    <- add_row (ptable, 
@@ -344,7 +344,7 @@ checkSummerSolstice <- function (ptable, TEST = 0) {
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]], 
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)  
   } 
@@ -381,7 +381,7 @@ checkWinterSolstice <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate)   
   } 
@@ -398,7 +398,7 @@ checkHalloween <- function (ptable, TEST = 0) {
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
-                          message     = postDetails [['Message']], 
+                          message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
                           expires     = expirDate) 
   } 
@@ -433,7 +433,7 @@ monthlyEngagementReminder <- function (ptable, TEST = 0) {
       postDetails <- getPostDetails ('monthlyEngagementReminder - Selfie')
       FigureName  <- 'witnesstree_PhenoCamImage'
     }
-    message     <- sprintf (postDetails [["Message"]], treeWebPage)
+    message     <- sprintf (postDetails [["MessageText"]], treeWebPage)
     delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate   <- sprintf ("%s 23:59:59 %s", 
                             format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 

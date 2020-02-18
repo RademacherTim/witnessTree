@@ -33,15 +33,15 @@ explainDimensions <- function (ptable, TEST = 0) {
   if (substring (Sys.time (), 9, 13) == "20 12" & memory [['dimensionsPosted']] == FALSE | 
       TEST == 1) {
     postDetails <- getPostDetails ('explainDimensions')
-    if (substring (postDetails [['Message']], 1, 3) == 'I a') {
-      message <- sprintf (postDetails [["Message"]], totalSurfaceArea)
-    } else if (substring (postDetails [['Message']], 1, 3) == 'Wow') {
-      message <- sprintf (postDetails [["Message"]], round (branchLength / 1609.34, 1), 
+    if (substring (postDetails [['MessageText']], 1, 3) == 'I a') {
+      message <- sprintf (postDetails [["MessageText"]], totalSurfaceArea)
+    } else if (substring (postDetails [['MessageText']], 1, 3) == 'Wow') {
+      message <- sprintf (postDetails [["MessageText"]], round (branchLength / 1609.34, 1), 
                           round (branchLength / 1000.0,1))
-    } else if (substring (postDetails [['Message']], 1, 3) == 'Sci') {
-      message <- sprintf (postDetails [["Message"]], treeHeight, round (treeHeight * 3.28084, 0))
+    } else if (substring (postDetails [['MessageText']], 1, 3) == 'Sci') {
+      message <- sprintf (postDetails [["MessageText"]], treeHeight, round (treeHeight * 3.28084, 0))
     } else {
-      message <- postDetails [["Message"]]
+      message <- postDetails [["MessageText"]]
     }
     delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
     expirDate <- sprintf ("%s 23:59:59 %s", 
