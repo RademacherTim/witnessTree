@@ -103,8 +103,16 @@ checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
   
   # Check whether it is the 24th of July
   #--------------------------------------------------------------------------------------
-  if (substring (Sys.time (), 6, 10) == '07-24' | TEST == 1) {
-    postDetails <- getPostDetails ("checkWoodGrowthUpdate")
+  if (substring (Sys.time (), 6, 10) == '06-10' | TEST == 1) {
+    postDetails <- getPostDetails ("checkWoodGrowthUpdate - june")
+    if (substring (postDetails [['MessageText']], 1, 1) == 'I'){
+      growth <- calcRadialGrowth (pdm_calibration_path = dataPath) # get monthly growth
+      message <- sprintf (postDetails [["MessageText"]], round (growth  [['monthlyGrowth']] [1], 2)) 
+    } else {
+      message <- sprintf (postDetails [["MessageText"]]) 
+    } 
+  } else if (substring (Sys.time (), 6, 10) == '07-24' | TEST == 2) {
+    postDetails <- getPostDetails ("checkWoodGrowthUpdate - july")
     if (substring (postDetails [['MessageText']], 1, 1) == 'T'){
       growth <- calcRadialGrowth (pdm_calibration_path = dataPath, temporalRes = 'annual')
       message <- sprintf (postDetails [["MessageText"]], round (growth [['annualGrowth']], 1), 
@@ -112,21 +120,27 @@ checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
     } else {
       message <- sprintf (postDetails [["MessageText"]]) 
     } 
-    delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-    expirDate   <- sprintf ("%s 23:59:59 %s", 
-                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
-    ptable    <- add_row (ptable, 
-                          priority    = postDetails [["Priority"]],
-                          fFigure     = postDetails [['fFigure']],
-                          figureName  = postDetails [["FigureName"]], 
-                          message     = message, 
-                          hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
-  } 
+  }
+  delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
+  expirDate   <- sprintf ("%s 23:59:59 %s", 
+                          format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+  ptable    <- add_row (ptable, 
+                        priority    = postDetails [["Priority"]],
+                        fFigure     = postDetails [['fFigure']],
+                        figureName  = postDetails [["FigureName"]], 
+                        message     = message, 
+                        hashtags    = postDetails [["Hashtags"]], 
+                        expires     = expirDate)
   
   # Return table with posts
   #--------------------------------------------------------------------------------------
   return (ptable)
+}
+
+# near peak wood growth 
+#----------------------------------------------------------------------------------------
+checkNearPeakWoodGrowth <- function (ptable, TEST = 0) {
+  
 }
 
 # Start of sap flow

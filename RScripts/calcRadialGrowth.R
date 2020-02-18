@@ -13,7 +13,7 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
   
   # Get and collate raw datalogger output 
   #--------------------------------------------------------------------------------------
-  temp1 <- read_csv (file = sprintf ('%s/witnessTreeDendrometerTable.dat', dataPath), 
+  temp1 <- read_csv (file = sprintf ('%sdata/witnessTreeDendroTable2019.dat', path), 
                      col_types = cols (),
                      skip = 4,
                      col_names = c ('datetime','recordNumber','batteryVoltage',
@@ -21,7 +21,7 @@ calcRadialGrowth <- function (pdm_calibration_path, temporalRes = 'monthly', PLO
                                     'dbhQuercusRubra2','dbhQuercusRubra3','dbhAcerRubrum1',
                                     'dbhAcerRubrum2','dbhAcerRubrum3','dbhPinusStrobus1',
                                     'dbhPinusStrobus2','dbhPinusStrobus3'))
-  temp2 <-  read_csv (file = sprintf ('%s/witnessTree_DendrometerTable.dat', dataPath),
+  temp2 <-  read_csv (file = sprintf ('%sdata/witnessTreeDendroTable2020.dat', path),
                       skip = 4,
                       col_types = cols (),
                       col_names = c ('datetime','recordNumber','batteryVoltage',
