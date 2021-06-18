@@ -15,6 +15,12 @@
 
 # To-do list:
 #----------------------------------------------------------------------------------------
+# - Restart the account  
+# - Add read data functions for new inputs  
+# - Move of data to the new rawData directory
+# - Check what is going on with phenocamapi package in the monthlyEngagementReminder 
+# - Reading in postDetails as xlsx has messed up the dates for when to post and when the 
+#   post expires. I may have to change the format.
 
 # Get the absolute path to the witnessTree, images and data directories 
 #----------------------------------------------------------------------------------------
@@ -98,7 +104,7 @@ IOStatus <- getPostsSpreadsheet (gs_posts_key = gsPostsKey)
 if (IOStatus != 0) {
   stop ('Error: Googlespreadsheet did not download!') 
 } else {
-  print ('Spreadsheet with posts\' details was downloaded and saved as csv.')
+  print ('Spreadsheet with posts\' details was downloaded and saved as xlsx.')
 }
 
 # Generate new posts concerning regularly recurrent events

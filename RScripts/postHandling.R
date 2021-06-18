@@ -121,12 +121,11 @@ getPostDetails <- function (fName)
   
   # load dependencies
   #--------------------------------------------------------------------------------------
-  if (!existsFunction ('read_csv')) library ('tidyverse')
+  if (!existsFunction ('read_excel')) library ('readxl')
   
   # get posts spreadsheet
   #--------------------------------------------------------------------------------------
-  input <- read_csv (file = sprintf ('%stmp/postsDetails.csv', path), 
-                     col_types = cols ())
+  input <- readxl::read_excel (path = sprintf ('%stmp/postsDetails.xlsx', path))
   
   # Find appropriate lines using the function name
   #--------------------------------------------------------------------------------------
@@ -186,14 +185,14 @@ getPostsSpreadsheet <- function (gs_posts_key)
   
   # load dependencies
   #--------------------------------------------------------------------------------------
-  if (!existsFunction ('gs_title')) library ('googlesheets')
+  if (!existsFunction ('drive_download')) library ('googledrive')
   
   # get posts spreadsheet
   #--------------------------------------------------------------------------------------
   spreadsheet <- suppressMessages (
-    gs_download (gs_key (gs_posts_key) , ws = "posts", 
-                 to = sprintf ('%stmp/postsDetails.csv', path),
-                 overwrite = TRUE)
+    googledrive::drive_download (file = gs_posts_key, 
+                                 path = sprintf ('%stmp/postsDetails.xlsx', path),
+                                 overwrite = TRUE)
   )
   
   # Return the zero to indicate smooth running
