@@ -155,7 +155,7 @@ posts <- explainSeedDispersal      (posts) # give background on seed dispersal b
                                            # 1st of September and end of November
 posts <- explainGypsyMothHerbivory (posts) # give background on gypsy moths between 15th 
                                            # of May and end of August
-posts <- explainGallWasps         (posts) # give background about galls
+posts <- explainGallWasps          (posts) # give background about galls
 posts <- checkCommunityWildlife    (posts)
 print ('Community related messages have been checked.')
 
@@ -205,6 +205,10 @@ if (dim (post) [1] == 1) {
                                                   !is.na  (pastPostDates)                 &
                                                   !is.nan (pastPostDates)])
   lastPostDateTime <- tail (pastPostDates [!is.na (pastPostDates)], n = 1)
+  
+  # Check that there was a post in the past week at all
+  #--------------------------------------------------------------------------------------
+  if (length (lastPostDateTime) == 0) lastPostDateTime <- Sys.time () - 7 * 24 * 60 * 60
   
   # Check whether the bot has already posted seven messages in the last week
   #--------------------------------------------------------------------------------------

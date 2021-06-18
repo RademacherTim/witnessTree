@@ -101,28 +101,32 @@ generateInteractiveResponses <- function (TEST = 0) {
   # add response to hottest and coldest day
   #------------------------------------------------------------------------------------
   postDetails <- getPostDetails ('generateInteractivity - hottestDay')
-  date <- dailyAirt [['day']] [dailyAirt [['rank']] == 1]
+  date <- dailyAirt [['day']] [dailyAirt [['rank']] == min (dailyAirt [['rank']], na.rm = TRUE)]
+  if (length (date) > 1) {
+    date <- as.character (unlist (slice_sample (as_tibble (date), n = 1)))
+  }
   suffix <- findOrdinalSuffix (day (date))
-  temperatureC <- max (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['MessageText']], day (date), suffix, 
+  message <- sprintf (postDetails [['MessageText']], 
+                      lubridate::day (date), suffix, 
                       lubridate::month (date, label = TRUE, abbr = FALSE),
-                      lubridate::year (date), round (temperatureC, 1), 
-                      round (CtoF (temperatureC), 1),
+                      lubridate::year (date),  
                       round (dailyTemperatureC, 1),
                       round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'hottest day',
                          reply = message, .before = 1)
   postDetails <- getPostDetails ('generateInteractivity - coldestDay')
   tempRank <- rank (dailyAirt [['airt']]) 
-  date <- dailyAirt [['day']] [tempRank == 1]
+  date <- dailyAirt [['day']] [tempRank == min (tempRank, na.rm = TRUE)]
+  if (length (date) > 1) {
+    date <- as.character (unlist (slice_sample (as_tibble (date), n = 1)))
+  }
   suffix <- findOrdinalSuffix (day (date))
-  temperatureC <- min (airt [['airt']] [airt [['day']] == date], na.rm = TRUE)
   dailyTemperatureC <- dailyAirt [['airt']] [dailyAirt [['day']] == date]
-  message <- sprintf (postDetails [['MessageText']], day (date), suffix, 
+  message <- sprintf (postDetails [['MessageText']], 
+                      lubridate::day (date), suffix, 
                       lubridate::month (date, label = TRUE, abbr = FALSE),
-                      lubridate::year (date), round (temperatureC, 1), 
-                      round (CtoF (temperatureC), 1),
+                      lubridate::year (date),  
                       round (dailyTemperatureC, 1),
                       round (CtoF (dailyTemperatureC), 1))
   responses <-  add_row (responses, season = 'all-year', topic = 'coldest day',

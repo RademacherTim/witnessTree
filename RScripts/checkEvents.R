@@ -41,7 +41,7 @@ helloWorld <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 } 
@@ -59,7 +59,7 @@ checkNewYears <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
     } 
   return (ptable)
 } # TTR To do: - maybe change to comparison to CO2 sequestered in last year?
@@ -75,7 +75,7 @@ checkNationalWildLifeDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
     } 
   return (ptable)
 }
@@ -94,7 +94,7 @@ checkPiDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 } 
@@ -111,7 +111,7 @@ checkInternationalDayOfForests <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 }
@@ -132,7 +132,7 @@ checkWorldWaterDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 }
@@ -149,7 +149,7 @@ checkBirthday <- function (ptable, TEST = 0) { ## calculate stats for how much w
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))  
+                          expires     = expiresIn (0))  
   }
   return (ptable)
 } 
@@ -173,7 +173,7 @@ checkArborDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 }
@@ -196,7 +196,7 @@ checkMothersDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 }
@@ -211,7 +211,7 @@ checkEarthDay <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))
+                          expires     = expiresIn (0))
   } 
   return (ptable)
 }
@@ -257,7 +257,7 @@ checkSpringEquinox <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0)) 
+                          expires     = expiresIn (0)) 
   } 
   return (ptable)
 } 
@@ -297,7 +297,7 @@ checkAutumnEquinox <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0)) 
+                          expires     = expiresIn (0)) 
   } 
   return (ptable)
 }
@@ -332,7 +332,7 @@ checkSummerSolstice <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))  
+                          expires     = expiresIn (0))  
   } 
   return (ptable)
 }
@@ -368,7 +368,7 @@ checkWinterSolstice <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0))   
+                          expires     = expiresIn (0))   
   } 
   return (ptable)
 }
@@ -384,7 +384,7 @@ checkHalloween <- function (ptable, TEST = 0) {
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [['MessageText']], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expiresIn (delay = 0)) 
+                          expires     = expiresIn (0)) 
   } 
   return (ptable)
 }
@@ -392,10 +392,6 @@ checkHalloween <- function (ptable, TEST = 0) {
 # 15 - Monthly engagement reminder (every third week of the month)
 #----------------------------------------------------------------------------------------
 monthlyEngagementReminder <- function (ptable, TEST = 0) {
-  
-  # load phenocamapi package, if it is not already loaded 
-  #--------------------------------------------------------------------------------------
-  if (!existsFunction ('getPhenocamImagesAndData')) library ('phenocamapi')
   
   # check whether it is the third week of the month
   #--------------------------------------------------------------------------------------

@@ -117,6 +117,8 @@ checkWoodGrowthUpdate <- function (ptable, TEST = 0) {
     } else {
       message <- sprintf (postDetails [["MessageText"]]) 
     } 
+  } else {
+    return (ptable)
   }
   delay       <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60 * 60
   ptable    <- add_row (ptable, 

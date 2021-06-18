@@ -41,7 +41,8 @@ getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name of phe
       #----------------------------------------------------------------------------------
       download.file (tail (get (paste0 ('site_midday_',s)), n = 1), 
                      destfile = paste0 (path,'tmp/',s,'_PhenoCamImage.jpg'), 
-                     mode = 'wb')
+                     mode = 'wb',
+                     quiet = TRUE)
     }
   }
 
@@ -52,7 +53,8 @@ getPhenocamImagesAndData <- function (siteName = 'Harvard Forest', # name of phe
       gcc_temp <- tail (get_pheno_ts (s, 
                                       vegType = 'DB', 
                                       roiID   = 1000, 
-                                      type    = '3day'), n = 1)
+                                      type    = '3day'), 
+                        n = 1)
       if (s == siteNames [1]) {
         gcc <- gcc_temp 
       } else {
@@ -100,13 +102,12 @@ checkLeafColourChange <- function (ptable, TEST = 0) {
     if ((!memory [['growingSeason']] & gcc [['gcc_90']] [2] > siteGCCThreshold)| TEST == 1) {
       postDetails <- getPostDetails ("checkLeafUnfolding")
       FigureName  <- 'witnesstree_PhenoCamImage'
-      message   <- sprintf (postDetails [["Message"]])
       delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
       ptable    <- add_row (ptable,
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
-                            message     = message,
+                            message     = postDetails [["MessageText"]],
                             hashtags    = postDetails [["Hashtags"]],
                             expires     = expiresIn (delay))
       
@@ -124,7 +125,7 @@ checkLeafColourChange <- function (ptable, TEST = 0) {
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
-                            message     = postDetails [['Message']],
+                            message     = postDetails [['MessageText']],
                             hashtags    = postDetails [["Hashtags"]],
                             expires     = expiresIn (delay))
       
