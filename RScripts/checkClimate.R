@@ -231,10 +231,8 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
       message    <- sprintf (postDetails [['MessageText']], round (temperatureC, 1), 
                              round (temperatureF, 1))
       
-      # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s %s", format (Sys.time () + delay * 60 * 60, 
-                                              format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
+      # Determine delay (s)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (HOT){
       postDetails <- getPostDetails ('hot')
       rank <- tail (airt [['rank']], n = 1)
@@ -242,17 +240,14 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                              round (temperatureC, 1),
                              round (temperatureF, 1), 
                              rank, findOrdinalSuffix (rank))
-      # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s %s", format (Sys.time () + delay * 60 * 60, 
-                                              format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
+      # Expires after delay (s)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (HOTTESTDAY) {
       postDetails <- getPostDetails ('hottestDay')
       message   <- sprintf (postDetails [['MessageText']], round (dailyTemperatureC, 1), 
                             round (dailyTemperatureF, 1))
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     } else if (HOTDAY) {
       postDetails <- getPostDetails ('hotDay')
       rank <- head (tail (dailyAirt [['rank']], n = 2), n = 1)
@@ -260,35 +255,29 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (dailyTemperatureF, 1), rank, findOrdinalSuffix (rank))
       
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     } else if (HOTTESTWEEK) {
       postDetails <- getPostDetails ('hottestWeek')
       message   <- sprintf (postDetails [['MessageText']], round (weeklyTemperatureC, 1), 
                             round (weeklyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
+      
     } else if (HOTWEEK) {
       postDetails <- getPostDetails ('hotWeek')
       message   <- sprintf (postDetails [['MessageText']], round (weeklyTemperatureC, 1), 
                             round (weeklyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60 * 60
     } else if (HOTTESTMONTH) {
       postDetails <- getPostDetails ('hottestMonth')
       message   <- sprintf (postDetails [['MessageText']], round (monthlyTemperatureC, 1), 
                             round (monthlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (HOTMONTH) {
       postDetails <- getPostDetails ('hotMonth')
       rank <- head (tail (monthlyAirt [['rank']], n = 2), n = 1)
@@ -297,9 +286,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (monthlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (HOTTESTYEAR) {
       postDetails <- getPostDetails ('hottestYear')
       message   <- sprintf (postDetails [['MessageText']], year (Sys.Date ()) - 1,
@@ -309,9 +296,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (CtoF (mean (yearlyAirt [['airt']], na.rm = T)), 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (HOTYEAR) {
       postDetails <- getPostDetails ('hotYear')
       rank <- head (tail (yearlyAirt [['rank']], n = 2), n = 1)
@@ -320,18 +305,14 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (yearlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (COLDEST) {
       postDetails <- getPostDetails ('coldest')
       message   <- sprintf (postDetails [['MessageText']], round (temperatureC, 1), 
                             round (temperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s %s", format (Sys.time () + delay * 60 * 60, 
-                                              format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (COLD){
       postDetails <- getPostDetails ('cold')
       rank <- tail (rank (airt [['airt']]), n = 1)
@@ -340,9 +321,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                              round (temperatureF, 1), 
                              rank, findOrdinalSuffix (rank))
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s %s", format (Sys.time () + delay * 60 * 60, 
-                                              format = '%Y-%m-%d %H:%M:%S'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (COLDESTDAY) {
       pastTemperatureC  <- tail (head (sort (airt [['airt']]), n = 2), n = 1)
       pastTemperatureF  <- CtoF (pastTemperatureC)
@@ -354,8 +333,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (dailyTemperatureC, 1), round (dailyTemperatureF, 1)) # TR still nedds work
       
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     } else if (COLDDAY) {
       postDetails <- getPostDetails ('coldDay')
       rank <- head (tail (rank (dailyAirt [['airt']]), n = 2), n = 1)
@@ -363,35 +341,28 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                           round (dailyTemperatureF, 1), rank, findOrdinalSuffix (rank))
       
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     } else if (COLDESTWEEK) {
       postDetails <- getPostDetails ('coldestWeek')
       message   <- sprintf (postDetails [['MessageText']], round (weeklyTemperatureC, 1), 
                             round (weeklyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (COLDWEEK) {
       postDetails <- getPostDetails ('coldWeek')
       message   <- sprintf (postDetails [['MessageText']], round (weeklyTemperatureC, 1), 
                             round (weeklyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 7)) * 60 * 60
     } else if (COLDESTMONTH) {
       postDetails <- getPostDetails ('coldestMonth')
       message   <- sprintf (postDetails [['MessageText']], round (monthlyTemperatureC, 1), 
                             round (monthlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (COLDMONTH) {
       postDetails <- getPostDetails ('coldMonth')
       rank <- head (tail (rank (monthlyAirt [['airt']]), n = 2), n = 1)
@@ -401,9 +372,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (monthlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (COLDESTYEAR) {
       postDetails <- getPostDetails ('coldestYear')
       message   <- sprintf (postDetails [['MessageText']], year (Sys.Date ()) - 1,
@@ -413,9 +382,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                             round (CtoF (mean (yearlyAirt [['airt']], na.rm = T)), 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (COLDYEAR) {
       postDetails <- getPostDetails ('coldYear')
       rank <- head (tail (rank (yearlyAirt [['airt']]), n = 2), n = 1)
@@ -424,9 +391,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                           round (yearlyTemperatureF, 1))
       
       # Expires after delay
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, 
-                                                    format = '%Y-%m-%d'), treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     }
     ptable <- add_row (ptable, 
                        priority    = postDetails [["Priority"]], 
@@ -434,7 +399,7 @@ checkExtremeTemperatures <- function (ptable, TEST = 0) {
                        fFigure     = postDetails [["fFigure"]],
                        message     = message, 
                        hashtags    = postDetails [["Hashtags"]], 
-                       expires     = expireDate)
+                       expires     = expiresIn (delay = delay))
   } 
   
   # Return the table with posts
@@ -545,8 +510,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             round (head (tail (dailyPrec [['prec']], n = 2), n = 1), 2))
       
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     } else if (WETTESTDAY) {
       postDetails <- getPostDetails ('wettestDay')
       message   <- sprintf (postDetails [['MessageText']], 
@@ -554,8 +518,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             round (head (tail (dailyPrec [['prec']], n = 2), n = 1), 2))
       
       # Expires at the end of the day
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date (), format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- 0
     }  else if (WETWEEK) {
       postDetails <- getPostDetails ('wetWeek')
       rank <- head (tail (weeklyPrec [['rank']], n = 2), n = 1)
@@ -568,9 +531,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             rank, findOrdinalSuffix (rank))
       
       # Expires after six days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (WETTESTWEEK) {
       postDetails <- getPostDetails ('wettestWeek')
       message   <- sprintf (postDetails [['MessageText']], 
@@ -578,9 +539,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             round (head (tail (weeklyPrec [['prec']], n = 2), n = 1), 2))
       
       # Expires after six days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (WETMONTH) {
       postDetails <- getPostDetails ('wetMonth')
       rank <- head (tail (monthlyPrec [['rank']], n = 2), n = 1)
@@ -590,9 +549,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             rank, findOrdinalSuffix (rank))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (WETTESTMONTH) {
       postDetails <- getPostDetails ('wettestMonth')
       message   <- sprintf (postDetails [['MessageText']], 
@@ -600,9 +557,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 1))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (WETYEAR) {
       postDetails <- getPostDetails ('wetYear')
       rank <- head (tail (yearlyPrec [['rank']], n = 2), n = 1)
@@ -610,9 +565,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           rank, findOrdinalSuffix (rank), treeLocationName)
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (WETTESTYEAR) {
       postDetails <- getPostDetails ('wettestYear')
       message   <- sprintf (postDetails [['MessageText']], year (Sys.Date())-1,
@@ -620,9 +573,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                             round (head (tail (yearlyPrec [['prec']], n = 2), n = 1), 1))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (DRYMONTH) {
       postDetails <- getPostDetails ('dryMonth')
       rank <- head (tail (rank (monthlyPrec [['prec']]), n = 2), n = 1)
@@ -632,9 +583,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 2))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (DRIESTMONTH) {
       postDetails <- getPostDetails ('driestMonth')
       message <- sprintf (postDetails [['MessageText']], 
@@ -642,9 +591,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           round (head (tail (monthlyPrec [['prec']], n = 2), n = 1), 2))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (DRYYEAR) {
       postDetails <- getPostDetails ('dryYear')
       rank <- head (tail (rank (yearlyPrec [['prec']]), n = 2), n = 1)
@@ -655,9 +602,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           year (Sys.Date ()))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     } else if (DRIESTYEAR) {
       postDetails <- getPostDetails ('driestYear')
       message <- sprintf (postDetails [['MessageText']], year (Sys.Date())-1, 
@@ -666,9 +611,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           year (Sys.Date ()))
       
       # Expires after 19 days
-      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expireDate <- sprintf ("%s 23:59:59", format (Sys.Date () + delay, format = '%Y-%m-%d'), 
-                             treeTimeZone)
+      delay <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
     }
     
     # compile post details
@@ -678,7 +621,7 @@ checkExtremePrecipitation <- function (ptable, TEST = 0) {
                           fFigure  = postDetails [["fFigure"]],
                           message  = message,
                           hashtags = postDetails [["Hashtags"]],
-                          expires  = expireDate)
+                          expires  = expiresIn (delay = delay))
   }
   
   # return the table with posts

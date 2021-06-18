@@ -1,8 +1,8 @@
 #========================================================================================
 # Function to select message of highest priority
 #----------------------------------------------------------------------------------------
-selectPost <- function (ptable) # tibble of posts with, inter alia, priorities 
-{
+selectPost <- function (ptable) { # tibble of posts with, inter alia, priorities 
+
   # Delete all messages that are empty or saying "NEEDS MESSAGE"
   #--------------------------------------------------------------------------------------
   ptable <- ptable [ptable [['message']] != 'NEEDS MESSAGE', ]
@@ -42,8 +42,8 @@ selectPost <- function (ptable) # tibble of posts with, inter alia, priorities
 # Function to delete message from messages tibble to avoid it being used again.
 #---------------------------------------------------------------------------------------
 deletePost <- function (ptable, # tibble of posts
-                        post)   # tibble of the selected post
-{
+                        post) { # tibble of the selected post
+
   # Get line on which the message is 
   #-------------------------------------------------------------------------------------
   nRow <- which (ptable [['message']] == post [['message']])
@@ -68,8 +68,7 @@ deletePost <- function (ptable, # tibble of posts
 
 # This function checks the expiration dates of messages
 #---------------------------------------------------------------------------------------
-checkExpirationDatesOf <- function (ptable) 
-{
+checkExpirationDatesOf <- function (ptable) {
  
   # Loop over messages to check expiration date
   #---------------------------------------------------------------------------------------
@@ -92,8 +91,7 @@ checkExpirationDatesOf <- function (ptable)
 
 # This function re-evaluates the priority of preserved messages
 #----------------------------------------------------------------------------------------
-reEvaluatePriorityOf <- function (ptable) 
-{
+reEvaluatePriorityOf <- function (ptable) {
   
   # Increase priority of all messages by 0.01 (2.88 priority points per day), 
   # but have them max out at 10
@@ -116,8 +114,7 @@ reEvaluatePriorityOf <- function (ptable)
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #----------------------------------------------------------------------------------------
-getPostDetails <- function (fName) 
-{
+getPostDetails <- function (fName) {
   
   # load dependencies
   #--------------------------------------------------------------------------------------
@@ -125,7 +122,26 @@ getPostDetails <- function (fName)
   
   # get posts spreadsheet
   #--------------------------------------------------------------------------------------
-  input <- readxl::read_excel (path = sprintf ('%stmp/postsDetails.xlsx', path))
+  input <- readr::read_csv (file = sprintf ('%stmp/postsDetails.csv', path),
+                              col_types = c (
+                                FunctionID         = col_character (),
+                                Status             = col_character (),
+                                Event              = col_character (),
+                                Logic              = col_character (),
+                                Date               = col_character (),
+                                ExpirationDate     = col_character (),
+                                Priority           = col_number (),
+                                FigureName         = col_character (),
+                                FigureDescription  = col_character (),
+                                Hashtags           = col_character (),
+                                MessageTreatment   = col_character (),
+                                DominantTheme      = col_character (),
+                                MessageText        = col_character (),
+                                Variables          = col_character (),
+                                VariablesExamples  = col_character (),
+                                Links              = col_character (),
+                                NumberOfCharacters = col_number ()
+                             ))
   
   # Find appropriate lines using the function name
   #--------------------------------------------------------------------------------------
@@ -144,7 +160,7 @@ getPostDetails <- function (fName)
   # Extract relevant post details
   #--------------------------------------------------------------------------------------
   postDetails <- temp %>% select (-c (Status, Event, Logic, Variables, VariablesExamples, 
-                                      Link, Numbers))
+                                      Link, NumberOfCharacters))
   
   # Check whether there is a figure accompanying the post
   #--------------------------------------------------------------------------------------
@@ -180,8 +196,7 @@ getPostDetails <- function (fName)
 # This function downloads the posts spreadsheet and saves it as postDetails.csv in the 
 # tmp directory
 #----------------------------------------------------------------------------------------
-getPostsSpreadsheet <- function (gs_posts_key) 
-{
+getPostsSpreadsheet <- function (gs_posts_key) {
   
   # load dependencies
   #--------------------------------------------------------------------------------------
@@ -191,7 +206,8 @@ getPostsSpreadsheet <- function (gs_posts_key)
   #--------------------------------------------------------------------------------------
   spreadsheet <- suppressMessages (
     googledrive::drive_download (file = gs_posts_key, 
-                                 path = sprintf ('%stmp/postsDetails.xlsx', path),
+                                 path = sprintf ('%stmp/postsDetails.csv', path),
+                                 type = 'csv',
                                  overwrite = TRUE)
   )
   
@@ -203,8 +219,7 @@ getPostsSpreadsheet <- function (gs_posts_key)
 # This function reads in the message text, hastags and expiration date from a central 
 # spreadsheet and hands them to a specific function.
 #---------------------------------------------------------------------------------------
-deletePostedPostsAndRemoveDuplicates <- function (ptable) 
-{
+deletePostedPostsAndRemoveDuplicates <- function (ptable) {
   
   # make list of posts during the last twenty days
   #----------------------------------------------------------------------------------------
@@ -269,6 +284,13 @@ deletePostedPostsAndRemoveDuplicates <- function (ptable)
   return (ptable)
 }
 
+# Function to determine the expiration date
+#----------------------------------------------------------------------------------------
+expiresIn  <- function (delay = 0) { # delay in seconds
+  as.POSIXct (sprintf ("%s 23:59:59", 
+                       format (Sys.Date (), format = '%Y-%m-%d')),
+              tz = treeTimeZone) + delay
+}
 
 # Function to find the ordinal suffix for a number
 #----------------------------------------------------------------------------------------

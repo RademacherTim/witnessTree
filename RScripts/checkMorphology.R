@@ -43,16 +43,14 @@ explainDimensions <- function (ptable, TEST = 0) {
     } else {
       message <- postDetails [["MessageText"]]
     }
-    delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-    expirDate <- sprintf ("%s 23:59:59 %s", 
-                          format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone) 
+    delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7)) * 60 * 60 
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate) 
+                          expires     = expiresIn (delay)) 
 
     # update memory 
     #------------------------------------------------------------------------------------

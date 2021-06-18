@@ -17,14 +17,15 @@ explainSeedDispersal <- function (ptable, TEST = 0) {
       TEST == 1) {
     postDetails <- getPostDetails ("explainSeedDispersal")
     message   <- sprintf (postDetails [["MessageText"]])
-    expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
+                          expires     = as.POSIXct (sprintf ("%s-11-30 23:59:59 %s", 
+                                                             format (Sys.Date (), format = '%Y')),
+                                                    tz = treeTimeZone))
   } 
   
   # Return table with posts
@@ -88,16 +89,14 @@ checkCommunityWildlife <- function (ptable, TEST = 0) {
         postDetails <- getPostDetails ("checkCommunityWildlife - winter")
       }
       message   <- sprintf (postDetails [["MessageText"]])
-      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7 ,7))
-      expirDate <- sprintf ("%s 23:59:59 %s", 
-                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
       ptable    <- add_row (ptable, 
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/wildlifeCam/%s',imagesPath, tail (listOfVisitors, n = 1)),
                             message     = message, 
                             hashtags    = postDetails [["Hashtags"]], 
-                            expires     = expirDate)
+                            expires     = expiresIn (delay = delay))
     
       # Increase the wildlife counter in the memory
       #----------------------------------------------------------------------------------
@@ -118,14 +117,13 @@ explainGypsyMothHerbivory <- function (ptable, TEST = 0) {
   if (substring (Sys.Date (), 6, 10) > '05-15' & substring (Sys.Date (), 6, 10) < '08-31'| 
       TEST == 1) {
     postDetails <- getPostDetails ("explainGypsyMothHerbivory")
-    expirDate <- sprintf ("%s-08-31 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
                           message     = postDetails [["MessageText"]], 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
+                          expires     = expiresIn (0))
   } 
   
   # Return table with posts
@@ -140,14 +138,13 @@ explainGallWasps <- function (ptable, TEST = 0) {
       TEST == 1) {
     postDetails <- getPostDetails ("explainGallWasps")
     message   <- sprintf (postDetails [["MessageText"]])
-    expirDate <- sprintf ("%s-11-30 23:59:59 %s", format (Sys.Date (), format = '%Y'), treeTimeZone)
     ptable    <- add_row (ptable, 
                           priority    = postDetails [["Priority"]],
                           fFigure     = postDetails [['fFigure']],
                           figureName  = postDetails [["FigureName"]], 
                           message     = message, 
                           hashtags    = postDetails [["Hashtags"]], 
-                          expires     = expirDate)
+                          expires     = expirsIn (0))
   } 
   
   # Return table with posts

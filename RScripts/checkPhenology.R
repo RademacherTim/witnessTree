@@ -101,16 +101,14 @@ checkLeafColourChange <- function (ptable, TEST = 0) {
       postDetails <- getPostDetails ("checkLeafUnfolding")
       FigureName  <- 'witnesstree_PhenoCamImage'
       message   <- sprintf (postDetails [["Message"]])
-      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expirDate <- sprintf ("%s 23:59:59 %s", 
-                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
       ptable    <- add_row (ptable,
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
                             message     = message,
                             hashtags    = postDetails [["Hashtags"]],
-                            expires     = expirDate)
+                            expires     = expiresIn (delay))
       
       # update growingSeason boolean to start the season
       #----------------------------------------------------------------------------------
@@ -121,16 +119,14 @@ checkLeafColourChange <- function (ptable, TEST = 0) {
     } else if ((memory [['growingSeason']] & gcc [['gcc_90']] [2] < siteGCCThreshold) | TEST == 2) {
       postDetails <- getPostDetails ("checkLeafColourChange - endOfSeason")
       FigureName  <- 'witnesstree_PhenoCamImage'
-      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8))
-      expirDate <- sprintf ("%s 23:59:59 %s", 
-                            format (Sys.Date () + delay, format = '%Y-%m-%d'), treeTimeZone)
+      delay     <- as.numeric (substring (postDetails [['ExpirationDate']], 7, 8)) * 60 * 60
       ptable    <- add_row (ptable,
                             priority    = postDetails [["Priority"]],
                             fFigure     = postDetails [['fFigure']],
                             figureName  = sprintf ('%s/tmp/%s.jpg', path, FigureName),
                             message     = postDetails [['Message']],
                             hashtags    = postDetails [["Hashtags"]],
-                            expires     = expirDate)
+                            expires     = expiresIn (delay))
       
       # update growingSeason boolean to end the season
       #-----------------------------------------------------------------------------------
